@@ -108,7 +108,7 @@ class _UserDashboardState extends State<UserDashboard> {
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      height: 90,
+      height: 100,
       child: Column(children: [
         const Text(
           'Today\'s Entry',
@@ -125,7 +125,9 @@ class _UserDashboardState extends State<UserDashboard> {
                   color: Colors.green.shade700,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/AddEntry');
+                  },
                   child: const Text('Add Entry'),
                 )
               ],
