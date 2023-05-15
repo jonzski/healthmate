@@ -1,5 +1,7 @@
+import 'package:cmsc_23_project/screens/UserDashboard.dart';
 import 'package:flutter/material.dart';
 import './screens/LoginPage.dart';
+import './screens/UserDashboard.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,9 +14,10 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Routing',
-      initialRoute: '/LoginPage',
+      initialRoute: '/',
       routes: {
-        '/LoginPage': (context) => const LoginPage(),
+        '/': (context) => const LoginPage(),
+        '/UserDashboard': (context) => const UserDashboard(),
       },
     );
   }
