@@ -1,7 +1,7 @@
+import 'package:cmsc_23_project/screens/AddEntry.dart';
 import 'package:cmsc_23_project/screens/UserDashboard.dart';
 import 'package:flutter/material.dart';
 import './screens/LoginPage.dart';
-import './screens/UserDashboard.dart';
 
 void main() {
   runApp(const MainApp());
@@ -18,6 +18,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/': (context) => const LoginPage(),
         '/UserDashboard': (context) => const UserDashboard(),
+        '/AddEntry': (context) => const AddEntry(),
       },
     );
   }
