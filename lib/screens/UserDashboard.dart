@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './components/UserDrawer.dart';
 
 class UserDashboard extends StatefulWidget {
   const UserDashboard({super.key});
@@ -11,51 +12,26 @@ class _UserDashboardState extends State<UserDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        backgroundColor: Colors.teal.shade100,
-        child: ListView(
-          children: [
-            ListTile(
-              title: const Text(
-                'Homepage',
-                style: TextStyle(fontSize: 18),
-              ),
-              onTap: () {
-                Navigator.pop(context); // close the drawer
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'My Profile',
-                style: TextStyle(fontSize: 18),
-              ),
-              onTap: () {
-                Navigator.pop(context); // close the drawer
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: const UserDrawer(),
       appBar: AppBar(
-          title: const Text('Health Monitoring'),
-          centerTitle: true,
-          backgroundColor: Colors.green,
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.person,
-                color: Colors.white,
-              ),
-              onPressed: () {},
-            )
-          ]),
+        backgroundColor: Color(0xFF090c12),
+        centerTitle: true,
+      ),
       body: homepage(),
     );
   }
 
   Widget homepage() {
     return Scaffold(
-        backgroundColor: Colors.teal.shade50,
+        backgroundColor: const Color(0xFF090c12),
+        bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: const Color(0xFF222429),
+            items: [
+              BottomNavigationBarItem(
+                  icon: const Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: const Icon(Icons.person), label: 'Profile'),
+            ]),
         body: ListView(children: [
           Row(
             children: [Expanded(child: header())],
@@ -78,7 +54,7 @@ class _UserDashboardState extends State<UserDashboard> {
         margin: const EdgeInsets.all(20.0),
         padding: const EdgeInsets.all(10),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFF526bf2),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         height: 100,
@@ -105,7 +81,7 @@ class _UserDashboardState extends State<UserDashboard> {
       margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
       padding: const EdgeInsets.all(10),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF222429),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       height: 100,
@@ -173,14 +149,7 @@ class _UserDashboardState extends State<UserDashboard> {
             padding: const EdgeInsets.only(left: 40, right: 40),
             height: 70,
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Colors.orange.shade200, Colors.orange.shade300]),
-                // color: Colors.blue,
-                border: Border.all(
-                  color: Colors.orange.shade100,
-                ),
+                color: Color(0xFF222429),
                 borderRadius: const BorderRadius.all(Radius.circular(50))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -219,14 +188,7 @@ class _UserDashboardState extends State<UserDashboard> {
             padding: const EdgeInsets.only(left: 50, right: 40),
             height: 70,
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.pink.shade200, Colors.red.shade400]),
-                // color: Colors.blue,
-                border: Border.all(
-                  color: Colors.red.shade100,
-                ),
+                color: Color(0xFF222429),
                 borderRadius: const BorderRadius.all(Radius.circular(50))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
