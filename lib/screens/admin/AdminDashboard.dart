@@ -8,8 +8,6 @@ class AdminDashboard extends StatefulWidget {
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
-  int currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +15,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         backgroundColor: const Color(0xFF090c12),
         centerTitle: true,
       ),
-      // body: homepage(),
+      body: const Center(child: Text('Admin')),
     );
   }
 }

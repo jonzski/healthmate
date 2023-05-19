@@ -4,9 +4,16 @@ import './screens/SignupPage.dart';
 import './screens/UserDashboard.dart';
 import './screens/Profile.dart';
 import './screens/AddEntry.dart';
+
+import './screens/SwitchUserType.dart';
+
 import './screens/admin/AdminDashboard.dart';
 import './screens/admin/AdminSignInPage.dart';
 import './screens/admin/AdminSignUpPage.dart';
+
+import './screens/monitor/MonitorDashboard.dart';
+import './screens/monitor/MonitorSignInPage.dart';
+import './screens/monitor/MonitorSignUpPage.dart';
 
 void main() {
   runApp(const MainApp());
@@ -28,9 +35,13 @@ class MainApp extends StatelessWidget {
         '/UserDashboard': (context) => const UserDashboard(),
         '/AddEntry': (context) => const AddEntry(),
         '/Profile': (context) => const Profile(),
+        '/SwitchUserType': (context) => const SwitchUserType(),
         '/AdminSignIn': (context) => const AdminSignInPage(),
         '/AdminSignUp': (context) => const AdminSignUpPage(),
-        '/AdminDashboard': (context) => const AdminDashboard()
+        '/AdminDashboard': (context) => const AdminDashboard(),
+        '/MonitorSignIn': (context) => const MonitorSignInPage(),
+        '/MonitorSignUp': (context) => const MonitorSignUpPage(),
+        '/MonitorDashboard': (context) => const MonitorDashboard()
       },
     );
   }

@@ -89,14 +89,14 @@ class _LoginPageState extends State<LoginPage> {
         margin: const EdgeInsets.all(10),
         child: TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/AdminSignIn');
+            Navigator.pushNamed(context, '/SwitchUserType');
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.transparent),
             overlayColor: MaterialStateProperty.all(Colors.transparent),
           ),
           child: const Center(
-            child: Text('Log in as Admin'),
+            child: Text('Log in as Personnel'),
           ),
         ),
       ),
