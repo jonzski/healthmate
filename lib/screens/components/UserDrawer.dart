@@ -15,8 +15,6 @@ class UserDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(
-                    context, '/UserDashboard'); // close the drawer
               },
             ),
             ListTile(

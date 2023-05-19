@@ -38,44 +38,47 @@ class _ProfileState extends State<Profile> {
             height: 450,
             width: 400,
             child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: ListView(children: const <Widget>[
-                Center(
-                  child: Text(
-                    "Profile",
-                    style: TextStyle(fontSize: 36),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Text(
-                    "Name: Goofy ahh lil jits",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Text(
-                    "Student Number: 2021-72769",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Text(
-                    "Course: BS Computer Science",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 15),
-                  child: Text(
-                    "College: College of Arts and Sciences",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ]),
-            ),
+                padding: const EdgeInsets.all(30),
+                child: Center(
+                  child: ListView(shrinkWrap: true, children: const <Widget>[
+                    Center(
+                        child: Padding(
+                            padding: EdgeInsets.all(15),
+                            child: Text(
+                              "Profile",
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                            ))),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Name: Goofy ahh lil jits",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Student Number: 2021-72769",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "Course: BS Computer Science",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        "College: College of Arts and Sciences",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ]),
+                )),
           ),
         ));
   }

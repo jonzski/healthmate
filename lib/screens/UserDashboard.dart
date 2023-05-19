@@ -9,6 +9,8 @@ class UserDashboard extends StatefulWidget {
 }
 
 class _UserDashboardState extends State<UserDashboard> {
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +27,9 @@ class _UserDashboardState extends State<UserDashboard> {
     return Scaffold(
         backgroundColor: const Color(0xFF090c12),
         bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: const Color(0xFF222429),
+            currentIndex: currentIndex,
+            type: BottomNavigationBarType.fixed,
+            onTap: (index) => setState(() => currentIndex = index),
             items: [
               BottomNavigationBarItem(
                   icon: const Icon(Icons.home), label: 'Home'),

@@ -14,51 +14,72 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFF090c12),
-        body: Container(
-          margin: const EdgeInsets.only(left: 128.0, right: 128.0),
-          child: Center(
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                const Text(
-                  "Login",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 25),
-                ),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Username',
-                  ),
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                  ),
-                  obscureText: true,
-                ),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF526bf2)),
-                    minimumSize:
-                        MaterialStateProperty.all<Size>(const Size(200, 40)),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/UserDashboard');
-                  },
-                  child: const Text('Login'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25),
-                  child: TextButton(
-                      onPressed: () {}, child: const Text("Sign Up")),
-                )
-              ],
-            ),
+        backgroundColor: const Color(0xFF090c12),
+        body: Center(
+            child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: const Color(0xFF222429),
           ),
-        ));
+          height: 450,
+          width: 400,
+          margin: const EdgeInsets.only(left: 128.0, right: 128.0),
+          child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    const Text(
+                      "Login",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 25),
+                    ),
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(
+                        labelText: 'Username',
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                      ),
+                      obscureText: true,
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFF526bf2)),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(100, 50)),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/UserDashboard');
+                      },
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text("Sign Up"),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        )));
   }
 }
