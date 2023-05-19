@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           height: 450,
           width: 400,
-          margin: const EdgeInsets.only(left: 128.0, right: 128.0),
+          margin: const EdgeInsets.only(left: 80.0, right: 80.0),
           child: Padding(
               padding: const EdgeInsets.all(30),
               child: Center(
@@ -67,14 +67,16 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       child: TextButton(
-                        onPressed: () {},
-                        child: const Text("Sign Up"),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/Signup');
+                        },
                         style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.transparent),
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent),
                         ),
+                        child: const Text("Sign Up"),
                       ),
                     )
                   ],
