@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+
+class AdminSignInPage extends StatefulWidget {
+  const AdminSignInPage({super.key});
+
+  @override
+  _AdminSignInPageState createState() => _AdminSignInPageState();
+}
+
+class _AdminSignInPageState extends State<AdminSignInPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: const Color(0xFF090c12),
+        body: Center(
+            child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: const Color(0xFF222429),
+          ),
+          height: 450,
+          width: 400,
+          margin: const EdgeInsets.only(left: 80.0, right: 80.0),
+          child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.admin_panel_settings),
+                          Text(
+                            " Admin Login ",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ]),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                      ),
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                      ),
+                      obscureText: true,
+                    ),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFF526bf2)),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(100, 50)),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/AdminDashboard');
+                      },
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/AdminSignUp');
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
+                        child: const Text("Sign Up"),
+                      ),
+                    )
+                  ],
+                ),
+              )),
+        )));
+  }
+}

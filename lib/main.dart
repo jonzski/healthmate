@@ -4,6 +4,9 @@ import './screens/SignupPage.dart';
 import './screens/UserDashboard.dart';
 import './screens/Profile.dart';
 import './screens/AddEntry.dart';
+import './screens/admin/AdminDashboard.dart';
+import './screens/admin/AdminSignInPage.dart';
+import './screens/admin/AdminSignUpPage.dart';
 
 void main() {
   runApp(const MainApp());
@@ -24,7 +27,10 @@ class MainApp extends StatelessWidget {
         '/Signup': (context) => const SignupPage(),
         '/UserDashboard': (context) => const UserDashboard(),
         '/AddEntry': (context) => const AddEntry(),
-        '/Profile': (context) => const Profile()
+        '/Profile': (context) => const Profile(),
+        '/AdminSignIn': (context) => const AdminSignInPage(),
+        '/AdminSignUp': (context) => const AdminSignUpPage(),
+        '/AdminDashboard': (context) => const AdminDashboard()
       },
     );
   }
