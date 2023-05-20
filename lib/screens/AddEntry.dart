@@ -27,7 +27,6 @@ class _AddEntryState extends State<AddEntry> {
   Widget build(BuildContext context) {
     return Scaffold(
         drawer: Drawer(
-          backgroundColor: Colors.teal.shade100,
           child: ListView(
             children: [
               ListTile(
@@ -55,34 +54,41 @@ class _AddEntryState extends State<AddEntry> {
         appBar: AppBar(
           title: const Text('Add Today\'s Entry'),
           centerTitle: true,
-          backgroundColor: Colors.green,
+          backgroundColor: Colors.black,
         ),
         body: entry());
   }
 
   Widget entry() {
     return Scaffold(
-        backgroundColor: Colors.teal.shade50,
-        body: ListView(children: [
-          Column(
-            children: [
-              Row(
-                children: [Expanded(child: title())],
-              ),
-              symptoms(),
-              monitoring(),
-              submitButton(),
-            ],
-          ),
-        ]));
+        backgroundColor: const Color(0xFF090c12),
+        body: Center(
+            child: Container(
+                width: 500,
+                color: const Color(0xFF090c12),
+                child: ListView(children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [Expanded(child: title())],
+                      ),
+                      symptoms(),
+                      monitoring(),
+                      submitButton(),
+                      const SizedBox(
+                        height: 30,
+                      )
+                    ],
+                  ),
+                ]))));
   }
 
   Widget title() {
     return Container(
-        margin: const EdgeInsets.all(20.0),
+        margin: const EdgeInsets.only(top: 20, left: 40, right: 40),
         padding: const EdgeInsets.all(12),
         decoration: const BoxDecoration(
-          color: Colors.white,
+          color: Color(0xFF222429),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         height: 120,
@@ -103,10 +109,10 @@ class _AddEntryState extends State<AddEntry> {
 
   Widget symptoms() {
     return Container(
-      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+      margin: const EdgeInsets.only(top: 20, left: 40, right: 40),
       padding: const EdgeInsets.all(12),
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFF222429),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: ListView.builder(
@@ -128,15 +134,16 @@ class _AddEntryState extends State<AddEntry> {
 
   Widget monitoring() {
     return Container(
-        margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+        margin: const EdgeInsets.only(top: 20, bottom: 25, left: 40, right: 40),
         padding: const EdgeInsets.all(12),
-        height: 100,
+        height: 90,
         decoration: const BoxDecoration(
-          color: Colors.white,
+          // color: Colors.white,
+          color: Color(0xFF222429),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const Flexible(
               child: Text(
@@ -187,7 +194,7 @@ class _AddEntryState extends State<AddEntry> {
           Navigator.pushNamed(context, '/UserDashboard');
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
+          backgroundColor: const Color(0xFF526bf2),
         ),
         child: const Text('Submit'));
   }

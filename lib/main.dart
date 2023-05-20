@@ -16,7 +16,7 @@ import './screens/monitor/MonitorSignInPage.dart';
 import './screens/monitor/MonitorSignUpPage.dart';
 
 import './provider/auth_provider.dart';
-import 'provider/entry_provider.dart';
+import './provider/entry_provider.dart';
 
 import 'package:provider/provider.dart';
 

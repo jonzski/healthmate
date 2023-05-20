@@ -8,10 +8,12 @@ environment:
 
 dependencies:
   cloud_firestore: ^4.7.0
+  email_validator: ^2.1.17
   firebase_auth: ^4.6.0
   firebase_core: ^2.12.0
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.5
   http: ^0.13.6
   provider: ^6.0.5
 
@@ -22,3 +24,24 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: SF-UI-Display
+      fonts:
+        - asset: assets/fonts/SF-UI-Display-Ultralight.otf
+          weight: 100
+        - asset: assets/fonts/SF-UI-Display-Thin.otf
+          weight: 200
+        - asset: assets/fonts/SF-UI-Display-Light.otf
+          weight: 300
+        - asset: assets/fonts/SF-UI-Display-Medium.otf
+          weight: 500
+        - asset: assets/fonts/SF-UI-Display-Semibold.otf
+          weight: 600
+        - asset: assets/fonts/SF-UI-Display-Bold.otf
+          weight: 700
+        - asset: assets/fonts/SF-UI-Display-Heavy.otf
+          weight: 800
+        - asset: assets/fonts/SF-UI-Display-Black.otf
+          weight: 900
+  assets:
+    - assets/images/

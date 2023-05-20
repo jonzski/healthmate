@@ -13,6 +13,7 @@ class UserDetails {
   String? position;
   String? homeUnit;
   bool? underMonitoring;
+  bool? underQuarantine;
   Map<String, bool>? preExistingDisease;
   List<String>? allergies;
 
@@ -28,6 +29,7 @@ class UserDetails {
       this.homeUnit,
       this.preExistingDisease,
       this.allergies,
+      this.underQuarantine,
       this.underMonitoring});
 
   // Factory constructor to instantiate object from json format
@@ -44,7 +46,8 @@ class UserDetails {
         homeUnit: json['homeUnit'],
         preExistingDisease: json['preExistingDisease'],
         allergies: json['allergies'],
-        underMonitoring: json['underMonitoring']);
+        underMonitoring: json['underMonitoring'],
+        underQuarantine: json['underQuarantine']);
   }
 
   static List<UserDetails> fromJsonArray(String jsonData) {
@@ -66,7 +69,8 @@ class UserDetails {
         'studentNum': user.studentNum,
         'preExistingDisease': user.preExistingDisease,
         'allergies': user.allergies,
-        'underMonitoring': user.underMonitoring
+        'underMonitoring': user.underMonitoring,
+        'underQuarantine': user.underQuarantine
       };
     }
     return ({
@@ -77,7 +81,8 @@ class UserDetails {
       'homeUnit': user.homeUnit,
       'preExistingDisease': user.preExistingDisease,
       'allergies': user.allergies,
-      'underMonitoring': user.underMonitoring
+      'underMonitoring': user.underMonitoring,
+      'underQuarantine': user.underQuarantine
     });
   }
 }
