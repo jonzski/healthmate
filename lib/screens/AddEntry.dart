@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../provider/entry_provider.dart';
+import '../model/entry_model.dart';
 
 class AddEntry extends StatefulWidget {
   const AddEntry({super.key});
@@ -8,6 +11,8 @@ class AddEntry extends StatefulWidget {
 }
 
 class _AddEntryState extends State<AddEntry> {
+  final formKey = GlobalKey<FormState>();
+
   final Map<String, bool> symptomsList = {
     "Fever (37.8 C and above)": false,
     "Feeling feverish": false,
@@ -63,24 +68,27 @@ class _AddEntryState extends State<AddEntry> {
     return Scaffold(
         backgroundColor: const Color(0xFF090c12),
         body: Center(
-            child: Container(
-                width: 500,
-                color: const Color(0xFF090c12),
-                child: ListView(children: [
-                  Column(
-                    children: [
-                      Row(
-                        children: [Expanded(child: title())],
-                      ),
-                      symptoms(),
-                      monitoring(),
-                      submitButton(),
-                      const SizedBox(
-                        height: 30,
-                      )
-                    ],
+          child: Container(
+            width: 500,
+            color: const Color(0xFF090c12),
+            child: Form(
+              key: formKey,
+              child: ListView(children: [
+                Column(children: [
+                  Row(
+                    children: [Expanded(child: title())],
                   ),
-                ]))));
+                  symptoms(),
+                  monitoring(),
+                  submitButton(),
+                  const SizedBox(
+                    height: 30,
+                  )
+                ]),
+              ]),
+            ),
+          ),
+        ));
   }
 
   Widget title() {
@@ -191,7 +199,36 @@ class _AddEntryState extends State<AddEntry> {
   Widget submitButton() {
     return ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/UserDashboard');
+          if (formKey.currentState!.validate()) {
+            final authProvider = context.read<EntryProvider>();
+
+            if (inContact == null) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content:
+                      Text('Please select an answer in the last question')));
+            } else {
+              bool contact;
+              DateTime dateToday = DateTime(DateTime.now().year,
+                  DateTime.now().month, DateTime.now().day);
+              if (inContact == 'yes') {
+                contact = true;
+              } else {
+                contact = false;
+              }
+              DailyEntry dailyEntry = DailyEntry(
+                  uid: '12345',
+                  symptoms: symptomsList,
+                  closeContact: contact,
+                  entryDate: dateToday);
+
+              authProvider.addEntry(dailyEntry);
+              formKey.currentState?.save();
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Successfully added entry')));
+              Navigator.pushNamed(context, '/UserDashboard');
+            }
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF526bf2),
