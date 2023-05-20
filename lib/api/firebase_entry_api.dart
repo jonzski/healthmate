@@ -25,6 +25,10 @@ class FirebaseEntryAPI {
     }
   }
 
+  Stream<QuerySnapshot> getAllUsers() {
+    return db.collection("user").snapshots();
+  }
+
   Future<String> editEntry(DailyEntry entry) async {
     try {
       await db.collection("user").doc(entry.uid).update({

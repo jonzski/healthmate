@@ -8,7 +8,7 @@ class EntryProvider with ChangeNotifier {
   late FirebaseEntryAPI firebaseService;
   late Stream<QuerySnapshot> _entryStream;
 
-  TodoListProvider() {
+  EntryProvider() {
     firebaseService = FirebaseEntryAPI();
     // fetchEntries();
   }
@@ -20,18 +20,17 @@ class EntryProvider with ChangeNotifier {
     DateTime timeToday =
         DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
-    if (entry.entryDate == timeToday) {
-      print("You have already added an entry today!");
-      return;
-    } else {
-      String message = await firebaseService.addEntry(entry.toJson(entry));
+    // if (entry.entryDate == timeToday) {
+    //   print("You have already added an entry today!");
+    //   return;
+    // } else {
+    String message = await firebaseService.addEntry(entry.toJson(entry));
+    print(message);
+    if (entry.closeContact == true) {
+      String message = await firebaseService.updateMonitoring(entry.uid);
       print(message);
-      if (entry.closeContact == true) {
-        String message = await firebaseService.updateMonitoring(entry.uid);
-        print(message);
-      }
-      notifyListeners();
     }
+    notifyListeners();
   }
 
   void editEntry(DailyEntry entry) async {
