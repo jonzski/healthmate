@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-class User {
+// UserType 0-User, 1-monitor, 2-admin
+class UserDetails {
   final int userId;
-  String? userType;
-  String? name;
+  int userType;
+  String name;
   String? userName;
   String? college;
   String? course;
@@ -15,7 +16,7 @@ class User {
   Map<String, bool>? preExistingDisease;
   List<String>? allergies;
 
-  User(
+  UserDetails(
       {required this.userId,
       required this.userType,
       required this.name,
@@ -30,8 +31,8 @@ class User {
       this.underMonitoring});
 
   // Factory constructor to instantiate object from json format
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserDetails.fromJson(Map<String, dynamic> json) {
+    return UserDetails(
         userId: json['userId'],
         userType: json['userType'],
         name: json['name'],
@@ -46,13 +47,15 @@ class User {
         underMonitoring: json['underMonitoring']);
   }
 
-  static List<User> fromJsonArray(String jsonData) {
+  static List<UserDetails> fromJsonArray(String jsonData) {
     final Iterable<dynamic> data = jsonDecode(jsonData);
-    return data.map<User>((dynamic d) => User.fromJson(d)).toList();
+    return data
+        .map<UserDetails>((dynamic d) => UserDetails.fromJson(d))
+        .toList();
   }
 
-  Map<String, dynamic> toJson(User user) {
-    if (user.userType == "Student") {
+  Map<String, dynamic> toJson(UserDetails user) {
+    if (user.userType == 0) {
       return {
         'userId': user.userId,
         'userType': user.userType,
