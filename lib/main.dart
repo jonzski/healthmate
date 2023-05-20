@@ -32,7 +32,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: ((context) => UserProvider())),
+        ChangeNotifierProvider(create: ((context) => EntryProvider())),
         ChangeNotifierProvider(create: ((context) => AuthProvider())),
       ],
       child: const MainApp(),
