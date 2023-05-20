@@ -34,18 +34,21 @@ class _LoginPageState extends State<LoginPage> {
                 shrinkWrap: true,
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    SvgPicture.asset(
-                      logo,
-                      width: 100,
-                      colorFilter: const ColorFilter.mode(
-                          Color(0xFF526bf2), BlendMode.srcIn),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: SvgPicture.asset(
+                        logo,
+                        width: 60,
+                        colorFilter: const ColorFilter.mode(
+                            Color(0xFF526bf2), BlendMode.srcIn),
+                      ),
                     ),
                     const Text(
                       "OHMS",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
-                          fontSize: 36,
+                          fontSize: 30,
                           fontWeight: FontWeight.w700),
                     ),
                     const Text(
@@ -53,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
-                          fontSize: 36,
+                          fontSize: 30,
                           fontWeight: FontWeight.w300),
                     ),
                   ]),
