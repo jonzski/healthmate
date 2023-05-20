@@ -12,18 +12,8 @@ class User {
   String? position;
   String? homeUnit;
   bool? underMonitoring;
-
-  Map<String, bool>? preExistingDisease = {
-    "hypertension": false,
-    "diabetes": false,
-    "tuberculosis": false,
-    "cancer": false,
-    "kidneyDisease": false,
-    "cardiacDisease": false,
-    "autoimmuneDisease": false,
-    "asthma": false
-  };
-  List<String>? allergies = [];
+  Map<String, bool>? preExistingDisease;
+  List<String>? allergies;
 
   User(
       {required this.userId,
