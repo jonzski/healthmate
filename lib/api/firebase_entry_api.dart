@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/entry_model.dart';
 
 class FirebaseEntryAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -18,7 +19,22 @@ class FirebaseEntryAPI {
     try {
       await db.collection("user").doc(uid).update({'userMonitoring': true});
 
-      return "Successfully edited slambook!";
+      return "Successfully edited entry!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  Future<String> editEntry(DailyEntry entry) async {
+    try {
+      await db.collection("user").doc(entry.uid).update({
+        'symptoms': entry.symptoms,
+        'closeContact': entry.closeContact,
+        'remarks': entry.remarks,
+        'status': 'Pending'
+      });
+
+      return "Successfully edited entry!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }
