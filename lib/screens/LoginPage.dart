@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,6 +11,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final String logo = 'assets/images/Logo.svg';
 
   @override
   Widget build(BuildContext context) {
@@ -30,38 +33,67 @@ class _LoginPageState extends State<LoginPage> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  const Text(
-                    "Login",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Username',
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    SvgPicture.asset(
+                      logo,
+                      width: 100,
+                      colorFilter: const ColorFilter.mode(
+                          Color(0xFF526bf2), BlendMode.srcIn),
                     ),
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
+                    const Text(
+                      "OHMS",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontSize: 36,
+                          fontWeight: FontWeight.w700),
                     ),
-                    obscureText: true,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(const Color(0xFF526bf2)),
-                      minimumSize:
-                          MaterialStateProperty.all(const Size(100, 50)),
+                    const Text(
+                      "Mobile",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontSize: 36,
+                          fontWeight: FontWeight.w300),
                     ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/UserDashboard');
-                    },
-                    child: const Text(
-                      'Login',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ]),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 25),
+                    child: Column(children: [
+                      TextFormField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Username',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                        ),
+                        obscureText: true,
+                      ),
+                    ]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFF526bf2)),
+                        minimumSize:
+                            MaterialStateProperty.all(const Size(100, 50)),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/UserDashboard');
+                      },
+                      child: const Text(
+                        'Login',
+                        style: TextStyle(
+                            fontFamily: 'SF-UI-Display',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15),
+                      ),
                     ),
                   ),
                   Padding(
@@ -76,7 +108,13 @@ class _LoginPageState extends State<LoginPage> {
                         overlayColor:
                             MaterialStateProperty.all(Colors.transparent),
                       ),
-                      child: const Text("Sign Up"),
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   )
                 ],
@@ -86,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         height: 20,
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(100),
         child: TextButton(
           onPressed: () {
             Navigator.pushNamed(context, '/SwitchUserType');
@@ -95,8 +133,12 @@ class _LoginPageState extends State<LoginPage> {
             backgroundColor: MaterialStateProperty.all(Colors.transparent),
             overlayColor: MaterialStateProperty.all(Colors.transparent),
           ),
-          child: const Center(
-            child: Text('Log in as Personnel'),
+          child: const Text(
+            'Log in as Personnel',
+            style: TextStyle(
+                fontFamily: 'SF-UI-Display',
+                fontWeight: FontWeight.w700,
+                fontSize: 15),
           ),
         ),
       ),
