@@ -2,7 +2,7 @@ import 'dart:convert';
 
 // UserType 0-User, 1-monitor, 2-admin
 class UserDetails {
-  final int userId;
+  final String userId;
   int userType;
   String name;
   String? userName;
