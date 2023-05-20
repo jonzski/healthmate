@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
 
@@ -108,9 +109,20 @@ class _LoginPageState extends State<LoginPage> {
                         if (loginKey.currentState!.validate()) {
                           loginKey.currentState!.save();
 
-                          await context.read<AuthProvider>().signIn(
-                              _emailController.text.trim(),
-                              _passwordController.text.trim());
+                          try {
+                            final UserCredential user = await context
+                                .read<AuthProvider>()
+                                .signIn(_emailController.text.trim(),
+                                    _passwordController.text.trim());
+
+                            if (user != null) {
+                              // Navigate to a specific page after login
+                              Navigator.pushReplacementNamed(
+                                  context, '/UserDashboard');
+                            }
+                          } catch (e) {
+                            print('Error: $e');
+                          }
                         }
                       },
                       child: const Text(
