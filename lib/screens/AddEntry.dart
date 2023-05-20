@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../provider/auth_provider.dart';
 import '../provider/entry_provider.dart';
 import '../model/entry_model.dart';
 
@@ -200,7 +201,7 @@ class _AddEntryState extends State<AddEntry> {
     return ElevatedButton(
         onPressed: () {
           if (formKey.currentState!.validate()) {
-            final authProvider = context.read<EntryProvider>();
+            final entryProvider = context.read<EntryProvider>();
 
             if (inContact == null) {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -216,16 +217,14 @@ class _AddEntryState extends State<AddEntry> {
                 contact = false;
               }
               DailyEntry dailyEntry = DailyEntry(
-                  uid: '12345',
+                  uid: context.read<AuthProvider>().currentUser.uid,
                   symptoms: symptomsList,
                   closeContact: contact,
                   entryDate: dateToday);
 
-              authProvider.addEntry(dailyEntry);
+              entryProvider.addEntry(dailyEntry);
               formKey.currentState?.save();
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Successfully added entry')));
               Navigator.pushNamed(context, '/UserDashboard');
             }
           }
