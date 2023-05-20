@@ -9,11 +9,14 @@ class FirebaseAuthAPI {
 
   Stream<User?> get getUser => auth.authStateChanges();
 
-  Future<void> signIn(String email, String password) async {
+  Future<UserCredential> signIn(String email, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential credential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return credential;
     } catch (e) {
       print(e);
+      throw e; // Rethrow the exception
     }
   }
 
