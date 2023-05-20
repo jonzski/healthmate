@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../provider/auth_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,10 +11,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final String logo = 'assets/images/Logo.svg';
+  final loginKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
         child: Padding(
             padding: const EdgeInsets.all(30),
             child: Center(
+                child: Form(
+              key: loginKey,
               child: ListView(
                 shrinkWrap: true,
                 children: [
@@ -64,13 +69,25 @@ class _LoginPageState extends State<LoginPage> {
                     padding: EdgeInsets.symmetric(vertical: 25),
                     child: Column(children: [
                       TextFormField(
-                        controller: _usernameController,
+                        controller: _emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
                         decoration: const InputDecoration(
-                          labelText: 'Username',
+                          labelText: 'Email',
                         ),
                       ),
                       TextFormField(
                         controller: _passwordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid password';
+                          }
+                          return null;
+                        },
                         decoration: const InputDecoration(
                           labelText: 'Password',
                         ),
@@ -87,8 +104,14 @@ class _LoginPageState extends State<LoginPage> {
                         minimumSize:
                             MaterialStateProperty.all(const Size(100, 50)),
                       ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/UserDashboard');
+                      onPressed: () async {
+                        if (loginKey.currentState!.validate()) {
+                          loginKey.currentState!.save();
+
+                          await context.read<AuthProvider>().signIn(
+                              _emailController.text.trim(),
+                              _passwordController.text.trim());
+                        }
                       },
                       child: const Text(
                         'Login',
@@ -102,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         Navigator.pushNamed(context, '/Signup');
                       },
                       style: ButtonStyle(
@@ -122,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                   )
                 ],
               ),
-            )),
+            ))),
       )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
