@@ -112,6 +112,7 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                     TextFormField(
                       controller: _passwordController,
+                      obscureText: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter valid password ';
@@ -244,6 +245,7 @@ class _SignupPageState extends State<SignupPage> {
                               "course": _courseController.text,
                               "studentNum": _studnoController.text,
                               "underMonitoring": false,
+                              "underQuarantine": false,
                               "diseases": _preIllness,
                               "allergies": allergiesEntry
                             };
