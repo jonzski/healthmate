@@ -2,7 +2,6 @@ import 'dart:convert';
 
 class DailyEntry {
   String uid;
-  String entryId;
   Map<String, bool> symptoms;
   bool closeContact;
   DateTime entryDate;
@@ -10,7 +9,6 @@ class DailyEntry {
 
   DailyEntry({
     required this.uid,
-    required this.entryId,
     required this.symptoms,
     required this.closeContact,
     required this.entryDate,
@@ -22,7 +20,6 @@ class DailyEntry {
   factory DailyEntry.fromJson(Map<String, dynamic> json) {
     return DailyEntry(
       uid: json['uid'],
-      entryId: json['entryId'],
       symptoms: json['symptoms'],
       closeContact: json['closeContact'],
       entryDate: json['entryDate'],
@@ -37,7 +34,6 @@ class DailyEntry {
   Map<String, dynamic> toJson(DailyEntry entry) {
     return {
       'uid': entry.uid,
-      'entryId': entry.entryId,
       'symptoms': entry.symptoms,
       'closeContact': entry.closeContact,
       'entryDate': entry.entryDate,
