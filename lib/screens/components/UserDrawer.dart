@@ -1,4 +1,7 @@
+import 'package:cmsc_23_project/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../provider/auth_provider.dart';
 
 class UserDrawer extends StatelessWidget {
   const UserDrawer({super.key});
@@ -33,7 +36,11 @@ class UserDrawer extends StatelessWidget {
                 style: TextStyle(fontSize: 18),
               ),
               onTap: () {
-                Navigator.pushNamed(context, '/'); // close the drawer
+                context.read<AuthProvider>().signOut();
+
+                if (context.mounted) {
+                  Navigator.pushReplacementNamed(context, '/');
+                }
               },
             ),
           ],
