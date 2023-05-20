@@ -15,8 +15,29 @@ import './screens/monitor/MonitorDashboard.dart';
 import './screens/monitor/MonitorSignInPage.dart';
 import './screens/monitor/MonitorSignUpPage.dart';
 
-void main() {
-  runApp(const MainApp());
+import './provider/auth_provider.dart';
+import './provider/user_provider.dart';
+
+import 'package:provider/provider.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: ((context) => UserProvider())),
+        ChangeNotifierProvider(create: ((context) => AuthProvider())),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {

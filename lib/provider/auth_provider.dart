@@ -1,3 +1,3 @@
 import 'package:flutter/material.dart';
 
-class Auth with ChangeNotifier {}
+class AuthProvider with ChangeNotifier {}
