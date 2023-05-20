@@ -1,9 +1,8 @@
+import 'package:cmsc_23_project/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import '../provider/auth_provider.dart';
 import './components/UserDrawer.dart';
-import 'LoginPage.dart';
 
 class UserDashboard extends StatefulWidget {
   const UserDashboard({super.key});
@@ -20,7 +19,7 @@ class _UserDashboardState extends State<UserDashboard> {
     return Scaffold(
       drawer: const UserDrawer(),
       appBar: AppBar(
-        backgroundColor: Color(0xFF090c12),
+        backgroundColor: const Color(0xFF090c12),
         centerTitle: true,
       ),
       body: homepage(),
@@ -34,11 +33,10 @@ class _UserDashboardState extends State<UserDashboard> {
             currentIndex: currentIndex,
             type: BottomNavigationBarType.fixed,
             onTap: (index) => setState(() => currentIndex = index),
-            items: [
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(
-                  icon: const Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: const Icon(Icons.person), label: 'Profile'),
+                  icon: Icon(Icons.person), label: 'Profile'),
             ]),
         body: ListView(children: [
           Row(
@@ -58,6 +56,8 @@ class _UserDashboardState extends State<UserDashboard> {
   }
 
   Widget header() {
+    User user = context.read<AuthProvider>().currentUser;
+
     return Container(
         margin: const EdgeInsets.all(20.0),
         padding: const EdgeInsets.all(10),
@@ -68,12 +68,12 @@ class _UserDashboardState extends State<UserDashboard> {
         height: 100,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
-              "Welcome, ",
+              ('Welcome ${user.displayName}'),
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(top: 10),
               child: Text(
                 'Your health deserves to be constantly checked.',
@@ -156,9 +156,9 @@ class _UserDashboardState extends State<UserDashboard> {
                 const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
             padding: const EdgeInsets.only(left: 40, right: 40),
             height: 70,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Color(0xFF222429),
-                borderRadius: const BorderRadius.all(Radius.circular(50))),
+                borderRadius: BorderRadius.all(Radius.circular(50))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -195,9 +195,9 @@ class _UserDashboardState extends State<UserDashboard> {
                 const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
             padding: const EdgeInsets.only(left: 50, right: 40),
             height: 70,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Color(0xFF222429),
-                borderRadius: const BorderRadius.all(Radius.circular(50))),
+                borderRadius: BorderRadius.all(Radius.circular(50))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
