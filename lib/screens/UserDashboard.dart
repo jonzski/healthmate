@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
 import './components/UserDrawer.dart';
@@ -18,27 +17,6 @@ class _UserDashboardState extends State<UserDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    Stream<User?> userStream = context.watch<AuthProvider>().uStream;
-
-    return StreamBuilder(
-        stream: userStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("Error encountered! ${snapshot.error}"),
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (!snapshot.hasData) {
-            return const LoginPage();
-          }
-          return displayScaffold(context);
-        });
-  }
-
-  Scaffold displayScaffold(BuildContext context) {
     return Scaffold(
       drawer: const UserDrawer(),
       appBar: AppBar(
