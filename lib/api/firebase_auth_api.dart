@@ -8,6 +8,7 @@ class FirebaseAuthAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
   Stream<User?> get getUser => auth.authStateChanges();
+  User get currentUser => auth.currentUser!;
 
   Future<UserCredential> signIn(String email, String password) async {
     try {
