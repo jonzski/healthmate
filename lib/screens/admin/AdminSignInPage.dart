@@ -87,6 +87,26 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                   ],
                 ),
               )),
-        )));
+        )),
+        floatingActionButton: Align(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20.0, left: 10.0),
+            child: TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                overlayColor: MaterialStateProperty.all(Colors.transparent),
+              ),
+              child: const Icon(
+                Icons.arrow_back_outlined,
+                size: 30.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ));
   }
 }
