@@ -33,9 +33,4 @@ class EntryProvider with ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // void fetchEntry() {
-  //   _todosStream = firebaseService.getAllEntries();
-  //   notifyListeners();
-  // }
 }
