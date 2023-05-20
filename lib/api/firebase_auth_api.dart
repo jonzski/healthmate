@@ -37,6 +37,7 @@ class FirebaseAuthAPI {
         newUser.course = userInfo["course"];
         newUser.studentNum = userInfo["studentNum"];
         newUser.underMonitoring = userInfo["underMonitoring"];
+        newUser.underQuarantine = userInfo["underQuarantine"];
         newUser.preExistingDisease = userInfo["diseases"];
         newUser.allergies = userInfo["allergies"];
       } else {
