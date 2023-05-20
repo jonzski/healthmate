@@ -115,8 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                                 .signIn(_emailController.text.trim(),
                                     _passwordController.text.trim());
 
-                            if (user != null) {
-                              // Navigate to a specific page after login
+                            if (user != null && context.mounted) {
                               Navigator.pushReplacementNamed(
                                   context, '/UserDashboard');
                             }
