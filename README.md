@@ -1,3 +1,5 @@
-# cmsc_23_project
+# Testing Branch
 
-A new Flutter project.
+- Testing commit with Discord Webhook
+
+Assigned: Jonah Perez, Diana Compahinay
