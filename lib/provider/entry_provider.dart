@@ -33,4 +33,10 @@ class EntryProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void editEntry(DailyEntry entry) async {
+    String message = await firebaseService.editEntry(entry);
+    print(message);
+    notifyListeners();
+  }
 }

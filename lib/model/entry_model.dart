@@ -4,6 +4,8 @@ class DailyEntry {
   String uid;
   Map<String, bool> symptoms;
   bool closeContact;
+  String? remarks;
+  String? status;
   DateTime entryDate;
   late bool canGenerateQR;
 
