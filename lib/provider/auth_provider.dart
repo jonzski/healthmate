@@ -13,6 +13,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Stream<User?> get userStream => uStream;
+  User get currentUser => authService.currentUser;
 
   void fetchAuthentication() {
     uStream = authService.getUser;

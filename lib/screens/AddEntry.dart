@@ -12,6 +12,8 @@ class AddEntry extends StatefulWidget {
 }
 
 class _AddEntryState extends State<AddEntry> {
+  final formKey = GlobalKey<FormState>();
+
   final Map<String, bool> symptomsList = {
     "Fever (37.8 C and above)": false,
     "Feeling feverish": false,
@@ -67,24 +69,27 @@ class _AddEntryState extends State<AddEntry> {
     return Scaffold(
         backgroundColor: const Color(0xFF090c12),
         body: Center(
-            child: Container(
-                width: 500,
-                color: const Color(0xFF090c12),
-                child: ListView(children: [
-                  Column(
-                    children: [
-                      Row(
-                        children: [Expanded(child: title())],
-                      ),
-                      symptoms(),
-                      monitoring(),
-                      submitButton(),
-                      const SizedBox(
-                        height: 30,
-                      )
-                    ],
+          child: Container(
+            width: 500,
+            color: const Color(0xFF090c12),
+            child: Form(
+              key: formKey,
+              child: ListView(children: [
+                Column(children: [
+                  Row(
+                    children: [Expanded(child: title())],
                   ),
-                ]))));
+                  symptoms(),
+                  monitoring(),
+                  submitButton(),
+                  const SizedBox(
+                    height: 30,
+                  )
+                ]),
+              ]),
+            ),
+          ),
+        ));
   }
 
   Widget title() {
