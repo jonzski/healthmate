@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../provider/auth_provider.dart';
+import '../provider/entry_provider.dart';
+import '../model/entry_model.dart';
 
 class AddEntry extends StatefulWidget {
   const AddEntry({super.key});
@@ -191,7 +195,34 @@ class _AddEntryState extends State<AddEntry> {
   Widget submitButton() {
     return ElevatedButton(
         onPressed: () {
-          Navigator.pushNamed(context, '/UserDashboard');
+          if (formKey.currentState!.validate()) {
+            final entryProvider = context.read<EntryProvider>();
+
+            if (inContact == null) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content:
+                      Text('Please select an answer in the last question')));
+            } else {
+              bool contact;
+              DateTime dateToday = DateTime(DateTime.now().year,
+                  DateTime.now().month, DateTime.now().day);
+              if (inContact == 'yes') {
+                contact = true;
+              } else {
+                contact = false;
+              }
+              DailyEntry dailyEntry = DailyEntry(
+                  uid: context.read<AuthProvider>().currentUser.uid,
+                  symptoms: symptomsList,
+                  closeContact: contact,
+                  entryDate: dateToday);
+
+              entryProvider.addEntry(dailyEntry);
+              formKey.currentState?.save();
+
+              Navigator.pushNamed(context, '/UserDashboard');
+            }
+          }
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF526bf2),
