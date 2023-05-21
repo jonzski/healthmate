@@ -33,10 +33,14 @@ class FirebaseEntryAPI {
     try {
       await db.collection("user").doc(uid).update({'userMonitoring': true});
 
-      return "Successfully edited slambook!";
+      return "Successfully updated Monitoring!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }
+  }
+
+  Stream<QuerySnapshot> getAllTodos() {
+    return db.collection("entry").snapshots();
   }
 
   Future<String> editEntry(DailyEntry entry) async {

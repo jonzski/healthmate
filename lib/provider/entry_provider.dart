@@ -9,15 +9,19 @@ class EntryProvider with ChangeNotifier {
   // Create User Class
   late FirebaseEntryAPI firebaseService;
   late Stream<QuerySnapshot> _entryStream;
-  late Stream<QuerySnapshot> _userStream;
 
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
-    // fetchEntries();
+    fetchEntries();
   }
 
   // getter
   Stream<QuerySnapshot> get entry => _entryStream;
+
+  void fetchEntries() {
+    _entryStream = firebaseService.getAllTodos();
+    notifyListeners();
+  }
 
   void addEntry(DailyEntry entry, User user) async {
     String message = await firebaseService.addEntry(entry.toJson(entry), user);
