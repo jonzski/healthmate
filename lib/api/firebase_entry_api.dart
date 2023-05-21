@@ -39,7 +39,7 @@ class FirebaseEntryAPI {
     }
   }
 
-  Stream<QuerySnapshot> getAllTodos() {
+  Stream<QuerySnapshot> getAllEntries() {
     return db.collection("entry").snapshots();
   }
 

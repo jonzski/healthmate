@@ -19,7 +19,7 @@ class EntryProvider with ChangeNotifier {
   Stream<QuerySnapshot> get entry => _entryStream;
 
   void fetchEntries() {
-    _entryStream = firebaseService.getAllTodos();
+    _entryStream = firebaseService.getAllEntries();
     notifyListeners();
   }
 
