@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
@@ -221,8 +222,8 @@ class _AddEntryState extends State<AddEntry> {
                   symptoms: symptomsList,
                   closeContact: contact,
                   entryDate: dateToday);
-
-              entryProvider.addEntry(dailyEntry);
+              User user = context.read<AuthProvider>().currentUser;
+              entryProvider.addEntry(dailyEntry, user);
               formKey.currentState?.save();
 
               Navigator.pushNamed(context, '/UserDashboard');

@@ -252,6 +252,7 @@ class _SignupPageState extends State<SignupPage> {
 
                             authProvider.signUp(
                                 email, password, 0, name, newUser);
+                            Navigator.pop(context);
                           } // return to login page
                         },
                         child: const Text(
