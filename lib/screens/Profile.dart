@@ -14,7 +14,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       drawer: const UserDrawer(),
       appBar: AppBar(
-        backgroundColor: Color(0xFF090c12),
+        backgroundColor: const Color(0xFF090c12),
         centerTitle: true,
       ),
       body: profile(),
@@ -26,11 +26,10 @@ class _ProfileState extends State<Profile> {
         backgroundColor: const Color(0xFF090c12),
         bottomNavigationBar: BottomNavigationBar(
             backgroundColor: const Color(0xFF222429),
-            items: [
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
               BottomNavigationBarItem(
-                  icon: const Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: const Icon(Icons.person), label: 'Profile'),
+                  icon: Icon(Icons.person), label: 'Profile'),
             ]),
         body: Center(
           child: Container(
