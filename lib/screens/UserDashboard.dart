@@ -2,6 +2,8 @@ import 'package:cmsc_23_project/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../model/user_model.dart';
 import './components/UserDrawer.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -56,7 +58,7 @@ class _UserDashboardState extends State<UserDashboard> {
   }
 
   Widget header() {
-    User user = context.read<AuthProvider>().currentUser;
+    Stream<User?> user = context.watch<AuthProvider>().uStream;
 
     return Container(
         margin: const EdgeInsets.all(20.0),
@@ -70,7 +72,7 @@ class _UserDashboardState extends State<UserDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              ('Welcome ${user.displayName}'),
+              ('Welcome ${user.length}'),
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
             ),
             const Padding(
