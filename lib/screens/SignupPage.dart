@@ -70,33 +70,37 @@ class _SignupPageState extends State<SignupPage> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 15),
-                        child: SvgPicture.asset(
-                          logo,
-                          width: 60,
-                          colorFilter: const ColorFilter.mode(
-                              Color(0xFF526bf2), BlendMode.srcIn),
-                        ),
-                      ),
-                      const Text(
-                        "OHMS",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontFamily: 'SF-UI-Display',
-                            fontSize: 30,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      const Text(
-                        "Mobile",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontFamily: 'SF-UI-Display',
-                            fontSize: 30,
-                            fontWeight: FontWeight.w300),
-                      ),
-                    ]),
+                    Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 15),
+                                child: SvgPicture.asset(
+                                  logo,
+                                  width: 60,
+                                  colorFilter: const ColorFilter.mode(
+                                      Color(0xFF526bf2), BlendMode.srcIn),
+                                ),
+                              ),
+                              const Text(
+                                "OHMS",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: 'SF-UI-Display',
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              const Text(
+                                "Mobile",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: 'SF-UI-Display',
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w300),
+                              ),
+                            ])),
                     sectionText("Create your login"),
                     TextFormField(
                       controller: _emailController,
@@ -142,7 +146,7 @@ class _SignupPageState extends State<SignupPage> {
                       controller: _usernameController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please your username';
+                          return 'Please enter your username';
                         }
                         return null;
                       },
@@ -171,7 +175,7 @@ class _SignupPageState extends State<SignupPage> {
                       controller: _courseController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please your course';
+                          return 'Please enter your course';
                         }
                         return null;
                       },
@@ -183,7 +187,7 @@ class _SignupPageState extends State<SignupPage> {
                       controller: _studnoController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please your student number';
+                          return 'Please enter your student number';
                         }
                         return null;
                       },
@@ -212,13 +216,15 @@ class _SignupPageState extends State<SignupPage> {
                         labelText: '(Optional)',
                       ),
                     ),
-                    const Text(
-                      "Separate each entries using comma",
-                      style: TextStyle(
-                          fontFamily: 'SF-UI-Display',
-                          fontWeight: FontWeight.w300,
-                          color: Color.fromARGB(178, 243, 243, 243)),
-                    ),
+                    const Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(
+                          "Separate each entries using comma",
+                          style: TextStyle(
+                              fontFamily: 'SF-UI-Display',
+                              fontWeight: FontWeight.w300,
+                              color: Color.fromARGB(178, 243, 243, 243)),
+                        )),
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),
                       child: ElevatedButton(
@@ -290,33 +296,13 @@ class _SignupPageState extends State<SignupPage> {
               ),
             )),
       ),
-      // floatingActionButton: Align(
-      //   alignment: Alignment.topLeft,
-      //   child: Padding(
-      //     padding: const EdgeInsets.only(top: 20.0, left: 10.0),
-      //     child: TextButton(
-      //       onPressed: () {
-      //         Navigator.pop(context);
-      //       },
-      //       style: ButtonStyle(
-      //         backgroundColor: MaterialStateProperty.all(Colors.transparent),
-      //         overlayColor: MaterialStateProperty.all(Colors.transparent),
-      //       ),
-      //       child: const Icon(
-      //         Icons.arrow_back_outlined,
-      //         size: 30.0,
-      //         color: Colors.white,
-      //       ),
-      //     ),
-      //   ),
-      // )
     );
   }
 
   Widget sectionText(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        vertical: 10,
+        vertical: 15,
       ),
       child: Text(
         title,
