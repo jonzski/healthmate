@@ -78,4 +78,18 @@ class FirebaseEntryAPI {
   }
 
   // gawa ng update monitoring. gawin true yung under monitoring kapag naglagay si user na may entry na may close contact siya
+
+  // Method to validateQRCode by checking if the entryId is valid and if the uid is the same as the uid of the entry
+  Future<bool> validateQRCode(String uid, String entryId) {
+    try {
+      return db
+          .collection("entry")
+          .where('id', isEqualTo: entryId)
+          .where('uid', isEqualTo: uid)
+          .get()
+          .then((value) => value.docs.isNotEmpty);
+    } on FirebaseException catch (e) {
+      rethrow;
+    }
+  }
 }
