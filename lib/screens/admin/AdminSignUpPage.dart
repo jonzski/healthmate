@@ -174,10 +174,14 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                               "empNo": _empnoController.text,
                               "position": _positionControler.text,
                               "homeUnit": _unitController.text,
+                              "underMonitoring": null,
+                              "underQuarantine": null,
+                              "diseases": null,
+                              "allergies": null
                             };
 
                             authProvider.signUp(
-                                email, password, 0, name, newAdmin);
+                                email, password, 2, name, newAdmin);
 
                             // Might add a welcome message in the near future
                             Navigator.pop(context);

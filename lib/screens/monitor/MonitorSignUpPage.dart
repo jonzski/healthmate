@@ -174,10 +174,14 @@ class _MonitorSignUpPageState extends State<MonitorSignUpPage> {
                               "empNo": _empnoController.text,
                               "position": _positionController.text,
                               "homeUnit": _unitController.text,
+                              "underMonitoring": null,
+                              "underQuarantine": null,
+                              "diseases": null,
+                              "allergies": null
                             };
 
                             authProvider.signUp(
-                                email, password, 0, name, newMonitor);
+                                email, password, 3, name, newMonitor);
 
                             // Might add a welcome message in the near future
                             Navigator.pop(context);
