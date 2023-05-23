@@ -9,6 +9,7 @@ class EntryProvider with ChangeNotifier {
   // Create User Class
   late FirebaseEntryAPI firebaseService;
   late Stream<QuerySnapshot> _entryToday;
+  late Stream<QuerySnapshot> _entryStream;
 
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
@@ -16,6 +17,7 @@ class EntryProvider with ChangeNotifier {
 
   // getter
   Stream<QuerySnapshot> get entry => _entryToday;
+  Stream<QuerySnapshot> get ehtry => _entryStream;
 
   void addEntry(DailyEntry entry, User user) async {
     String message = await firebaseService.addEntry(entry.toJson(entry), user);
@@ -39,5 +41,10 @@ class EntryProvider with ChangeNotifier {
   Future<bool> validateQRCode(String uid, String entryId) async {
     bool isValid = await firebaseService.validateQRCode(uid, entryId);
     return isValid;
+  }
+
+  void fetchAllEntries() async {
+    _entryStream = firebaseService.fetchAllEntries();
+    notifyListeners();
   }
 }
