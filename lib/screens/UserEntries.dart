@@ -5,6 +5,7 @@ import '../provider/entry_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import './components/UserDrawer.dart';
+import 'package:intl/intl.dart';
 
 class UserEntries extends StatefulWidget {
   const UserEntries({super.key});
@@ -58,7 +59,7 @@ class _UserEntriesState extends State<UserEntries> {
                             as Map<String, dynamic>);
 
                     String date =
-                        '${entry.entryDate.day}-${entry.entryDate.month}-${entry.entryDate.year}';
+                        DateFormat('dd MMMM yyyy').format(entry.entryDate);
 
                     if (entry.uid ==
                         context.read<AuthProvider>().currentUser.uid) {
