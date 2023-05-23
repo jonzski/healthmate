@@ -69,5 +69,13 @@ class FirebaseEntryAPI {
     }
   }
 
+  Stream<QuerySnapshot> fetchAllEntries() {
+    try {
+      return db.collection("entry").snapshots();
+    } on FirebaseException catch (e) {
+      throw e;
+    }
+  }
+
   // gawa ng update monitoring. gawin true yung under monitoring kapag naglagay si user na may entry na may close contact siya
 }
