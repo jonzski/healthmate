@@ -6,6 +6,8 @@ class DailyEntry {
   bool closeContact;
   String? remarks;
   String? status;
+  String? entryId;
+  DateTime? requestDate;
   DateTime entryDate;
   late bool canGenerateQR;
 

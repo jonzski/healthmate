@@ -54,16 +54,26 @@ class FirebaseEntryAPI {
     }
   }
 
-  Future<String> editEntry(DailyEntry entry) async {
+  Future<String> editEntryRequest(String entryId, DailyEntry entry) async {
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     try {
-      await db.collection("user").doc(entry.uid).update({
+      await db
+          .collection("entry")
+          .doc(entryId)
+          .update({'remarks': entry.remarks, 'status': "Pending"});
+
+      final docRef = await db.collection("entryEditRequests").add({
         'symptoms': entry.symptoms,
+        'requestDate': timeToday,
         'closeContact': entry.closeContact,
         'remarks': entry.remarks,
+        'entryId': entryId,
         'status': 'Pending'
       });
+      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
 
-      return "Successfully edited entry!";
+      return "Successfully requested for editing entry!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }
@@ -90,6 +100,37 @@ class FirebaseEntryAPI {
           .then((value) => value.docs.isNotEmpty);
     } on FirebaseException catch (e) {
       rethrow;
+    }
+  }
+
+  Future<String> editRequest(
+      DailyEntry entryRequest, String entryRequestId) async {
+    try {
+      if (entryRequest.status == "Approved") {
+        await db.collection("entry").doc(entryRequest.entryId).update({
+          'symptoms': entryRequest.symptoms,
+          'closeContact': entryRequest.closeContact,
+          'remarks': entryRequest.remarks,
+          'status': entryRequest.status,
+        });
+      } else {
+        await db.collection("entry").doc(entryRequest.entryId).update({
+          'remarks': entryRequest.remarks,
+          'status': entryRequest.status,
+        });
+      }
+      await db.collection("entryEditRequests").doc(entryRequestId).delete();
+      return "Successfully edited entry!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  Stream<QuerySnapshot> fetchAllRequestedEntries() {
+    try {
+      return db.collection("entryEditRequests").snapshots();
+    } on FirebaseException catch (e) {
+      throw e;
     }
   }
 }

@@ -10,14 +10,16 @@ class EntryProvider with ChangeNotifier {
   late FirebaseEntryAPI firebaseService;
   late Stream<QuerySnapshot> _entryToday;
   late Stream<QuerySnapshot> _entryStream;
+  late Stream<QuerySnapshot> _entryRequestStream;
 
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
   }
 
   // getter
-  Stream<QuerySnapshot> get entry => _entryToday;
-  Stream<QuerySnapshot> get ehtry => _entryStream;
+  Stream<QuerySnapshot> get entryToday => _entryToday;
+  Stream<QuerySnapshot> get allEntries => _entryStream;
+  Stream<QuerySnapshot> get allRequestedEntries => _entryRequestStream;
 
   void addEntry(DailyEntry entry, User user) async {
     String message = await firebaseService.addEntry(entry.toJson(entry), user);
@@ -31,8 +33,8 @@ class EntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void editEntry(DailyEntry entry) async {
-    String message = await firebaseService.editEntry(entry);
+  void editEntryRequest(String entryId, DailyEntry entry) async {
+    String message = await firebaseService.editEntryRequest(entryId, entry);
     print(message);
     notifyListeners();
   }
@@ -45,6 +47,19 @@ class EntryProvider with ChangeNotifier {
 
   void fetchAllEntries() async {
     _entryStream = firebaseService.fetchAllEntries();
+    notifyListeners();
+  }
+
+  void fetchAllRequestedEntries() async {
+    _entryRequestStream = firebaseService.fetchAllRequestedEntries();
+    notifyListeners();
+  }
+
+  void editRequest(DailyEntry entryRequest, String entryRequestId) async {
+    String message =
+        await firebaseService.editRequest(entryRequest, entryRequestId);
+    print(message);
+
     notifyListeners();
   }
 }
