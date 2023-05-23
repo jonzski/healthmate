@@ -151,7 +151,7 @@ class _UserDashboardState extends State<UserDashboard> {
   Widget listOfEntries() {
     return GestureDetector(
         onTap: () {
-          print("Container clicked");
+          Navigator.pushNamed(context, '/UserEntries');
         },
         child: Container(
             margin:

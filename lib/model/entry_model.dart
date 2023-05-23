@@ -22,11 +22,20 @@ class DailyEntry {
   }
 
   factory DailyEntry.fromJson(Map<String, dynamic> json) {
+    dynamic linkedMap = json['symptoms'];
+
+    Map<String, bool> convertedMap = {};
+    linkedMap.forEach((key, value) {
+      if (value is bool) {
+        convertedMap[key] = value;
+      }
+    });
+
     return DailyEntry(
       uid: json['uid'],
-      symptoms: json['symptoms'],
+      symptoms: convertedMap,
       closeContact: json['closeContact'],
-      entryDate: json['entryDate'],
+      entryDate: json['entryDate'].toDate(),
     );
   }
 

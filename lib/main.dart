@@ -1,3 +1,4 @@
+import 'package:cmsc_23_project/screens/UserEntries.dart';
 import 'package:flutter/material.dart';
 import './screens/LoginPage.dart';
 import './screens/SignupPage.dart';
@@ -55,6 +56,7 @@ class MainApp extends StatelessWidget {
         '/Signup': (context) => const SignupPage(),
         '/UserDashboard': (context) => const UserDashboard(),
         '/AddEntry': (context) => const AddEntry(),
+        '/UserEntries': (context) => const UserEntries(),
         '/Profile': (context) => const Profile(),
         '/SwitchUserType': (context) => const SwitchUserType(),
         '/AdminSignIn': (context) => const AdminSignInPage(),
