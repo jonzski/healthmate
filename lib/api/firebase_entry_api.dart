@@ -39,8 +39,19 @@ class FirebaseEntryAPI {
     }
   }
 
-  Stream<QuerySnapshot> getAllEntries() {
-    return db.collection("entry").snapshots();
+  Stream<QuerySnapshot> getTodayEntry(User user) {
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+
+    try {
+      return db
+          .collection("entry")
+          .where('uid', isEqualTo: user.uid)
+          .where('entryDate', isEqualTo: timeToday)
+          .snapshots();
+    } on FirebaseException catch (e) {
+      throw e;
+    }
   }
 
   Future<String> editEntry(DailyEntry entry) async {

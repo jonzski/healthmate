@@ -8,20 +8,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class EntryProvider with ChangeNotifier {
   // Create User Class
   late FirebaseEntryAPI firebaseService;
-  late Stream<QuerySnapshot> _entryStream;
+  late Stream<QuerySnapshot> _entryToday;
 
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
-    fetchEntries();
   }
 
   // getter
-  Stream<QuerySnapshot> get entry => _entryStream;
-
-  void fetchEntries() {
-    _entryStream = firebaseService.getAllEntries();
-    notifyListeners();
-  }
+  Stream<QuerySnapshot> get entry => _entryToday;
 
   void addEntry(DailyEntry entry, User user) async {
     String message = await firebaseService.addEntry(entry.toJson(entry), user);
@@ -31,6 +25,7 @@ class EntryProvider with ChangeNotifier {
       String message = await firebaseService.updateMonitoring(entry.uid);
       print(message);
     }
+    _entryToday = firebaseService.getTodayEntry(user);
     notifyListeners();
   }
 
