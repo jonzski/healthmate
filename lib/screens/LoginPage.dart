@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         height: 20,
-        margin: const EdgeInsets.all(100),
+        margin: const EdgeInsets.all(10),
         child: TextButton(
           onPressed: () {
             Navigator.pushNamed(context, '/SwitchUserType');

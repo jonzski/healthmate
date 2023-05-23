@@ -41,7 +41,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
               child: Form(
                 key: signupKey,
                 child: ListView(
-                  physics: const NeverScrollableScrollPhysics(),
+                  // physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   children: [
                     Padding(
@@ -137,7 +137,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Course',
+                        labelText: 'Position',
                       ),
                     ),
                     TextFormField(
@@ -149,7 +149,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                         return null;
                       },
                       decoration: const InputDecoration(
-                        labelText: 'Student No',
+                        labelText: 'Home Unit',
                       ),
                     ),
                     Padding(
@@ -174,8 +174,6 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                               "empNo": _empnoController.text,
                               "position": _positionControler.text,
                               "homeUnit": _unitController.text,
-                              "underMonitoring": false,
-                              "underQuarantine": false,
                             };
 
                             authProvider.signUp(

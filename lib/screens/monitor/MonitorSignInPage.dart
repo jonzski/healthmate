@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import '../../provider/auth_provider.dart';
 
 class MonitorSignInPage extends StatefulWidget {
   const MonitorSignInPage({super.key});
@@ -11,102 +15,170 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  final String logo = 'assets/images/Logo.svg';
+  final loginKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF090c12),
-        body: Center(
-            child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
-            color: const Color(0xFF222429),
-          ),
-          height: 450,
-          width: 400,
-          margin: const EdgeInsets.only(left: 80.0, right: 80.0),
-          child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.person),
-                          Text(
-                            " Monitor Login ",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 25),
-                          ),
-                        ]),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
+      backgroundColor: const Color(0xFF090c12),
+      body: Center(
+          child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: const Color(0xFF222429),
+        ),
+        height: 450,
+        width: 400,
+        margin: const EdgeInsets.only(left: 80.0, right: 80.0),
+        child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Center(
+                child: Form(
+              key: loginKey,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15),
+                      child: SvgPicture.asset(
+                        logo,
+                        width: 60,
+                        colorFilter: const ColorFilter.mode(
+                            Color(0xFF526bf2), BlendMode.srcIn),
                       ),
                     ),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                      ),
-                      obscureText: true,
+                    const Text(
+                      "OHMS",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700),
                     ),
-                    ElevatedButton(
+                    const Text(
+                      "Mobile",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontSize: 30,
+                          fontWeight: FontWeight.w300),
+                    ),
+                  ]),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 25),
+                    child: Column(children: [
+                      TextFormField(
+                        controller: _emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Email',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _passwordController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a valid password';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                        ),
+                        obscureText: true,
+                      ),
+                    ]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xFF526bf2)),
                         minimumSize:
                             MaterialStateProperty.all(const Size(100, 50)),
                       ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/MonitorDashboard');
+                      onPressed: () async {
+                        if (loginKey.currentState!.validate()) {
+                          loginKey.currentState!.save();
+
+                          try {
+                            final UserCredential user = await context
+                                .read<AuthProvider>()
+                                .signIn(_emailController.text.trim(),
+                                    _passwordController.text.trim());
+
+                            if (user != null && context.mounted) {
+                              Navigator.pushReplacementNamed(
+                                  context, '/MonitorDashboard');
+                            }
+                          } catch (e) {
+                            print('Error: $e');
+                          }
+                        }
                       },
                       child: const Text(
-                        'Login',
+                        'Login as Entrance Monitor',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
+                            fontFamily: 'SF-UI-Display',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 15),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/MonitorSignUp');
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.transparent),
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.transparent),
-                        ),
-                        child: const Text("Sign Up"),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/MonitorSignUp');
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
                       ),
-                    )
-                  ],
-                ),
-              )),
-        )),
-        floatingActionButton: Align(
-          alignment: Alignment.topLeft,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 20.0, left: 10.0),
-            child: TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                overlayColor: MaterialStateProperty.all(Colors.transparent),
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
-              child: const Icon(
-                Icons.arrow_back_outlined,
-                size: 30.0,
-                color: Colors.white,
-              ),
-            ),
+            ))),
+      )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        height: 20,
+        margin: const EdgeInsets.all(10),
+        child: TextButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/');
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
           ),
-        ));
+          child: const Text(
+            'Log in as Student',
+            style: TextStyle(
+                fontFamily: 'SF-UI-Display',
+                fontWeight: FontWeight.w700,
+                fontSize: 15),
+          ),
+        ),
+      ),
+    );
   }
 }

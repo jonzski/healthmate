@@ -117,7 +117,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
 
                             if (user != null && context.mounted) {
                               Navigator.pushReplacementNamed(
-                                  context, '/UserDashboard');
+                                  context, '/AdminDashboard');
                             }
                           } catch (e) {
                             print('Error: $e');
@@ -161,7 +161,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
         height: 20,
-        margin: const EdgeInsets.all(100),
+        margin: const EdgeInsets.all(10),
         child: TextButton(
           onPressed: () {
             Navigator.pushNamed(context, '/');
