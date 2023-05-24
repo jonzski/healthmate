@@ -5,6 +5,8 @@ import '../api/firebase_user_api.dart';
 class UserProvider with ChangeNotifier {
   late FirebaseUserAPI firebaseService;
   late Stream<QuerySnapshot> _userStream;
+  late Stream<QuerySnapshot> _quarantineStream;
+  late Stream<QuerySnapshot> _monitorStream;
 
   UserProvider() {
     firebaseService = FirebaseUserAPI();
@@ -12,6 +14,8 @@ class UserProvider with ChangeNotifier {
   }
 
   Stream<QuerySnapshot> get allStudents => _userStream;
+  Stream<QuerySnapshot> get allQuarantinedStudents => _quarantineStream;
+  Stream<QuerySnapshot> get allMonitoredStudents => _monitorStream;
 
   // Add User to Quarantine
   Future<String> addUserToQuarantine(
@@ -42,15 +46,15 @@ class UserProvider with ChangeNotifier {
   }
 
   // View All Students Under Monitoring
-  Future<Stream<QuerySnapshot>> viewAllStudentsUnderMonitoring() async {
-    Stream<QuerySnapshot> stream = firebaseService.getUsersUnderMonitoring();
-    return stream;
+  void viewAllStudentsUnderMonitoring() async {
+    _monitorStream = firebaseService.getUsersUnderMonitoring();
+    notifyListeners();
   }
 
   // View all students under Quarantine
-  Future<Stream<QuerySnapshot>> viewAllStudentsUnderQuarantine() async {
-    Stream<QuerySnapshot> stream = firebaseService.getUsersUnderQuarantine();
-    return stream;
+  void viewAllStudentsUnderQuarantine() async {
+    _quarantineStream = firebaseService.getUsersUnderQuarantine();
+    notifyListeners();
   }
 
   // Get user quarantine details
