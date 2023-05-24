@@ -87,7 +87,7 @@ class _UserDashboardState extends State<UserDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              ('Welcome User'),
+              ('Welcome <username>'),
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
             ),
             const Padding(

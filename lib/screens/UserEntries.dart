@@ -39,7 +39,11 @@ class _UserEntriesState extends State<UserEntries> {
               );
               // ignore: prefer_is_empty
             } else {
-              return dailyEntryStatus(snapshot);
+              return Center(
+                  child: SizedBox(
+                width: 600,
+                child: dailyEntryStatus(snapshot),
+              ));
             }
           }),
     );
@@ -58,33 +62,66 @@ class _UserEntriesState extends State<UserEntries> {
         entryStatus.add(Container(
             margin:
                 const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
-            padding: const EdgeInsets.only(left: 40, right: 40),
-            height: 70,
+            padding: const EdgeInsets.all(5),
+            // height: 90,
             decoration: const BoxDecoration(
                 color: Color(0xFF222429),
                 borderRadius: BorderRadius.all(Radius.circular(10))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Table(
+              columnWidths: const {
+                0: FixedColumnWidth(130),
+                1: FixedColumnWidth(100),
+                2: FixedColumnWidth(190),
+              },
               children: [
-                const Icon(
-                  Icons.monitor_heart_rounded,
-                  size: 40,
-                  color: Colors.white,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                TableRow(
                   children: [
-                    const Text(
-                      'Date',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                          color: Colors.indigo,
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: const Center(child: Text('Date')),
                     ),
-                    Text(
-                      date,
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    )
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                          color: Colors.indigo,
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: const Center(child: Text('In Contact')),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                          color: Colors.indigo,
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: const Center(child: Text('Symptoms')),
+                    ),
                   ],
-                )
+                ),
+                TableRow(
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.only(
+                            top: 10, bottom: 10, left: 5, right: 5),
+                        child: Center(
+                          child: Text(date),
+                        )),
+                    Container(
+                      margin: const EdgeInsets.only(
+                          top: 10, bottom: 10, left: 5, right: 5),
+                      child: Center(child: inContact(entry)),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(
+                          top: 10, bottom: 10, left: 5, right: 5),
+                      child: Center(child: symptoms(entry)),
+                    ),
+                  ],
+                ),
               ],
             )));
       }
@@ -104,5 +141,28 @@ class _UserEntriesState extends State<UserEntries> {
     }
 
     return Column(children: entryStatus);
+  }
+
+  Text inContact(DailyEntry entry) {
+    if (entry.closeContact) {
+      return const Text('Yes');
+    } else {
+      return const Text('No');
+    }
+  }
+
+  Text symptoms(DailyEntry entry) {
+    String listOfSymptoms = '';
+    for (var val in entry.symptoms.entries) {
+      if (val.value == true) {
+        listOfSymptoms += '${val.key} ';
+      }
+    }
+
+    if (listOfSymptoms != '') {
+      return Text(listOfSymptoms);
+    } else {
+      return const Text('No symptoms');
+    }
   }
 }
