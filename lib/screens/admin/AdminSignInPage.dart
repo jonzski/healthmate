@@ -116,8 +116,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                                     _passwordController.text.trim());
 
                             if (user != null && context.mounted) {
-                              Navigator.pushReplacementNamed(
-                                  context, '/AdminDashboard');
+                              Navigator.pushReplacementNamed(context, '/admin');
                             }
                           } catch (e) {
                             print('Error: $e');
@@ -137,7 +136,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/AdminSignUp');
+                        Navigator.pushNamed(context, '/admin-signup');
                       },
                       style: ButtonStyle(
                         backgroundColor:
@@ -164,7 +163,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
         margin: const EdgeInsets.all(10),
         child: TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamed(context, '/login');
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.transparent),

@@ -18,6 +18,7 @@ import './screens/monitor/MonitorSignUpPage.dart';
 
 import './provider/auth_provider.dart';
 import './provider/entry_provider.dart';
+import './provider/user_provider.dart';
 
 import 'package:provider/provider.dart';
 
@@ -35,6 +36,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: ((context) => EntryProvider())),
         ChangeNotifierProvider(create: ((context) => AuthProvider())),
+        ChangeNotifierProvider(create: ((context) => UserProvider())),
       ],
       child: const MainApp(),
     ),
@@ -50,21 +52,21 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Routing',
       theme: ThemeData.dark(),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => const LoginPage(),
-        '/Signup': (context) => const SignupPage(),
-        '/UserDashboard': (context) => const UserDashboard(),
-        '/AddEntry': (context) => const AddEntry(),
-        '/UserEntries': (context) => const UserEntries(),
-        '/Profile': (context) => const Profile(),
-        '/SwitchUserType': (context) => const SwitchUserType(),
-        '/AdminSignIn': (context) => const AdminSignInPage(),
-        '/AdminSignUp': (context) => const AdminSignUpPage(),
-        '/AdminDashboard': (context) => const AdminDashboard(),
-        '/MonitorSignIn': (context) => const MonitorSignInPage(),
-        '/MonitorSignUp': (context) => const MonitorSignUpPage(),
-        '/MonitorDashboard': (context) => const MonitorDashboard()
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const SignupPage(),
+        '/': (context) => const UserDashboard(),
+        '/add-entry': (context) => const AddEntry(),
+        '/user-entries': (context) => const UserEntries(),
+        '/profile': (context) => const Profile(),
+        '/switch-user-type': (context) => const SwitchUserType(),
+        '/admin-signin': (context) => const AdminSignInPage(),
+        '/admin-signup': (context) => const AdminSignUpPage(),
+        '/admin': (context) => const AdminDashboard(),
+        '/monitor-signin': (context) => const MonitorSignInPage(),
+        '/monitor-signup': (context) => const MonitorSignUpPage(),
+        '/monitor': (context) => const MonitorDashboard()
       },
     );
   }

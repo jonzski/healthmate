@@ -127,7 +127,7 @@ class _UserDashboardState extends State<UserDashboard> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/AddEntry');
+                    Navigator.pushNamed(context, '/add-entry');
                   },
                   child: const Text('Add Entry'),
                 )
@@ -166,7 +166,7 @@ class _UserDashboardState extends State<UserDashboard> {
   Widget listOfEntries() {
     return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/UserEntries');
+          Navigator.pushNamed(context, '/user-entries');
         },
         child: Container(
             margin:

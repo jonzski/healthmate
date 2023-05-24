@@ -1,6 +1,10 @@
+import 'package:cmsc_23_project/screens/admin/EntryRequest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../components/UserDrawer.dart';
+import './StudentEntries.dart';
+import './StudentQuarantine.dart';
+import './StudentMonitoring.dart';
+import './StudentEntries.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -10,56 +14,70 @@ class AdminDashboard extends StatefulWidget {
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
-  int currentIndex = 0;
+  int _pageIndex = 0;
+  GlobalKey _bottomNavigationKey = GlobalKey();
   final String logo = 'assets/images/Logo.svg';
+
+  Widget bottomNavFunction() {
+    switch (_pageIndex) {
+      case 0:
+        return homepage();
+      case 1:
+        return const StudentEntries();
+      case 2:
+        return const StudentQuarantine();
+      case 3:
+        return const StudentMonitoring();
+      case 4:
+        return const EntryRequest();
+      default:
+        return homepage();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 7.5),
-            child: SvgPicture.asset(
-              logo,
-              width: 40,
-              colorFilter:
-                  const ColorFilter.mode(Color(0xFF526bf2), BlendMode.srcIn),
+        appBar: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 7.5),
+              child: SvgPicture.asset(
+                logo,
+                width: 40,
+                colorFilter:
+                    const ColorFilter.mode(Color(0xFF526bf2), BlendMode.srcIn),
+              ),
             ),
-          ),
-          const Text(
-            "OHMS",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontFamily: 'SF-UI-Display',
-                fontSize: 20,
-                fontWeight: FontWeight.w700),
-          ),
-          const Text(
-            "Mobile",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontFamily: 'SF-UI-Display',
-                fontSize: 20,
-                fontWeight: FontWeight.w300),
-          ),
-        ]),
-        backgroundColor: Color(0xFF090c12),
-      ),
-      body: homepage(),
-    );
-  }
-
-  Widget homepage() {
-    return Scaffold(
-        backgroundColor: const Color(0xFF090c12),
+            const Text(
+              "OHMS",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700),
+            ),
+            const Text(
+              "Mobile",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300),
+            ),
+          ]),
+          backgroundColor: const Color(0xFF090c12),
+        ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Color(0xFF090c12),
-          currentIndex: currentIndex,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          key: _bottomNavigationKey,
+          backgroundColor: const Color(0xFF090c12),
+          currentIndex: _pageIndex,
           type: BottomNavigationBarType.fixed,
-          onTap: (index) => setState(() => currentIndex = index),
+          onTap: (index) => setState(() => _pageIndex = index),
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
@@ -67,16 +85,26 @@ class _AdminDashboardState extends State<AdminDashboard> {
               label: 'Students',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.sick),
               label: 'Quarantined',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: 'Monitor',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list_alt_rounded),
+              label: 'Entry Request',
             ),
           ],
         ),
-        body: ListView(children: [
+        body: bottomNavFunction());
+  }
+
+  Widget homepage() {
+    return Container(
+        color: const Color(0xFF090c12),
+        child: ListView(children: [
           Row(
             children: [Expanded(child: header())],
           ),
@@ -192,9 +220,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
             padding: const EdgeInsets.only(left: 40, right: 40),
             height: 70,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Color(0xFF222429),
-                borderRadius: const BorderRadius.all(Radius.circular(50))),
+                borderRadius: BorderRadius.all(Radius.circular(50))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

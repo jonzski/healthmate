@@ -117,7 +117,7 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
 
                             if (user != null && context.mounted) {
                               Navigator.pushReplacementNamed(
-                                  context, '/MonitorDashboard');
+                                  context, '/monitor');
                             }
                           } catch (e) {
                             print('Error: $e');
@@ -137,7 +137,7 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/MonitorSignUp');
+                        Navigator.pushNamed(context, '/monitor-signup');
                       },
                       style: ButtonStyle(
                         backgroundColor:
@@ -164,7 +164,7 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
         margin: const EdgeInsets.all(10),
         child: TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamed(context, '/login');
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.transparent),

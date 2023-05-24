@@ -201,7 +201,7 @@ class _AddEntryState extends State<AddEntry> {
               entryProvider.addEntry(dailyEntry, user);
               formKey.currentState?.save();
 
-              Navigator.pushNamed(context, '/UserDashboard');
+              Navigator.pushNamed(context, '/');
             }
           }
         },

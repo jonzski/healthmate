@@ -116,8 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                                     _passwordController.text.trim());
 
                             if (user != null && context.mounted) {
-                              Navigator.pushReplacementNamed(
-                                  context, '/UserDashboard');
+                              Navigator.pushReplacementNamed(context, '/');
                             }
                           } catch (e) {
                             print('Error: $e');
@@ -137,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: TextButton(
                       onPressed: () async {
-                        Navigator.pushNamed(context, '/Signup');
+                        Navigator.pushNamed(context, '/signup');
                       },
                       style: ButtonStyle(
                         backgroundColor:
@@ -164,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
         margin: const EdgeInsets.all(10),
         child: TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/SwitchUserType');
+            Navigator.pushNamed(context, '/switch-user-type');
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.transparent),

@@ -32,7 +32,7 @@ class _SwitchUserTypeState extends State<SwitchUserType> {
                         MaterialStateProperty.all(const Color(0xFF526bf2)),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/AdminSignIn');
+                    Navigator.pushNamed(context, '/admin-signin');
                   },
                   child: const Text('Admin'),
                 ),
@@ -43,7 +43,7 @@ class _SwitchUserTypeState extends State<SwitchUserType> {
                         MaterialStateProperty.all(const Color(0xFF526bf2)),
                   ),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/MonitorSignIn');
+                    Navigator.pushNamed(context, '/monitor-signin');
                   },
                   child: const Text('Entrance Monitor'),
                 ),

@@ -145,7 +145,7 @@ class _MonitorDashboardState extends State<MonitorDashboard> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/AddEntry');
+                    Navigator.pushNamed(context, '/add-entry');
                   },
                   child: const Text('Add Entry'),
                 )
