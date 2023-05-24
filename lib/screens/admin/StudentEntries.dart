@@ -37,7 +37,8 @@ class _StudentEntriesState extends State<StudentEntries> {
         return ListView.builder(
           itemCount: snapshot.data?.docs.length,
           itemBuilder: ((context, index) {
-            print(index);
+            // UserDetails user = UserDetails.fromJson(
+            //     snapshot.data?.docs[index].data() as Map<String, dynamic>);
           }),
         );
       },
