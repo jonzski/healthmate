@@ -14,11 +14,11 @@ class StudentMonitoring extends StatefulWidget {
 class _StudentMonitoringState extends State<StudentMonitoring> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> allstudents =
-        context.watch<UserProvider>().allStudents;
+    Stream<QuerySnapshot> monitoredStudents =
+        context.watch<UserProvider>().allMonitoredStudents;
 
     return StreamBuilder(
-      stream: allstudents,
+      stream: monitoredStudents,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(

@@ -14,11 +14,11 @@ class StudentEntries extends StatefulWidget {
 class _StudentEntriesState extends State<StudentEntries> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> allstudents =
+    Stream<QuerySnapshot> allStudents =
         context.watch<UserProvider>().allStudents;
 
     return StreamBuilder(
-      stream: allstudents,
+      stream: allStudents,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -34,12 +34,20 @@ class _StudentEntriesState extends State<StudentEntries> {
           );
         }
 
-        return ListView.builder(
-          itemCount: snapshot.data?.docs.length,
-          itemBuilder: ((context, index) {
-            // UserDetails user = UserDetails.fromJson(
-            //     snapshot.data?.docs[index].data() as Map<String, dynamic>);
-          }),
+        return Padding(
+          padding: EdgeInsets.all(16.0), // Adjust the padding value as needed
+          child: ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: ((context, index) {
+              UserDetails students = UserDetails.fromJson(
+                  snapshot.data?.docs[index].data() as Map<String, dynamic>, 0);
+              return Card(
+                child: ListTile(
+                  title: Text(students.name),
+                ),
+              );
+            }),
+          ),
         );
       },
     );

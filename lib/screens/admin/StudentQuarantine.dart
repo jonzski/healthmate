@@ -14,11 +14,11 @@ class StudentQuarantine extends StatefulWidget {
 class _StudentQuarantineState extends State<StudentQuarantine> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> allstudents =
-        context.watch<UserProvider>().allStudents;
+    Stream<QuerySnapshot> quarantinedStudents =
+        context.watch<UserProvider>().allQuarantinedStudents;
 
     return StreamBuilder(
-      stream: allstudents,
+      stream: quarantinedStudents,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -33,11 +33,21 @@ class _StudentQuarantineState extends State<StudentQuarantine> {
             child: Text("No students found."),
           );
         }
-        return ListView.builder(
-          itemCount: snapshot.data?.docs.length,
-          itemBuilder: ((context, index) {
-            print(index);
-          }),
+
+        return Padding(
+          padding: EdgeInsets.all(16.0), // Adjust the padding value as needed
+          child: ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: ((context, index) {
+              UserDetails students = UserDetails.fromJson(
+                  snapshot.data?.docs[index].data() as Map<String, dynamic>, 0);
+              return Card(
+                child: ListTile(
+                  title: Text(students.name),
+                ),
+              );
+            }),
+          ),
         );
       },
     );
