@@ -5,6 +5,7 @@ import '../api/firebase_auth_api.dart';
 class AuthProvider with ChangeNotifier {
   late FirebaseAuthAPI authService;
   late Stream<User?> uStream;
+
   User? userObj;
 
   AuthProvider() {
