@@ -1,10 +1,9 @@
-import 'package:cmsc_23_project/screens/admin/EntryRequest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import './StudentEntries.dart';
 import './StudentQuarantine.dart';
 import './StudentMonitoring.dart';
-import './StudentEntries.dart';
+import './EntryRequest.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -15,23 +14,57 @@ class AdminDashboard extends StatefulWidget {
 
 class _AdminDashboardState extends State<AdminDashboard> {
   int _pageIndex = 0;
+
+  late PageController _pageController;
   GlobalKey _bottomNavigationKey = GlobalKey();
+
   final String logo = 'assets/images/Logo.svg';
 
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _pageIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   Widget bottomNavFunction() {
-    switch (_pageIndex) {
-      case 0:
-        return homepage();
-      case 1:
-        return const StudentEntries();
-      case 2:
-        return const StudentQuarantine();
-      case 3:
-        return const StudentMonitoring();
-      case 4:
-        return const EntryRequest();
-      default:
-        return homepage();
+    return PageView(
+      controller: _pageController,
+      onPageChanged: (index) {
+        setState(() {
+          _pageIndex = index;
+        });
+      },
+      children: <Widget>[
+        homepage(),
+        const StudentEntries(),
+        const StudentQuarantine(),
+        const StudentMonitoring(),
+        const EntryRequest(),
+      ],
+    );
+  }
+
+  void _swipeLeft() {
+    if (_pageIndex > 0) {
+      _pageController.previousPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _swipeRight() {
+    if (_pageIndex < 4) {
+      _pageController.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     }
   }
 
@@ -77,7 +110,16 @@ class _AdminDashboardState extends State<AdminDashboard> {
           backgroundColor: const Color(0xFF090c12),
           currentIndex: _pageIndex,
           type: BottomNavigationBarType.fixed,
-          onTap: (index) => setState(() => _pageIndex = index),
+          onTap: (index) {
+            setState(() {
+              _pageIndex = index;
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            });
+          },
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
@@ -89,7 +131,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               label: 'Quarantined',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: Icon(Icons.safety_check),
               label: 'Monitor',
             ),
             BottomNavigationBarItem(
@@ -98,7 +140,16 @@ class _AdminDashboardState extends State<AdminDashboard> {
             ),
           ],
         ),
-        body: bottomNavFunction());
+        body: GestureDetector(
+          onHorizontalDragEnd: (details) {
+            if (details.primaryVelocity! < 0) {
+              _swipeRight();
+            } else if (details.primaryVelocity! > 0) {
+              _swipeLeft();
+            }
+          },
+          child: bottomNavFunction(),
+        ));
   }
 
   Widget homepage() {
