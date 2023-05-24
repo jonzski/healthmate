@@ -174,7 +174,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/AddEntry');
+                    Navigator.pushNamed(context, '/add-entry');
                   },
                   child: const Text('Add Entry'),
                 )
