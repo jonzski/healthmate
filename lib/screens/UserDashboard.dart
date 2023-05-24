@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'package:cmsc_23_project/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../model/user_model.dart';
+import '../model/entry_model.dart';
 import './components/UserDrawer.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -15,6 +16,20 @@ class UserDashboard extends StatefulWidget {
 
 class _UserDashboardState extends State<UserDashboard> {
   int currentIndex = 0;
+
+  List<DocumentSnapshot> _documents = [];
+
+  void initState() {
+    super.initState();
+    StreamSubscription<QuerySnapshot> subscription = FirebaseFirestore.instance
+        .collection('entry')
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      setState(() {
+        _documents = snapshot.docs;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +87,7 @@ class _UserDashboardState extends State<UserDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              ('Welcome ${user.length}'),
+              ('Welcome User'),
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
             ),
             const Padding(
@@ -172,13 +187,13 @@ class _UserDashboardState extends State<UserDashboard> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
+                  children: [
+                    const Text(
                       'List of Health Status Entries',
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                     Text(
-                      'Number of Entries: 0',
+                      'Number of Entries: ${numOfEntries()}',
                       style: TextStyle(fontSize: 14, color: Colors.white),
                     )
                   ],
@@ -224,5 +239,21 @@ class _UserDashboardState extends State<UserDashboard> {
                 )
               ],
             )));
+  }
+
+  int numOfEntries() {
+    int counter = 0;
+    // Stream<QuerySnapshot> entriesStream =
+    //     context.watch<EntryProvider>().allEntries;
+
+    for (int index = 0; index < _documents.length; index++) {
+      DailyEntry entry =
+          DailyEntry.fromJson(_documents[index].data() as Map<String, dynamic>);
+
+      if (entry.uid == context.read<AuthProvider>().currentUser.uid) {
+        counter++;
+      }
+    }
+    return counter;
   }
 }

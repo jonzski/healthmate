@@ -33,31 +33,6 @@ class _AddEntryState extends State<AddEntry> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              ListTile(
-                title: const Text(
-                  'Homepage',
-                  style: TextStyle(fontSize: 18),
-                ),
-                onTap: () {
-                  Navigator.pushNamed(
-                      context, '/UserDashboard'); // close the drawer
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'My Profile',
-                  style: TextStyle(fontSize: 18),
-                ),
-                onTap: () {
-                  Navigator.pop(context); // close the drawer
-                },
-              ),
-            ],
-          ),
-        ),
         appBar: AppBar(
           title: const Text('Add Today\'s Entry'),
           centerTitle: true,
