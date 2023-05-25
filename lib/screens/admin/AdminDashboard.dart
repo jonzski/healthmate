@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:pie_chart/pie_chart.dart';
 import './StudentEntries.dart';
 import './StudentQuarantine.dart';
 import './StudentMonitoring.dart';
@@ -21,25 +19,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
   GlobalKey _bottomNavigationKey = GlobalKey();
 
   final String logo = 'assets/images/Logo.svg';
-
-  final List<ChartData> chartData = [
-    ChartData(1, 10),
-    ChartData(2, 18),
-    ChartData(3, 14),
-    ChartData(4, 32),
-    ChartData(5, 40),
-    ChartData(6, 35),
-    ChartData(7, 28),
-    ChartData(8, 34),
-    ChartData(9, 32),
-    ChartData(10, 40)
-  ];
-
-  Map<String, double> dataMap = {
-    "Cleared": 10,
-    "Monitoring": 3,
-    "Quarantined": 2,
-  };
 
   @override
   void initState() {
@@ -91,337 +70,272 @@ class _AdminDashboardState extends State<AdminDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              automaticallyImplyLeading: false,
-              title:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 7.5),
-                  child: SvgPicture.asset(
-                    logo,
-                    width: 40,
-                    colorFilter: const ColorFilter.mode(
-                        Color(0xFF526bf2), BlendMode.srcIn),
-                  ),
-                ),
-                const Text(
-                  "OHMS",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: 'SF-UI-Display',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
-                ),
-                const Text(
-                  "Mobile",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: 'SF-UI-Display',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300),
-                ),
-              ]),
-              backgroundColor: const Color(0xFF090c12),
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          title: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 7.5),
+              child: SvgPicture.asset(
+                logo,
+                width: 40,
+                colorFilter:
+                    const ColorFilter.mode(Color(0xFF526bf2), BlendMode.srcIn),
+              ),
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              key: _bottomNavigationKey,
-              backgroundColor: const Color(0xFF090c12),
-              currentIndex: _pageIndex,
-              type: BottomNavigationBarType.fixed,
-              onTap: (index) {
-                setState(() {
-                  _pageIndex = index;
-                  _pageController.animateToPage(
-                    index,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                });
-              },
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people),
-                  label: 'Students',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.sick),
-                  label: 'Quarantined',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.safety_check),
-                  label: 'Monitor',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.list_alt_rounded),
-                  label: 'Entry Request',
-                ),
-              ],
+            const Text(
+              "OHMS",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700),
             ),
-            body: GestureDetector(
-              onHorizontalDragEnd: (details) {
-                if (details.primaryVelocity! < 0) {
-                  _swipeRight();
-                } else if (details.primaryVelocity! > 0) {
-                  _swipeLeft();
-                }
-              },
-              child: bottomNavFunction(),
-            )));
+            const Text(
+              "Mobile",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w300),
+            ),
+          ]),
+          backgroundColor: const Color(0xFF090c12),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          key: _bottomNavigationKey,
+          backgroundColor: const Color(0xFF090c12),
+          currentIndex: _pageIndex,
+          type: BottomNavigationBarType.fixed,
+          onTap: (index) {
+            setState(() {
+              _pageIndex = index;
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            });
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Students',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.sick),
+              label: 'Quarantined',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.safety_check),
+              label: 'Monitor',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list_alt_rounded),
+              label: 'Entry Request',
+            ),
+          ],
+        ),
+        body: GestureDetector(
+          onHorizontalDragEnd: (details) {
+            if (details.primaryVelocity! < 0) {
+              _swipeRight();
+            } else if (details.primaryVelocity! > 0) {
+              _swipeLeft();
+            }
+          },
+          child: bottomNavFunction(),
+        ));
   }
 
   Widget homepage() {
-    return Center(
-        child: Container(
-            width: 600,
-            // color: const Color(0xFF090c12),
-            color: Colors.white70,
-            child: ListView(children: [
-              Row(
-                children: [Expanded(child: header())],
-              ),
-              Row(
-                children: [Expanded(child: title())],
-              ),
-              Row(
-                children: [Expanded(child: lineGraph())],
-              ),
-              const Divider(),
-              Row(
-                children: [
-                  Expanded(flex: 1, child: pieGraph()),
-                  Expanded(flex: 1, child: dataNumbers())
-                ],
-              ),
-            ])));
+    return Container(
+        color: const Color(0xFF090c12),
+        child: ListView(children: [
+          Row(
+            children: [Expanded(child: header())],
+          ),
+          Row(
+            children: [Expanded(child: todaysEntry())],
+          ),
+          const Divider(),
+          Row(
+            children: [Expanded(child: listOfEntries())],
+          ),
+          Row(
+            children: [Expanded(child: isUnderQuarantine())],
+          ),
+        ]));
   }
 
   Widget header() {
     return Container(
-      margin:
-          const EdgeInsets.only(top: 30.0, left: 30.0, right: 30.0, bottom: 15),
-      padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Color(0xFF526bf2),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      height: 80,
-      child: Text(
-        ('Welcome, Admin'),
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
-      ),
-    );
-  }
-
-  Widget title() {
-    return Container(
-        margin: const EdgeInsets.only(
-            top: 10.0, left: 30.0, right: 30.0, bottom: 15),
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.blueGrey.shade400,
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+        margin: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+          color: Color(0xFF526bf2),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
+        height: 100,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            Center(
+            Text(
+              "Welcome, Admin",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 10),
               child: Text(
-                "Online Report",
-                style: TextStyle(
-                    fontSize: 20,
-                    // color: Colors.black,
-                    fontWeight: FontWeight.w500),
+                'Your health deserves to be constantly checked.',
+                style: TextStyle(fontStyle: FontStyle.italic),
               ),
             )
           ],
         ));
   }
 
-  Widget lineGraph() {
+  Widget todaysEntry() {
     return Container(
-        margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
-        padding:
-            const EdgeInsets.only(top: 40, left: 30, right: 30, bottom: 10),
-        decoration: BoxDecoration(
-          // color: const Color(0xFF222429),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(35),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.6),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        // height: 300,
-        child: Column(
-          children: [
-            const Text(
-              'Number of Quarantined Students',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-            Container(
-              height: 200,
-              child: SfCartesianChart(
-                primaryXAxis: NumericAxis(
-                  majorGridLines: const MajorGridLines(width: 0),
-                  minorGridLines: const MinorGridLines(width: 0),
-                  labelStyle: const TextStyle(color: Colors.black),
-                  title: AxisTitle(
-                      text: 'Days', textStyle: TextStyle(color: Colors.black)),
-                ),
-                primaryYAxis: NumericAxis(
-                  majorGridLines: const MajorGridLines(width: 0),
-                  minorGridLines: const MinorGridLines(width: 0),
-                  labelStyle: const TextStyle(color: Colors.black),
-                ),
-                series: <ChartSeries>[
-                  // Renders line chart
-                  LineSeries<ChartData, int>(
-                      color: Colors.amber.shade800,
-                      dataSource: chartData,
-                      xValueMapper: (ChartData data, _) => data.day,
-                      yValueMapper: (ChartData data, _) => data.numOfQuar)
-                ],
-                plotAreaBorderColor: Colors.transparent,
-                borderWidth: 0,
-              ),
-            )
-          ],
-        ));
-  }
-
-  Widget pieGraph() {
-    return Container(
-      margin: const EdgeInsets.only(left: 30, right: 10, bottom: 10),
-      padding: const EdgeInsets.all(25),
-      decoration: BoxDecoration(
-        // color: const Color(0xFF222429),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(35),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.6),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3),
-          ),
-        ],
+      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+      padding: const EdgeInsets.all(10),
+      decoration: const BoxDecoration(
+        color: Color(0xFF222429),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      height: 300,
+      height: 100,
       child: Column(children: [
         const Text(
-          'Daily Status',
-          style: TextStyle(fontSize: 20, color: Colors.black),
+          'Today\'s Entry',
+          style: TextStyle(fontSize: 16),
         ),
-        Container(
-            margin: const EdgeInsets.only(top: 30),
-            child: PieChart(
-              dataMap: dataMap,
-              colorList: const [Colors.green, Colors.orange, Colors.red],
-              legendOptions: const LegendOptions(
-                showLegends: false,
-              ),
-              chartValuesOptions: const ChartValuesOptions(
-                  showChartValues: false, showChartValueBackground: false),
-            ))
+        const Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.add_box_rounded,
+                  color: Colors.green.shade700,
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/add-entry');
+                  },
+                  child: const Text('Add Entry'),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.edit,
+                  color: Colors.blue.shade900,
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Edit Entry'),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text('Delete Entry'),
+                )
+              ],
+            )
+          ],
+        )
       ]),
     );
   }
 
-  Widget dataNumbers() {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            // color: const Color(0xFF222429),
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.6),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          height: 90,
-          width: 250,
-          child: Column(children: [
-            const Text(
-              'Cleared Students',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-          ]),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            // color: const Color(0xFF222429),
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.6),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          height: 90,
-          width: 250,
-          child: Column(children: [
-            const Text(
-              'Monitoring Student',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-          ]),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            // color: const Color(0xFF222429),
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.6),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          height: 90,
-          width: 250,
-          child: Column(children: [
-            const Text(
-              'Quarantined Students',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-          ]),
-        )
-      ],
-    );
+  Widget listOfEntries() {
+    return GestureDetector(
+        onTap: () {
+          print("Container clicked");
+        },
+        child: Container(
+            margin:
+                const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
+            padding: const EdgeInsets.only(left: 40, right: 40),
+            height: 70,
+            decoration: const BoxDecoration(
+                color: Color(0xFF222429),
+                borderRadius: BorderRadius.all(Radius.circular(50))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(
+                  Icons.list_alt_rounded,
+                  size: 40,
+                  color: Colors.white,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Health Status Entries',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    Text(
+                      'Number of Entries: 0',
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    )
+                  ],
+                )
+              ],
+            )));
   }
-}
 
-class ChartData {
-  ChartData(this.day, this.numOfQuar);
-  final int day;
-  final int numOfQuar;
+  Widget isUnderQuarantine() {
+    return GestureDetector(
+        onTap: () {
+          print("Container clicked");
+        },
+        child: Container(
+            margin:
+                const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
+            padding: const EdgeInsets.only(left: 50, right: 40),
+            height: 70,
+            decoration: BoxDecoration(
+                color: Color(0xFF222429),
+                borderRadius: const BorderRadius.all(Radius.circular(50))),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(
+                  Icons.sick,
+                  size: 40,
+                  color: Colors.white,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Is under Quarantine?',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                    Text(
+                      'No',
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    )
+                  ],
+                )
+              ],
+            )));
+  }
 }

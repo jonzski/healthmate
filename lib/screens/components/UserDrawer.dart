@@ -40,7 +40,7 @@ class UserDrawer extends StatelessWidget {
                 context.read<AuthProvider>().signOut();
 
                 if (context.mounted) {
-                  Navigator.pushReplacementNamed(context, '/login');
+                  Navigator.pushReplacementNamed(context, '/');
                 }
               },
             ),
