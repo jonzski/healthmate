@@ -345,7 +345,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             // color: const Color(0xFF222429),
-            color: Colors.white,
+            color: const Color(0xFF3eb88b),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
@@ -361,7 +361,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           child: Column(children: [
             const Text(
               'Cleared Students',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+              style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ]),
         ),
@@ -370,7 +370,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             // color: const Color(0xFF222429),
-            color: Colors.white,
+            color:const Color(0xFFed832d),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
@@ -386,7 +386,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           child: Column(children: [
             const Text(
               'Monitoring Student',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+              style: TextStyle(fontSize: 16, color: Colors.white), 
             ),
           ]),
         ),
@@ -395,7 +395,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             // color: const Color(0xFF222429),
-            color: Colors.white,
+            color: Color(0xFFd62b1c),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
@@ -411,7 +411,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
           child: Column(children: [
             const Text(
               'Quarantined Students',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+              style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ]),
         )

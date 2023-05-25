@@ -140,7 +140,9 @@ class _UserDashboardState extends State<UserDashboard> {
                   color: Colors.blue.shade900,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/edit-entry');
+                  },
                   child: const Text('Edit Entry'),
                 )
               ],

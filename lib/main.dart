@@ -5,6 +5,7 @@ import './screens/SignupPage.dart';
 import './screens/UserDashboard.dart';
 import './screens/Profile.dart';
 import './screens/AddEntry.dart';
+import 'screens/EditEntry.dart';
 
 import './screens/SwitchUserType.dart';
 
@@ -24,6 +25,7 @@ import 'package:provider/provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +60,7 @@ class MainApp extends StatelessWidget {
         '/signup': (context) => const SignupPage(),
         '/': (context) => const UserDashboard(),
         '/add-entry': (context) => const AddEntry(),
+        '/edit-entry': (context) => const EditEntry(),
         '/user-entries': (context) => const UserEntries(),
         '/profile': (context) => const Profile(),
         '/switch-user-type': (context) => const SwitchUserType(),
