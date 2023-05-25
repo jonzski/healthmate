@@ -14,24 +14,17 @@ class EditEntry extends StatefulWidget {
 
 class _EditEntryState extends State<EditEntry> {
   final formKey = GlobalKey<FormState>();
+  
 
-  final Map<String, bool> symptomsList = {
-    "Fever (37.8 C and above)": false,
-    "Feeling feverish": false,
-    "Muscle or joint pains": false,
-    "Cough": false,
-    "Colds": false,
-    "Sore throat": false,
-    "Difficulty of breathing": false,
-    "Diarrhea": false,
-    "Loss of taste": false,
-    "Loss of smell": false,
-  };
+  final Map<String, bool> symptomsList = {};
 
   String? inContact;
 
   @override
   Widget build(BuildContext context) {
+
+    final entryProvider = context.read<EntryProvider>();
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Edit Today\'s Entry'),

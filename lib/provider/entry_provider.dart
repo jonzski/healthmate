@@ -13,6 +13,7 @@ class EntryProvider with ChangeNotifier {
   late Stream<QuerySnapshot> _entryEditRequestStream;
   late Stream<QuerySnapshot> _entryDeleteRequestStream;
 
+
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
     fetchAllEntries();
@@ -22,8 +23,7 @@ class EntryProvider with ChangeNotifier {
   Stream<QuerySnapshot> get entryToday => _entryToday;
   Stream<QuerySnapshot> get allEntries => _entryStream;
   Stream<QuerySnapshot> get allRequestedEditEntries => _entryEditRequestStream;
-  Stream<QuerySnapshot> get allRequestedDeleteEntries =>
-      _entryDeleteRequestStream;
+  Stream<QuerySnapshot> get allRequestedDeleteEntries => _entryDeleteRequestStream;
 
   void addEntry(DailyEntry entry, User user) async {
     String message = await firebaseService.addEntry(entry.toJson(entry), user);
@@ -56,6 +56,7 @@ class EntryProvider with ChangeNotifier {
 
   void fetchAllRequestedEntries() async {
     _entryEditRequestStream = firebaseService.fetchAllRequestedEntries();
+    _entryEditRequestStream = firebaseService.fetchAllRequestedEntries();
     notifyListeners();
   }
 
@@ -84,6 +85,11 @@ class EntryProvider with ChangeNotifier {
         await firebaseService.deleteRequest(entryRequest, entryRequestId);
     print(message);
 
+    notifyListeners();
+  }
+
+ void getTodayEntry(User user) async{
+    _entryToday = await firebaseService.getTodayEntry(user);
     notifyListeners();
   }
 }
