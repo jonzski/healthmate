@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,15 +16,27 @@ class EditEntry extends StatefulWidget {
 class _EditEntryState extends State<EditEntry> {
   final formKey = GlobalKey<FormState>();
   
-
-  final Map<String, bool> symptomsList = {};
+  final Map<String, bool> symptomsList = {
+      "Fever (37.8 C and above)": false,
+    "Feeling feverish": false,
+    "Muscle or joint pains": false,
+    "Cough": false,
+    "Colds": false,
+    "Sore throat": false,
+    "Difficulty of breathing": false,
+    "Diarrhea": false,
+    "Loss of taste": false,
+    "Loss of smell": false,
+  };
 
   String? inContact;
 
   @override
   Widget build(BuildContext context) {
-
-    final entryProvider = context.read<EntryProvider>();
+    // User user = context.watch<AuthProvider>().currentUser;
+    // context.read<EntryProvider>().getTodayEntry(user);
+    // Stream<QuerySnapshot> entryToday = context.read<EntryProvider>().entryToday;
+    
 
     return Scaffold(
         appBar: AppBar(
