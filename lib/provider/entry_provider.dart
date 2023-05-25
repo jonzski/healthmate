@@ -86,4 +86,9 @@ class EntryProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+ void getTodayEntry(User user) async{
+    _entryToday = await firebaseService.getTodayEntry(user);
+    notifyListeners();
+  }
 }

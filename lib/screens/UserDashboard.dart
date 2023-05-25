@@ -74,7 +74,7 @@ class _UserDashboardState extends State<UserDashboard> {
 
   Widget header() {
     Stream<User?> user = context.watch<AuthProvider>().uStream;
-
+    
     return Container(
         margin: const EdgeInsets.all(20.0),
         padding: const EdgeInsets.all(10),
