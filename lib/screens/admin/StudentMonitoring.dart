@@ -17,30 +17,43 @@ class _StudentMonitoringState extends State<StudentMonitoring> {
     Stream<QuerySnapshot> monitoredStudents =
         context.watch<UserProvider>().allMonitoredStudents;
 
-    return StreamBuilder(
-      stream: monitoredStudents,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text("Error encountered! ${snapshot.error}"),
-          );
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.data!.docs.isEmpty) {
-          return const Center(
-            child: Text("No students found."),
-          );
-        }
+    return Container(
+      color: const Color(0xFF090c12),
+      child: StreamBuilder(
+        stream: monitoredStudents,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error encountered! ${snapshot.error}"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text("No students found."),
+            );
+          }
 
-        return ListView.builder(
-          itemCount: snapshot.data?.docs.length,
-          itemBuilder: ((context, index) {
-            print(index);
-          }),
-        );
-      },
+          return Padding(
+            padding: EdgeInsets.all(16.0), // Adjust the padding value as needed
+            child: ListView.builder(
+              itemCount: snapshot.data?.docs.length,
+              itemBuilder: ((context, index) {
+                UserDetails students = UserDetails.fromJson(
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>,
+                    0);
+                return Card(
+                  child: ListTile(
+                    title: Text(students.name),
+                  ),
+                );
+              }),
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -180,7 +180,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         child: Container(
             width: 600,
             // color: const Color(0xFF090c12),
-            color: Colors.white70,
+            color: const Color(0xFF090c12),
             child: ListView(children: [
               Row(
                 children: [Expanded(child: header())],
