@@ -133,4 +133,58 @@ class FirebaseEntryAPI {
       throw e;
     }
   }
+
+  Future<String> entryDeleteRequest(String entryId, DailyEntry entry) async {
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    try {
+      await db
+          .collection("entry")
+          .doc(entryId)
+          .update({'remarks': entry.remarks, 'status': "Pending"});
+
+      final docRef = await db.collection("entryDeleteRequests").add({
+        'symptoms': entry.symptoms,
+        'requestDate': timeToday,
+        'closeContact': entry.closeContact,
+        'remarks': entry.remarks,
+        'entryId': entryId,
+        'status': 'Pending'
+      });
+      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+
+      return "Successfully requested for deleting entry!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  Stream<QuerySnapshot> fetchAllEntryDeleteRequests() {
+    try {
+      return db.collection("entryDeleteRequests").snapshots();
+    } on FirebaseException catch (e) {
+      throw e;
+    }
+  }
+
+  Future<String> deleteRequest(
+      DailyEntry entryRequest, String entryRequestId) async {
+    try {
+      if (entryRequest.status == "Approved") {
+        await db
+            .collection("entryEditRequests")
+            .doc(entryRequest.entryId)
+            .delete();
+      } else {
+        await db.collection("entry").doc(entryRequest.entryId).update({
+          'remarks': entryRequest.remarks,
+          'status': entryRequest.status,
+        });
+      }
+      await db.collection("entryEditRequests").doc(entryRequestId).delete();
+      return "Successfully deleted entry!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
 }
