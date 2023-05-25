@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:pie_chart/pie_chart.dart';
 import './StudentEntries.dart';
 import './StudentQuarantine.dart';
 import './StudentMonitoring.dart';
@@ -33,6 +34,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
     ChartData(9, 32),
     ChartData(10, 40)
   ];
+
+  Map<String, double> dataMap = {
+    "Cleared": 10,
+    "Monitoring": 3,
+    "Quarantined": 2,
+  };
 
   @override
   void initState() {
@@ -295,7 +302,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   Widget pieGraph() {
     return Container(
       margin: const EdgeInsets.only(left: 30, right: 10, bottom: 10),
-      padding: const EdgeInsets.all(50),
+      padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
         // color: const Color(0xFF222429),
         color: Colors.white,
@@ -312,9 +319,20 @@ class _AdminDashboardState extends State<AdminDashboard> {
       height: 300,
       child: Column(children: [
         const Text(
-          'Status',
-          style: TextStyle(fontSize: 16, color: Colors.black),
+          'Daily Status',
+          style: TextStyle(fontSize: 20, color: Colors.black),
         ),
+        Container(
+            margin: const EdgeInsets.only(top: 30),
+            child: PieChart(
+              dataMap: dataMap,
+              colorList: const [Colors.green, Colors.orange, Colors.red],
+              legendOptions: const LegendOptions(
+                showLegends: false,
+              ),
+              chartValuesOptions: const ChartValuesOptions(
+                  showChartValues: false, showChartValueBackground: false),
+            ))
       ]),
     );
   }
