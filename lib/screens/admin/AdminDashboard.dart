@@ -180,7 +180,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         child: Container(
             width: 600,
             // color: const Color(0xFF090c12),
-            color: const Color(0xFF090c12),
+            color: Colors.white70,
             child: ListView(children: [
               Row(
                 children: [Expanded(child: header())],
@@ -344,15 +344,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
           margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            // color: const Color(0xFF222429),
-            color: const Color(0xFF3eb88b),
+            color: const Color(0xFF55d993),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.6),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -361,23 +360,35 @@ class _AdminDashboardState extends State<AdminDashboard> {
           child: Column(children: [
             const Text(
               'Cleared Students',
-              style: TextStyle(fontSize: 16, color: Colors.white),
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(
+                  Icons.emoji_emotions,
+                  size: 40,
+                ),
+                Text(
+                  '${dataMap["Cleared"]}',
+                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                ),
+              ],
+            )
           ]),
         ),
         Container(
           margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            // color: const Color(0xFF222429),
-            color:const Color(0xFFed832d),
+            color: const Color(0xFFfca562),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.6),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -386,23 +397,35 @@ class _AdminDashboardState extends State<AdminDashboard> {
           child: Column(children: [
             const Text(
               'Monitoring Student',
-              style: TextStyle(fontSize: 16, color: Colors.white), 
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(
+                  Icons.monitor_rounded,
+                  size: 40,
+                ),
+                Text(
+                  '${dataMap["Monitoring"]}',
+                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                ),
+              ],
+            )
           ]),
         ),
         Container(
           margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            // color: const Color(0xFF222429),
-            color: Color(0xFFd62b1c),
+            color: const Color(0xFFfc6265),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.6),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -411,8 +434,21 @@ class _AdminDashboardState extends State<AdminDashboard> {
           child: Column(children: [
             const Text(
               'Quarantined Students',
-              style: TextStyle(fontSize: 16, color: Colors.white),
+              style: TextStyle(fontSize: 19, color: Colors.white),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Icon(
+                  Icons.sick,
+                  size: 40,
+                ),
+                Text(
+                  '${dataMap["Quarantined"]}',
+                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                ),
+              ],
+            )
           ]),
         )
       ],
