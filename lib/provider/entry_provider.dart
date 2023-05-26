@@ -10,7 +10,8 @@ class EntryProvider with ChangeNotifier {
   late FirebaseEntryAPI firebaseService;
   late Stream<QuerySnapshot> _entryToday;
   late Stream<QuerySnapshot> _entryStream;
-  late Stream<QuerySnapshot> _entryRequestStream;
+  late Stream<QuerySnapshot> _entryEditRequestStream;
+  late Stream<QuerySnapshot> _entryDeleteRequestStream;
 
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
@@ -20,7 +21,9 @@ class EntryProvider with ChangeNotifier {
   // getter
   Stream<QuerySnapshot> get entryToday => _entryToday;
   Stream<QuerySnapshot> get allEntries => _entryStream;
-  Stream<QuerySnapshot> get allRequestedEntries => _entryRequestStream;
+  Stream<QuerySnapshot> get allRequestedEditEntries => _entryEditRequestStream;
+  Stream<QuerySnapshot> get allRequestedDeleteEntries =>
+      _entryDeleteRequestStream;
 
   void addEntry(DailyEntry entry, User user) async {
     String message = await firebaseService.addEntry(entry.toJson(entry), user);
@@ -52,13 +55,33 @@ class EntryProvider with ChangeNotifier {
   }
 
   void fetchAllRequestedEntries() async {
-    _entryRequestStream = firebaseService.fetchAllRequestedEntries();
+    _entryEditRequestStream = firebaseService.fetchAllRequestedEntries();
     notifyListeners();
   }
 
   void editRequest(DailyEntry entryRequest, String entryRequestId) async {
     String message =
         await firebaseService.editRequest(entryRequest, entryRequestId);
+    print(message);
+
+    notifyListeners();
+  }
+
+  void entryDeleteRequest(String entryId, DailyEntry entry) async {
+    String message = await firebaseService.entryDeleteRequest(entryId, entry);
+    print(message);
+
+    notifyListeners();
+  }
+
+  void fetchAllEntryDeleteRequests() {
+    _entryDeleteRequestStream = firebaseService.fetchAllRequestedEntries();
+    notifyListeners();
+  }
+
+  void deleteRequest(DailyEntry entryRequest, String entryRequestId) async {
+    String message =
+        await firebaseService.deleteRequest(entryRequest, entryRequestId);
     print(message);
 
     notifyListeners();
