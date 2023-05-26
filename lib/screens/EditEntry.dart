@@ -15,10 +15,11 @@ class EditEntry extends StatefulWidget {
 
 class _EditEntryState extends State<EditEntry> {
   final formKey = GlobalKey<FormState>();
-  
+  final TextEditingController _remarkController = TextEditingController();
+
   final Map<String, bool> symptomsList = {
-      "Fever (37.8 C and above)": false,
-    "Feeling feverish": false,
+    "Fever (37.8 C and above)": false,
+    "Feeling feverish": true,
     "Muscle or joint pains": false,
     "Cough": false,
     "Colds": false,
@@ -34,9 +35,10 @@ class _EditEntryState extends State<EditEntry> {
   @override
   Widget build(BuildContext context) {
     // User user = context.watch<AuthProvider>().currentUser;
-    // context.read<EntryProvider>().getTodayEntry(user);
-    // Stream<QuerySnapshot> entryToday = context.read<EntryProvider>().entryToday;
-    
+    // Stream<QuerySnapshot> entryToday = context
+    //     .watch<EntryProvider>()
+    //     .getTodayEntry(user) as Stream<QuerySnapshot<Object?>>;
+    // DailyEntry entryTd = DailyEntry.fromJson(entryToday.data?.docs as Map<String, dynamic>);
 
     return Scaffold(
         appBar: AppBar(
@@ -63,6 +65,7 @@ class _EditEntryState extends State<EditEntry> {
                   ),
                   symptoms(),
                   monitoring(),
+                  remarks(),
                   submitButton(),
                   const SizedBox(
                     height: 30,
@@ -177,6 +180,31 @@ class _EditEntryState extends State<EditEntry> {
             ),
           ],
         ));
+  }
+
+  Widget remarks() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 25, left: 40, right: 40),
+      padding: const EdgeInsets.all(12),
+      height: 90,
+      decoration: const BoxDecoration(
+        // color: Colors.white,
+        color: Color(0xFF222429),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: TextFormField(
+        controller: _remarkController,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter a remark';
+          }
+          return null;
+        },
+        decoration: const InputDecoration(
+          labelText: 'Reason for editing entry',
+        ),
+      ),
+    );
   }
 
   Widget submitButton() {

@@ -40,10 +40,11 @@ class _UserEntriesState extends State<UserEntries> {
               // ignore: prefer_is_empty
             } else {
               return Center(
-                  child: SizedBox(
-                width: 600,
-                child: dailyEntryStatus(snapshot),
-              ));
+                  child: Container(
+                      width: 600,
+                      child: ListView(
+                        children: dailyEntryStatus(snapshot),
+                      )));
             }
           }),
     );
@@ -140,7 +141,7 @@ class _UserEntriesState extends State<UserEntries> {
           ]));
     }
 
-    return Column(children: entryStatus);
+    return entryStatus;
   }
 
   Text inContact(DailyEntry entry) {

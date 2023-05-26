@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../model/entry_model.dart';
+import '../provider/entry_provider.dart';
 import './components/UserDrawer.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -15,6 +16,9 @@ class UserDashboard extends StatefulWidget {
 }
 
 class _UserDashboardState extends State<UserDashboard> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController _remarkController = TextEditingController();
+
   int currentIndex = 0;
 
   List<DocumentSnapshot> _documents = [];
@@ -74,7 +78,7 @@ class _UserDashboardState extends State<UserDashboard> {
 
   Widget header() {
     Stream<User?> user = context.watch<AuthProvider>().uStream;
-    
+
     return Container(
         margin: const EdgeInsets.all(20.0),
         padding: const EdgeInsets.all(10),
@@ -154,7 +158,58 @@ class _UserDashboardState extends State<UserDashboard> {
                   color: Colors.red,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Delete Today\'s Entry'),
+                          content: Form(
+                            child: TextFormField(
+                              controller: _remarkController,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a remark';
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Reason for deleting entry',
+                              ),
+                            ),
+                          ),
+                          actions: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                TextButton(
+                                  child: const Text('Submit'),
+                                  onPressed: () {
+                                    if (formKey.currentState!.validate()) {
+                                      final entryProvider =
+                                          context.read<EntryProvider>();
+
+                                      // DailyEntry dailyEntry =
+                                      // entryProvider.entryDeleteRequest(dailyEntry, user);
+
+                                      formKey.currentState?.save();
+                                    }
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('Close'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  },
                   child: const Text('Delete Entry'),
                 )
               ],
