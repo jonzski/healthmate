@@ -4,14 +4,14 @@ import '../../provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StudentMonitoring extends StatefulWidget {
-  const StudentMonitoring({Key? key}) : super(key: key);
+class StudentClearing extends StatefulWidget {
+  const StudentClearing({Key? key}) : super(key: key);
 
   @override
-  State<StudentMonitoring> createState() => _StudentMonitoringState();
+  State<StudentClearing> createState() => _StudentClearingState();
 }
 
-class _StudentMonitoringState extends State<StudentMonitoring> {
+class _StudentClearingState extends State<StudentClearing> {
   @override
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> monitoredStudents =
