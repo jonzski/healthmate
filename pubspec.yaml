@@ -19,6 +19,7 @@ dependencies:
   flutter_svg: ^2.0.5
   http: ^0.13.6
   provider: ^6.0.5
+  animated_bottom_navigation_bar: ^1.2.0
 
 dev_dependencies:
   flutter_test:
