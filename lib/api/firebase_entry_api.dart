@@ -39,16 +39,28 @@ class FirebaseEntryAPI {
     }
   }
 
-  Stream<QuerySnapshot> getTodayEntry(User user) {
+  Future<DailyEntry?> getTodayEntry(User user) async {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
 
     try {
-      return db
+      final snapshot = await db
           .collection("entry")
           .where('uid', isEqualTo: user.uid)
           .where('entryDate', isEqualTo: timeToday)
-          .snapshots();
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot document = snapshot.docs[0];
+        Map<String, dynamic> entryData =
+            document.data() as Map<String, dynamic>;
+        // Use the entryData map as needed
+        DailyEntry entry = DailyEntry.fromJson(entryData);
+        return entry;
+      } else {
+        print('No matching documents found.');
+        return null;
+      }
     } on FirebaseException catch (e) {
       throw e;
     }
@@ -81,7 +93,10 @@ class FirebaseEntryAPI {
 
   Stream<QuerySnapshot> fetchAllEntries() {
     try {
-      return db.collection("entry").snapshots();
+      return db
+          .collection("entry")
+          .orderBy('date', descending: true)
+          .snapshots();
     } on FirebaseException catch (e) {
       throw e;
     }
@@ -128,7 +143,10 @@ class FirebaseEntryAPI {
 
   Stream<QuerySnapshot> fetchAllRequestedEntries() {
     try {
-      return db.collection("entryEditRequests").snapshots();
+      return db
+          .collection("entryEditRequests")
+          .orderBy('date', descending: true)
+          .snapshots();
     } on FirebaseException catch (e) {
       throw e;
     }
@@ -161,7 +179,10 @@ class FirebaseEntryAPI {
 
   Stream<QuerySnapshot> fetchAllEntryDeleteRequests() {
     try {
-      return db.collection("entryDeleteRequests").snapshots();
+      return db
+          .collection("entryDeleteRequests")
+          .orderBy('date', descending: true)
+          .snapshots();
     } on FirebaseException catch (e) {
       throw e;
     }

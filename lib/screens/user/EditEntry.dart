@@ -35,6 +35,8 @@ class _EditEntryState extends State<EditEntry> {
   @override
   Widget build(BuildContext context) {
     User user = context.watch<AuthProvider>().currentUser;
+    context.watch<EntryProvider>().getTodayEntry(user);
+    DailyEntry? entryToday = context.watch<EntryProvider>().entryToday;
 
     return Scaffold(
         appBar: AppBar(

@@ -119,11 +119,21 @@ class FirebaseUserAPI {
   }
 
   // View Specific Student
-  Stream<DocumentSnapshot> getSpecificStudent(String uid) {
+  Map<String, dynamic>? getSpecificStudent(String uid) {
     try {
-      return db.collection("user").doc(uid).snapshots();
+      final docRef = db.collection("user").doc(uid);
+      docRef.get().then((doc) {
+        if (doc.exists) {
+          (DocumentSnapshot doc) {
+            return doc.data() as Map<String, dynamic>;
+          };
+        } else {
+          return null;
+        }
+      });
     } on FirebaseException catch (e) {
       throw e;
     }
+    return null;
   }
 }
