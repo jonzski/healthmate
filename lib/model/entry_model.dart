@@ -4,10 +4,10 @@ class DailyEntry {
   String uid;
   Map<String, bool> symptoms;
   bool closeContact;
-  String? remarks;
-  String? status;
-  String? entryId;
-  DateTime? requestDate;
+  late String? remarks;
+  late String? status;
+  late String? entryId;
+  late DateTime? requestDate;
   DateTime entryDate;
   late bool canGenerateQR;
 
@@ -16,6 +16,10 @@ class DailyEntry {
     required this.symptoms,
     required this.closeContact,
     required this.entryDate,
+    this.remarks,
+    this.status,
+    this.entryId,
+    this.requestDate,
   }) {
     this.canGenerateQR =
         !(this.closeContact || this.symptoms.containsValue(true));
@@ -36,6 +40,10 @@ class DailyEntry {
       symptoms: convertedMap,
       closeContact: json['closeContact'],
       entryDate: json['entryDate'].toDate(),
+      remarks: json['remarks'],
+      status: json['status'],
+      entryId: json['entryId'],
+      requestDate: json['requestDate'],
     );
   }
 
@@ -50,6 +58,10 @@ class DailyEntry {
       'symptoms': entry.symptoms,
       'closeContact': entry.closeContact,
       'entryDate': entry.entryDate,
+      'remarks': entry.remarks,
+      'status': entry.status,
+      'entryId': entry.entryId,
+      'requestDate': entry.requestDate,
     };
   }
 }

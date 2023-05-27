@@ -15,9 +15,9 @@ class EditEntry extends StatefulWidget {
 
 class _EditEntryState extends State<EditEntry> {
   final formKey = GlobalKey<FormState>();
-  
+
   final Map<String, bool> symptomsList = {
-      "Fever (37.8 C and above)": false,
+    "Fever (37.8 C and above)": false,
     "Feeling feverish": false,
     "Muscle or joint pains": false,
     "Cough": false,
@@ -33,10 +33,21 @@ class _EditEntryState extends State<EditEntry> {
 
   @override
   Widget build(BuildContext context) {
-    // User user = context.watch<AuthProvider>().currentUser;
-    // context.read<EntryProvider>().getTodayEntry(user);
-    // Stream<QuerySnapshot> entryToday = context.read<EntryProvider>().entryToday;
-    
+    User user = context.watch<AuthProvider>().currentUser;
+    context.watch<EntryProvider>().getTodayEntry(user);
+    DailyEntry? entryToday = context.watch<EntryProvider>().entryToday;
+    print(entryToday?.closeContact);
+    // entryToday.listen((QuerySnapshot snapshot) {
+    //   if (snapshot.docs.isNotEmpty) {
+    //     QueryDocumentSnapshot document = snapshot.docs[0];
+    //     Map<String, dynamic> entryData =
+    //         document.data() as Map<String, dynamic>;
+    //     // Use the entryData map as needed
+    //     DailyEntry entry = DailyEntry.fromJson(entryData);
+    //   } else {
+    //     print('No matching documents found.');
+    //   }
+    // });
 
     return Scaffold(
         appBar: AppBar(
