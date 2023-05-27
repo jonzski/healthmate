@@ -3,9 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../screens/components/AdminDrawer.dart';
 import 'Dashboard.dart';
 import 'StudentList.dart';
-import 'StudentQuarantine.dart';
-import 'StudentMonitoring.dart';
 import 'StudentEntries.dart';
+import 'EntryRequest.dart';
+import 'Profile.dart';
 
 class Admin extends StatefulWidget {
   const Admin({super.key});
@@ -45,6 +45,8 @@ class _AdminState extends State<Admin> {
         Dashboard(),
         StudentList(),
         StudentEntries(),
+        EntryRequest(),
+        Profile(),
       ],
     );
   }
