@@ -34,11 +34,9 @@ class _EditEntryState extends State<EditEntry> {
 
   @override
   Widget build(BuildContext context) {
-    // User user = context.watch<AuthProvider>().currentUser;
-    // Stream<QuerySnapshot> entryToday = context
-    //     .watch<EntryProvider>()
-    //     .getTodayEntry(user) as Stream<QuerySnapshot<Object?>>;
-    // DailyEntry entryTd = DailyEntry.fromJson(entryToday.data?.docs as Map<String, dynamic>);
+    User user = context.watch<AuthProvider>().currentUser;
+    context.watch<EntryProvider>().getTodayEntry(user);
+    DailyEntry? entryToday = context.watch<EntryProvider>().entryToday;
 
     return Scaffold(
         appBar: AppBar(
