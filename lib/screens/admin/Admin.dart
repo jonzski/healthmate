@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../screens/components/AdminDrawer.dart';
+import 'package:provider/provider.dart';
+import '../../provider/auth_provider.dart';
 import 'Dashboard.dart';
 import 'StudentList.dart';
 import 'StudentEntries.dart';
@@ -71,6 +72,7 @@ class _AdminState extends State<Admin> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AuthProvider>().currentUser;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
