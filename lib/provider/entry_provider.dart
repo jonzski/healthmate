@@ -34,7 +34,7 @@ class EntryProvider with ChangeNotifier {
       print(message);
     }
     if (message != "You have already added an entry for today") {
-      _entryToday = (await firebaseService.getTodayEntry(user)) as DailyEntry?;
+      _entryToday = await firebaseService.getTodayEntry(user);
     }
     notifyListeners();
   }
@@ -90,7 +90,7 @@ class EntryProvider with ChangeNotifier {
   }
 
   Future<void> getTodayEntry(User user) async {
-    _entryToday = (await firebaseService.getTodayEntry(user)) as DailyEntry?;
+    _entryToday = await firebaseService.getTodayEntry(user);
     notifyListeners();
   }
 }

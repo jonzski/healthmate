@@ -40,10 +40,8 @@ class _UserEntriesState extends State<UserEntries> {
               // ignore: prefer_is_empty
             } else {
               return Center(
-                  child: Container(
-                width: 600,
-                child: dailyEntryStatus(snapshot),
-              ));
+                  child:
+                      Container(width: 600, child: dailyEntryStatus(snapshot)));
             }
           }),
     );

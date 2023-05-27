@@ -7,6 +7,7 @@ class DailyEntry {
   late String? remarks;
   late String? status;
   late String? entryId;
+  late String? entryRequestId;
   late DateTime? requestDate;
   DateTime entryDate;
   late bool canGenerateQR;

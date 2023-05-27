@@ -21,7 +21,10 @@ class FirebaseEntryAPI {
 
     try {
       final docRef = await db.collection("entry").add(entry);
-      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      await db
+          .collection("entry")
+          .doc(docRef.id)
+          .update({'entryId': docRef.id});
 
       return "Successfully added entry!";
     } on FirebaseException catch (e) {
@@ -39,16 +42,28 @@ class FirebaseEntryAPI {
     }
   }
 
-  Stream<QuerySnapshot> getTodayEntry(User user) {
+  Future<DailyEntry?> getTodayEntry(User user) async {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
 
     try {
-      return db
+      final snapshot = await db
           .collection("entry")
           .where('uid', isEqualTo: user.uid)
           .where('entryDate', isEqualTo: timeToday)
-          .snapshots();
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot document = snapshot.docs[0];
+        Map<String, dynamic> entryData =
+            document.data() as Map<String, dynamic>;
+        // Use the entryData map as needed
+        DailyEntry entry = DailyEntry.fromJson(entryData);
+        return entry;
+      } else {
+        print('No matching documents found.');
+        return null;
+      }
     } on FirebaseException catch (e) {
       throw e;
     }
@@ -62,7 +77,7 @@ class FirebaseEntryAPI {
           .collection("entry")
           .doc(entryId)
           .update({'remarks': entry.remarks, 'status': "Pending"});
-
+      print(entryId);
       final docRef = await db.collection("entryEditRequests").add({
         'symptoms': entry.symptoms,
         'requestDate': timeToday,
@@ -74,7 +89,7 @@ class FirebaseEntryAPI {
       await db
           .collection("entryEditRequests")
           .doc(docRef.id)
-          .update({'id': docRef.id});
+          .update({'entryRequestId': docRef.id});
 
       return "Successfully requested for editing entry!";
     } on FirebaseException catch (e) {
@@ -136,7 +151,7 @@ class FirebaseEntryAPI {
     try {
       return db
           .collection("entryEditRequests")
-          .orderBy('entryDate', descending: true)
+          .orderBy('requestDate', descending: true)
           .snapshots();
     } on FirebaseException catch (e) {
       throw e;
@@ -160,7 +175,11 @@ class FirebaseEntryAPI {
         'entryId': entryId,
         'status': 'Pending'
       });
-      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      // await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      await db
+          .collection("entryDeleteRequests")
+          .doc(docRef.id)
+          .update({'entryRequestId': docRef.id});
 
       return "Successfully requested for deleting entry!";
     } on FirebaseException catch (e) {
@@ -172,7 +191,7 @@ class FirebaseEntryAPI {
     try {
       return db
           .collection("entryDeleteRequests")
-          .orderBy('entryDate', descending: true)
+          .orderBy('requestDate', descending: true)
           .snapshots();
     } on FirebaseException catch (e) {
       throw e;
@@ -193,7 +212,7 @@ class FirebaseEntryAPI {
           'status': entryRequest.status,
         });
       }
-      await db.collection("entryEditRequests").doc(entryRequestId).delete();
+      await db.collection("entryDeleteRequests").doc(entryRequestId).delete();
       return "Successfully deleted entry!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";

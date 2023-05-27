@@ -109,6 +109,12 @@ class _UserDashboardState extends State<UserDashboard> {
   }
 
   Widget todaysEntry() {
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    User user = context.read<AuthProvider>().currentUser;
+    context.read<EntryProvider>().getTodayEntry(user);
+    DailyEntry? entry = context.read<EntryProvider>().entryToday;
+
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
       padding: const EdgeInsets.all(10),
@@ -173,17 +179,19 @@ class _UserDashboardState extends State<UserDashboard> {
                           content: Form(
                             key: formKey,
                             child: TextFormField(
-                              controller: _remarkController,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a remark';
-                                }
-                                return null;
-                              },
-                              decoration: const InputDecoration(
-                                labelText: 'Reason for deleting entry',
-                              ),
-                            ),
+                                controller: _remarkController,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a remark';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                  labelText: 'Reason for deleting entry',
+                                ),
+                                onChanged: (String value) {
+                                  entry!.remarks = value;
+                                }),
                           ),
                           actions: [
                             Row(
@@ -195,8 +203,10 @@ class _UserDashboardState extends State<UserDashboard> {
                                     if (formKey.currentState!.validate()) {
                                       final entryProvider =
                                           context.read<EntryProvider>();
+                                      entryProvider.entryDeleteRequest(
+                                          entry!.entryId!, entry);
 
-                                      formKey.currentState?.save();
+                                      // formKey.currentState?.save();
                                       Navigator.of(context).pop();
                                     }
                                   },
@@ -333,9 +343,6 @@ class _UserDashboardState extends State<UserDashboard> {
 
   int numOfEntries() {
     int counter = 0;
-    // Stream<QuerySnapshot> entriesStream =
-    //     context.watch<EntryProvider>().allEntries;
-
     for (int index = 0; index < _documents.length; index++) {
       DailyEntry entry =
           DailyEntry.fromJson(_documents[index].data() as Map<String, dynamic>);
