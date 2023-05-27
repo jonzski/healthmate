@@ -8,11 +8,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class EntryProvider with ChangeNotifier {
   // Create User Class
   late FirebaseEntryAPI firebaseService;
-  late Stream<QuerySnapshot> _entryToday;
+  late DailyEntry? _entryToday;
   late Stream<QuerySnapshot> _entryStream;
   late Stream<QuerySnapshot> _entryEditRequestStream;
   late Stream<QuerySnapshot> _entryDeleteRequestStream;
-
 
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
@@ -20,10 +19,11 @@ class EntryProvider with ChangeNotifier {
   }
 
   // getter
-  Stream<QuerySnapshot> get entryToday => _entryToday;
+  DailyEntry? get entryToday => _entryToday;
   Stream<QuerySnapshot> get allEntries => _entryStream;
   Stream<QuerySnapshot> get allRequestedEditEntries => _entryEditRequestStream;
-  Stream<QuerySnapshot> get allRequestedDeleteEntries => _entryDeleteRequestStream;
+  Stream<QuerySnapshot> get allRequestedDeleteEntries =>
+      _entryDeleteRequestStream;
 
   void addEntry(DailyEntry entry, User user) async {
     String message = await firebaseService.addEntry(entry.toJson(entry), user);
@@ -33,7 +33,7 @@ class EntryProvider with ChangeNotifier {
       String message = await firebaseService.updateMonitoring(entry.uid);
       print(message);
     }
-    _entryToday = firebaseService.getTodayEntry(user);
+    _entryToday = await firebaseService.getTodayEntry(user);
     notifyListeners();
   }
 
@@ -55,7 +55,6 @@ class EntryProvider with ChangeNotifier {
   }
 
   void fetchAllRequestedEntries() async {
-    _entryEditRequestStream = firebaseService.fetchAllRequestedEntries();
     _entryEditRequestStream = firebaseService.fetchAllRequestedEntries();
     notifyListeners();
   }
@@ -88,7 +87,7 @@ class EntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
- void getTodayEntry(User user) async{
+  void getTodayEntry(User user) async {
     _entryToday = await firebaseService.getTodayEntry(user);
     notifyListeners();
   }
