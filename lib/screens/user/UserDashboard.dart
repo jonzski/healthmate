@@ -73,6 +73,9 @@ class _UserDashboardState extends State<UserDashboard> {
           Row(
             children: [Expanded(child: isUnderQuarantine())],
           ),
+          Row(
+            children: [Expanded(child: isUnderMonitoring())],
+          ),
         ]));
   }
 
@@ -163,8 +166,12 @@ class _UserDashboardState extends State<UserDashboard> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                           title: const Text('Delete Today\'s Entry'),
                           content: Form(
+                            key: formKey,
                             child: TextFormField(
                               controller: _remarkController,
                               validator: (value) {
@@ -189,12 +196,9 @@ class _UserDashboardState extends State<UserDashboard> {
                                       final entryProvider =
                                           context.read<EntryProvider>();
 
-                                      // DailyEntry dailyEntry =
-                                      // entryProvider.entryDeleteRequest(dailyEntry, user);
-
                                       formKey.currentState?.save();
+                                      Navigator.of(context).pop();
                                     }
-                                    Navigator.of(context).pop();
                                   },
                                 ),
                                 TextButton(
@@ -260,42 +264,71 @@ class _UserDashboardState extends State<UserDashboard> {
   }
 
   Widget isUnderQuarantine() {
-    return GestureDetector(
-        onTap: () {
-          print("Container clicked");
-        },
-        child: Container(
-            margin:
-                const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
-            padding: const EdgeInsets.only(left: 50, right: 40),
-            height: 70,
-            decoration: const BoxDecoration(
-                color: Color(0xFF222429),
-                borderRadius: BorderRadius.all(Radius.circular(50))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Icon(
-                  Icons.sick,
-                  size: 40,
-                  color: Colors.white,
+    return Container(
+        margin: const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
+        padding: const EdgeInsets.only(left: 50, right: 40),
+        height: 70,
+        decoration: const BoxDecoration(
+            color: Color(0xFF222429),
+            borderRadius: BorderRadius.all(Radius.circular(50))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Icon(
+              Icons.sick,
+              size: 40,
+              color: Colors.white,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Is under quarantine?',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Is under Quarantine?',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    Text(
-                      'No',
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    )
-                  ],
+                Text(
+                  'No',
+                  style: TextStyle(fontSize: 14, color: Colors.white),
                 )
               ],
-            )));
+            )
+          ],
+        ));
+  }
+
+  Widget isUnderMonitoring() {
+    return Container(
+        margin: const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
+        padding: const EdgeInsets.only(left: 50, right: 40),
+        height: 70,
+        decoration: const BoxDecoration(
+            color: Color(0xFF222429),
+            borderRadius: BorderRadius.all(Radius.circular(50))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Icon(
+              Icons.monitor,
+              size: 40,
+              color: Colors.white,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Is under monitoring?',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+                Text(
+                  'No',
+                  style: TextStyle(fontSize: 14, color: Colors.white),
+                )
+              ],
+            )
+          ],
+        ));
   }
 
   int numOfEntries() {
