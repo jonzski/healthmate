@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../provider/auth_provider.dart';
 
-class UserDrawer extends StatelessWidget {
-  const UserDrawer({super.key});
+class AdminDrawer extends StatelessWidget {
+  const AdminDrawer({super.key});
 
   Widget build(BuildContext context) {
     return Drawer(
@@ -17,17 +17,7 @@ class UserDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/admin');
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'My Profile',
-                style: TextStyle(fontSize: 18),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/profile'); // close the drawer
+                Navigator.pushNamed(context, '/login');
               },
             ),
             ListTile(
@@ -39,7 +29,7 @@ class UserDrawer extends StatelessWidget {
                 context.read<AuthProvider>().signOut();
 
                 if (context.mounted) {
-                  Navigator.pushReplacementNamed(context, '/admin-login');
+                  Navigator.pushReplacementNamed(context, '/login');
                 }
               },
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../components/UserDrawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'Dashboard.dart';
+import 'Scanner.dart';
 
 class Monitor extends StatefulWidget {
   const Monitor({super.key});
@@ -13,7 +14,6 @@ class _MonitorState extends State<Monitor> {
   int _pageIndex = 0;
 
   late PageController _pageController;
-  GlobalKey _bottomNavigationKey = GlobalKey();
 
   final String logo = 'assets/images/Logo.svg';
   @override
@@ -37,8 +37,8 @@ class _MonitorState extends State<Monitor> {
         });
       },
       children: const <Widget>[
-        // Dashboard(),
-        // StudentEntries(),
+        Dashboard(),
+        Scanner(),
         // StudentQuarantine(),
         // StudentMonitoring(),
         // EntryRequest(),
@@ -100,9 +100,9 @@ class _MonitorState extends State<Monitor> {
           backgroundColor: const Color(0xFF090c12),
         ),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: const Color(0xFF526bf2),
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          key: _bottomNavigationKey,
           backgroundColor: const Color(0xFF090c12),
           currentIndex: _pageIndex,
           type: BottomNavigationBarType.fixed,
@@ -121,14 +121,6 @@ class _MonitorState extends State<Monitor> {
             BottomNavigationBarItem(
               icon: Icon(Icons.people),
               label: 'Students',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.sick),
-              label: 'Quarantined',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.safety_check),
-              label: 'Monitor',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.list_alt_rounded),
