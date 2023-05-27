@@ -6,7 +6,7 @@ import '../../provider/entry_provider.dart';
 import '../../model/entry_model.dart';
 
 class EditEntry extends StatefulWidget {
-  const EditEntry({super.key});
+  const EditEntry({Key? key}) : super(key: key);
 
   @override
   State<EditEntry> createState() => _EditEntryState();
@@ -21,85 +21,100 @@ class _EditEntryState extends State<EditEntry> {
   String? inContact;
   DailyEntry? dailyEntry;
 
+  @override
   void initState() {
     super.initState();
-    DateTime timeToday = DateTime.now();
-    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
     User user = context.read<AuthProvider>().currentUser;
-    context.read<EntryProvider>().getTodayEntry(user);
+    await context.read<EntryProvider>().getTodayEntry(user);
     DailyEntry? entry = context.read<EntryProvider>().entryToday;
-    setState(() {
-      dailyEntry = entry;
-      symptomsList = dailyEntry!.symptoms;
-      if (dailyEntry?.closeContact == true) {
-        inContact = 'yes';
-      } else {
-        inContact = 'no';
-      }
-    });
+
+    if (entry != null) {
+      setState(() {
+        dailyEntry = entry;
+        symptomsList = dailyEntry!.symptoms;
+        if (dailyEntry!.closeContact == true) {
+          inContact = 'yes';
+        } else {
+          inContact = 'no';
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Edit Today\'s Entry'),
-          centerTitle: true,
-          backgroundColor: Colors.black,
-        ),
-        body: entry());
+      appBar: AppBar(
+        title: const Text('Edit Today\'s Entry'),
+        centerTitle: true,
+        backgroundColor: Colors.black,
+      ),
+      body: entry(),
+    );
   }
 
   Widget entry() {
     return Scaffold(
-        backgroundColor: const Color(0xFF090c12),
-        body: Center(
-          child: Container(
-            width: 500,
-            color: const Color(0xFF090c12),
-            child: Form(
-              key: formKey,
-              child: ListView(children: [
-                Column(children: [
-                  Row(
-                    children: [Expanded(child: title())],
-                  ),
-                  symptoms(),
-                  monitoring(),
-                  remarks(),
-                  submitButton(),
-                  const SizedBox(
-                    height: 30,
-                  )
-                ]),
-              ]),
+      backgroundColor: const Color(0xFF090c12),
+      body: Center(
+        child: Container(
+          width: 500,
+          color: const Color(0xFF090c12),
+          child: Form(
+            key: formKey,
+            child: ListView(
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(child: title()),
+                      ],
+                    ),
+                    symptoms(),
+                    monitoring(),
+                    remarks(),
+                    submitButton(),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget title() {
     return Container(
-        margin: const EdgeInsets.only(top: 20, left: 40, right: 40),
-        padding: const EdgeInsets.all(12),
-        decoration: const BoxDecoration(
-          color: Color(0xFF222429),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        height: 120,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              "Are you experiencing any of these symptoms? ",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Text('Select all that apply.'),
-            )
-          ],
-        ));
+      margin: const EdgeInsets.only(top: 20, left: 40, right: 40),
+      padding: const EdgeInsets.all(12),
+      decoration: const BoxDecoration(
+        color: Color(0xFF222429),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      height: 120,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: const [
+          Text(
+            "Are you experiencing any of these symptoms? ",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text('Select all that apply.'),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget symptoms() {
@@ -112,77 +127,78 @@ class _EditEntryState extends State<EditEntry> {
       ),
       child: ListView.builder(
         shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          return CheckboxListTile(
-              title: Text(symptomsList.keys.elementAt(index)),
-              value: symptomsList[symptomsList.keys.elementAt(index)],
-              onChanged: (bool? value) {
-                setState(() {
-                  symptomsList[symptomsList.keys.elementAt(index)] = value!;
-                });
-              });
-        },
         itemCount: symptomsList.length,
+        itemBuilder: (BuildContext context, int index) {
+          String symptom = symptomsList.keys.elementAt(index);
+          return CheckboxListTile(
+            title: Text(symptom),
+            value: symptomsList[symptom],
+            onChanged: (bool? value) {
+              setState(() {
+                symptomsList[symptom] = value!;
+              });
+            },
+          );
+        },
       ),
     );
   }
 
   Widget monitoring() {
     return Container(
-        margin: const EdgeInsets.only(top: 20, bottom: 25, left: 40, right: 40),
-        padding: const EdgeInsets.all(12),
-        height: 90,
-        decoration: const BoxDecoration(
-          // color: Colors.white,
-          color: Color(0xFF222429),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const Flexible(
-              child: Text(
-                  'Did you have a face-to-face encounter or contact with a confirmed COVID-19 case?'),
+      margin: const EdgeInsets.only(top: 20, bottom: 25, left: 40, right: 40),
+      padding: const EdgeInsets.all(12),
+      height: 90,
+      decoration: const BoxDecoration(
+        color: Color(0xFF222429),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          const Flexible(
+            child: Text(
+              'Did you have a face-to-face encounter or contact with a confirmed COVID-19 case?',
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  children: [
-                    Radio(
-                        value: 'yes',
-                        groupValue: inContact,
-                        onChanged: (value) {
-                          setState(() {
-                            inContact = value!;
-                            dailyEntry!.closeContact = true;
-                          });
-                        }),
-                    const Text('Yes')
-                  ],
-                ),
-                Row(
-                  children: [
-                    Row(
-                      children: [
-                        Radio(
-                            value: 'no',
-                            groupValue: inContact,
-                            onChanged: (value) {
-                              setState(() {
-                                inContact = value!;
-                                dailyEntry!.closeContact = false;
-                              });
-                            }),
-                        const Text('No')
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
-          ],
-        ));
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                children: [
+                  Radio(
+                    value: 'yes',
+                    groupValue: inContact,
+                    onChanged: (value) {
+                      setState(() {
+                        inContact = value as String?;
+                        dailyEntry!.closeContact = true;
+                      });
+                    },
+                  ),
+                  const Text('Yes'),
+                ],
+              ),
+              Row(
+                children: [
+                  Radio(
+                    value: 'no',
+                    groupValue: inContact,
+                    onChanged: (value) {
+                      setState(() {
+                        inContact = value as String?;
+                        dailyEntry!.closeContact = false;
+                      });
+                    },
+                  ),
+                  const Text('No'),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget remarks() {
@@ -191,7 +207,6 @@ class _EditEntryState extends State<EditEntry> {
       padding: const EdgeInsets.all(12),
       height: 90,
       decoration: const BoxDecoration(
-        // color: Colors.white,
         color: Color(0xFF222429),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
@@ -214,27 +229,27 @@ class _EditEntryState extends State<EditEntry> {
 
   Widget submitButton() {
     return ElevatedButton(
-        onPressed: () {
-          if (formKey.currentState!.validate()) {
-            final entryProvider = context.read<EntryProvider>();
+      onPressed: () {
+        if (formKey.currentState!.validate()) {
+          final entryProvider = context.read<EntryProvider>();
 
-            if (inContact == null) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content:
-                      Text('Please select an answer in the last question')));
-            } else {
-              dailyEntry!.symptoms = symptomsList;
-              entryProvider.editEntryRequest(dailyEntry!.entryId!, dailyEntry!);
+          if (inContact == null) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Please select an answer in the last question')));
+          } else {
+            dailyEntry!.symptoms = symptomsList;
+            entryProvider.editEntryRequest(dailyEntry!.entryId!, dailyEntry!);
 
-              formKey.currentState?.save();
+            formKey.currentState?.save();
 
-              Navigator.pushNamed(context, '/');
-            }
+            Navigator.pushNamed(context, '/');
           }
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF526bf2),
-        ),
-        child: const Text('Submit'));
+        }
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF526bf2),
+      ),
+      child: const Text('Submit'),
+    );
   }
 }
