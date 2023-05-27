@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../model/user_model.dart';
-import '../../provider/user_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import './StudentQuarantine.dart';
+import './StudentMonitoring.dart';
+import 'StudentCleared.dart';
 
 class StudentEntries extends StatefulWidget {
   const StudentEntries({Key? key}) : super(key: key);
@@ -14,47 +13,45 @@ class StudentEntries extends StatefulWidget {
 class _StudentEntriesState extends State<StudentEntries> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> allStudents =
-        context.watch<UserProvider>().allStudents;
-
     return Container(
       color: const Color(0xFF090c12),
-      child: StreamBuilder(
-        stream: allStudents,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("Error encountered! ${snapshot.error}"),
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text("No students found."),
-            );
-          }
-
-          return Padding(
-            padding: EdgeInsets.all(16.0), // Adjust the padding value as needed
-            child: ListView.builder(
-              itemCount: snapshot.data?.docs.length,
-              itemBuilder: ((context, index) {
-                UserDetails students = UserDetails.fromJson(
-                    snapshot.data?.docs[index].data() as Map<String, dynamic>,
-                    0);
-                return Card(
-                  child: ListTile(
-                    title: Text(students.name),
-                    subtitle: Text(students.studentNum!),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <
+          Widget>[
+        const SizedBox(height: 20.0),
+        const Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Text('Quarantine and Monitor Students',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontFamily: 'SF-UI-Display', fontSize: 25))),
+        DefaultTabController(
+            length: 3, // length of tabs
+            initialIndex: 0,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    child: const TabBar(
+                      labelColor: Color(0xFF526bf2),
+                      unselectedLabelColor: Colors.white,
+                      tabs: [
+                        Tab(text: 'Monitor'),
+                        Tab(text: 'Quarantine'),
+                        Tab(text: 'Cleared'),
+                      ],
+                    ),
                   ),
-                );
-              }),
-            ),
-          );
-        },
-      ),
+                  Container(
+                      height: 400, //height of TabBarView
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              top: BorderSide(color: Colors.grey, width: 0.5))),
+                      child: const TabBarView(children: <Widget>[
+                        StudentMonitoring(),
+                        StudentQuarantine(),
+                        StudentClearing(),
+                      ]))
+                ])),
+      ]),
     );
   }
 }

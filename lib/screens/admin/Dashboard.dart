@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../provider/user_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -67,8 +64,11 @@ class _DashboardState extends State<Dashboard> {
       ),
       height: 80,
       child: const Text(
-        ('Welcome, Admin'),
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+        ('Welcome'),
+        style: TextStyle(
+            fontFamily: 'SF-UI-Display',
+            fontSize: 25,
+            fontWeight: FontWeight.w500),
       ),
     );
   }

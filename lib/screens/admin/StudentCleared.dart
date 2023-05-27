@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import '../../model/entry_model.dart';
-import '../../provider/entry_provider.dart';
+import '../../model/user_model.dart';
+import '../../provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StudentMonitoring extends StatefulWidget {
-  const StudentMonitoring({Key? key}) : super(key: key);
+class StudentClearing extends StatefulWidget {
+  const StudentClearing({Key? key}) : super(key: key);
 
   @override
-  State<StudentMonitoring> createState() => _StudentMonitoringState();
+  State<StudentClearing> createState() => _StudentClearingState();
 }
 
-class _StudentMonitoringState extends State<StudentMonitoring> {
+class _StudentClearingState extends State<StudentClearing> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> editRequests =
-        context.watch<EntryProvider>().allRequestedEditEntries;
+    Stream<QuerySnapshot> monitoredStudents =
+        context.watch<UserProvider>().allMonitoredStudents;
 
     return Container(
       color: const Color(0xFF090c12),
       child: StreamBuilder(
-        stream: editRequests,
+        stream: monitoredStudents,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -42,12 +42,13 @@ class _StudentMonitoringState extends State<StudentMonitoring> {
             child: ListView.builder(
               itemCount: snapshot.data?.docs.length,
               itemBuilder: ((context, index) {
-                DailyEntry entry = DailyEntry.fromJson(
-                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
+                UserDetails students = UserDetails.fromJson(
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>,
+                    0);
                 return Card(
                   color: const Color(0xFF222429),
                   child: ListTile(
-                    title: Text(entry.uid),
+                    title: Text(students.name),
                   ),
                 );
               }),

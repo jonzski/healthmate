@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                                     _passwordController.text.trim());
 
                             if (user != null && context.mounted) {
-                              Navigator.pushReplacementNamed(context, '/');
+                              Navigator.pushReplacementNamed(context, '/user');
                             }
                           } catch (e) {
                             print('Error: $e');

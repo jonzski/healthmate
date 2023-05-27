@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:pie_chart/pie_chart.dart';
+import '../../screens/components/AdminDrawer.dart';
 import 'Dashboard.dart';
-import 'StudentEntries.dart';
+import 'StudentList.dart';
 import 'StudentQuarantine.dart';
 import 'StudentMonitoring.dart';
-import 'EntryRequest.dart';
+import 'StudentEntries.dart';
 
 class Admin extends StatefulWidget {
   const Admin({super.key});
@@ -44,10 +43,8 @@ class _AdminState extends State<Admin> {
       },
       children: const <Widget>[
         Dashboard(),
+        StudentList(),
         StudentEntries(),
-        StudentQuarantine(),
-        StudentMonitoring(),
-        EntryRequest(),
       ],
     );
   }
@@ -110,6 +107,7 @@ class _AdminState extends State<Admin> {
           showUnselectedLabels: false,
           key: _bottomNavigationKey,
           backgroundColor: const Color(0xFF090c12),
+          selectedItemColor: const Color(0xFF526bf2),
           currentIndex: _pageIndex,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
@@ -133,12 +131,12 @@ class _AdminState extends State<Admin> {
               label: 'Quarantined',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.safety_check),
-              label: 'Monitor',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.list_alt_rounded),
               label: 'Entry Request',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Monitor',
             ),
           ],
         ),

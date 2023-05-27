@@ -7,7 +7,7 @@ class UserProvider with ChangeNotifier {
   late Stream<QuerySnapshot> _userStream;
   late Stream<QuerySnapshot> _quarantineStream;
   late Stream<QuerySnapshot> _monitorStream;
-  late Stream<DocumentSnapshot> _specificUserStream;
+  late Map<String, dynamic>? _specificUserStream;
 
   UserProvider() {
     firebaseService = FirebaseUserAPI();
@@ -19,7 +19,7 @@ class UserProvider with ChangeNotifier {
   Stream<QuerySnapshot> get allStudents => _userStream;
   Stream<QuerySnapshot> get allQuarantinedStudents => _quarantineStream;
   Stream<QuerySnapshot> get allMonitoredStudents => _monitorStream;
-  Stream<DocumentSnapshot> get getUser => _specificUserStream;
+  Map<String, dynamic>? get getUser => _specificUserStream;
 
   // Add User to Quarantine
   Future<String> addUserToQuarantine(
