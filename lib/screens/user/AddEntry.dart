@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../provider/auth_provider.dart';
-import '../provider/entry_provider.dart';
-import '../model/entry_model.dart';
+import '../../provider/auth_provider.dart';
+import '../../provider/entry_provider.dart';
+import '../../model/entry_model.dart';
 
 class AddEntry extends StatefulWidget {
   const AddEntry({super.key});

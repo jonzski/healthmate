@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './components/UserDrawer.dart';
+import '../components/UserDrawer.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});

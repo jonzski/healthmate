@@ -1,4 +1,3 @@
-import 'package:cmsc_23_project/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../provider/auth_provider.dart';
@@ -18,17 +17,7 @@ class UserDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/UserDashboard');
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'My Profile',
-                style: TextStyle(fontSize: 18),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/Profile'); // close the drawer
+                Navigator.pushNamed(context, '/');
               },
             ),
             ListTile(

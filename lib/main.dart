@@ -1,30 +1,35 @@
-import 'package:cmsc_23_project/screens/UserEntries.dart';
+// Firebase credential and packages
 import 'package:flutter/material.dart';
-import './screens/LoginPage.dart';
-import './screens/SignupPage.dart';
-import './screens/UserDashboard.dart';
-import './screens/Profile.dart';
-import './screens/AddEntry.dart';
-import 'screens/EditEntry.dart';
-
-import './screens/SwitchUserType.dart';
-
-import 'screens/admin/Admin.dart';
-import './screens/admin/AdminSignInPage.dart';
-import './screens/admin/AdminSignUpPage.dart';
-
-import './screens/monitor/MonitorDashboard.dart';
-import './screens/monitor/MonitorSignInPage.dart';
-import './screens/monitor/MonitorSignUpPage.dart';
-
-import './provider/auth_provider.dart';
-import './provider/entry_provider.dart';
-import './provider/user_provider.dart';
-
 import 'package:provider/provider.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+
+// User Screens
+import 'screens/user/UserDashboard.dart';
+import 'screens/user/Profile.dart';
+import 'screens/user/AddEntry.dart';
+import 'screens/user/EditEntry.dart';
+import 'screens/user/UserEntries.dart';
+
+// Auth Screens
+import 'screens/auth/SwitchUserType.dart';
+import 'screens/auth/LoginPage.dart';
+import 'screens/auth/SignupPage.dart';
+
+// Admin Screens
+import 'screens/admin/Admin.dart';
+import 'screens/admin/AdminSignInPage.dart';
+import 'screens/admin/AdminSignUpPage.dart';
+
+// Monitor Screens
+import 'screens/monitor/Monitor.dart';
+import 'screens/monitor/MonitorSignInPage.dart';
+import 'screens/monitor/MonitorSignUpPage.dart';
+
+// Proviers
+import 'provider/auth_provider.dart';
+import 'provider/entry_provider.dart';
+import 'provider/user_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +73,7 @@ class MainApp extends StatelessWidget {
         '/admin': (context) => const Admin(),
         '/monitor-signin': (context) => const MonitorSignInPage(),
         '/monitor-signup': (context) => const MonitorSignUpPage(),
-        '/monitor': (context) => const MonitorDashboard()
+        '/monitor': (context) => const Monitor()
       },
     );
   }

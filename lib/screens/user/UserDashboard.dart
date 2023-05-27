@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../model/entry_model.dart';
-import '../provider/entry_provider.dart';
-import './components/UserDrawer.dart';
+import '../../model/entry_model.dart';
+import '../../provider/entry_provider.dart';
+import './../components/UserDrawer.dart';
 
 class UserDashboard extends StatefulWidget {
   const UserDashboard({super.key});
