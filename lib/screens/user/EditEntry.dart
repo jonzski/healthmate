@@ -25,16 +25,8 @@ class _EditEntryState extends State<EditEntry> {
   @override
   Widget build(BuildContext context) {
     User user = context.watch<AuthProvider>().currentUser;
-    context.read<EntryProvider>().getTodayEntry(user);
-    dailyEntry = context.watch<EntryProvider>().entryToday;
-
-    symptomsList = dailyEntry!.symptoms;
-
-    if (dailyEntry?.closeContact == true) {
-      inContact = 'yes';
-    } else {
-      inContact = 'no';
-    }
+    context.watch<EntryProvider>().getTodayEntry(user);
+    DailyEntry? entryToday = context.watch<EntryProvider>().entryToday;
 
     return Scaffold(
         appBar: AppBar(
