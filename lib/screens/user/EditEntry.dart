@@ -25,25 +25,25 @@ class _EditEntryState extends State<EditEntry> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      DateTime timeToday = DateTime.now();
-      timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
-      User user = context.read<AuthProvider>().currentUser;
-      await context.read<EntryProvider>().getTodayEntry(user);
-      DailyEntry? entry = context.read<EntryProvider>().entryToday;
+    fetchData();
+  }
 
-      if (entry != null) {
-        setState(() {
-          dailyEntry = entry;
-          symptomsList = dailyEntry!.symptoms;
-          if (dailyEntry!.closeContact == true) {
-            inContact = 'yes';
-          } else {
-            inContact = 'no';
-          }
-        });
-      }
-    });
+  Future<void> fetchData() async {
+    User user = context.read<AuthProvider>().currentUser;
+    await context.read<EntryProvider>().getTodayEntry(user);
+    DailyEntry? entry = context.read<EntryProvider>().entryToday;
+
+    if (entry != null) {
+      setState(() {
+        dailyEntry = entry;
+        symptomsList = dailyEntry!.symptoms;
+        if (dailyEntry!.closeContact == true) {
+          inContact = 'yes';
+        } else {
+          inContact = 'no';
+        }
+      });
+    }
   }
 
   @override
