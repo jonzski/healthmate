@@ -33,7 +33,9 @@ class EntryProvider with ChangeNotifier {
       String message = await firebaseService.updateMonitoring(entry.uid);
       print(message);
     }
-    _entryToday = await firebaseService.getTodayEntry(user);
+    if (message != "You have already added an entry for today") {
+      _entryToday = await firebaseService.getTodayEntry(user);
+    }
     notifyListeners();
   }
 
@@ -87,7 +89,7 @@ class EntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void getTodayEntry(User user) async {
+  Future<void> getTodayEntry(User user) async {
     _entryToday = await firebaseService.getTodayEntry(user);
     notifyListeners();
   }

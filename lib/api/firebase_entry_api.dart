@@ -22,6 +22,10 @@ class FirebaseEntryAPI {
     try {
       final docRef = await db.collection("entry").add(entry);
       await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      await db
+          .collection("entry")
+          .doc(docRef.id)
+          .update({'entryId': docRef.id});
 
       return "Successfully added entry!";
     } on FirebaseException catch (e) {
@@ -74,7 +78,7 @@ class FirebaseEntryAPI {
           .collection("entry")
           .doc(entryId)
           .update({'remarks': entry.remarks, 'status': "Pending"});
-
+      print(entryId);
       final docRef = await db.collection("entryEditRequests").add({
         'symptoms': entry.symptoms,
         'requestDate': timeToday,
@@ -83,7 +87,10 @@ class FirebaseEntryAPI {
         'entryId': entryId,
         'status': 'Pending'
       });
-      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      await db
+          .collection("entryEditRequests")
+          .doc(docRef.id)
+          .update({'id': docRef.id});
 
       return "Successfully requested for editing entry!";
     } on FirebaseException catch (e) {
@@ -202,7 +209,7 @@ class FirebaseEntryAPI {
           'status': entryRequest.status,
         });
       }
-      await db.collection("entryEditRequests").doc(entryRequestId).delete();
+      await db.collection("entryDeleteRequests").doc(entryRequestId).delete();
       return "Successfully deleted entry!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
