@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,25 +27,32 @@ class _EditEntryState extends State<EditEntry> {
   @override
   void initState() {
     super.initState();
-    fetchData();
-  }
-
-  Future<void> fetchData() async {
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     User user = context.read<AuthProvider>().currentUser;
-    await context.read<EntryProvider>().getTodayEntry(user);
-    DailyEntry? entry = context.read<EntryProvider>().entryToday;
-
-    if (entry != null) {
-      setState(() {
-        dailyEntry = entry;
-        symptomsList = dailyEntry!.symptoms;
-        if (dailyEntry!.closeContact == true) {
-          inContact = 'yes';
-        } else {
-          inContact = 'no';
-        }
-      });
-    }
+    StreamSubscription<QuerySnapshot> subscription = FirebaseFirestore.instance
+        .collection("entry")
+        .where('uid', isEqualTo: user.uid)
+        .where('entryDate', isEqualTo: timeToday)
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot document = snapshot.docs[0];
+        Map<String, dynamic> entryData =
+            document.data() as Map<String, dynamic>;
+        // Use the entryData map as needed
+        DailyEntry entry = DailyEntry.fromJson(entryData);
+        setState(() {
+          dailyEntry = entry;
+          symptomsList = dailyEntry!.symptoms;
+          if (dailyEntry?.closeContact == true) {
+            inContact = 'yes';
+          } else {
+            inContact = 'no';
+          }
+        });
+      }
+    });
   }
 
   @override
@@ -240,9 +250,9 @@ class _EditEntryState extends State<EditEntry> {
             dailyEntry!.symptoms = symptomsList;
             entryProvider.editEntryRequest(dailyEntry!.entryId!, dailyEntry!);
 
-            formKey.currentState?.save();
+            // formKey.currentState?.save();
 
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamed(context, '/user');
           }
         }
       },
