@@ -9,7 +9,7 @@ import 'screens/EditEntry.dart';
 
 import './screens/SwitchUserType.dart';
 
-import './screens/admin/AdminDashboard.dart';
+import 'screens/admin/Admin.dart';
 import './screens/admin/AdminSignInPage.dart';
 import './screens/admin/AdminSignUpPage.dart';
 
@@ -25,7 +25,6 @@ import 'package:provider/provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -66,7 +65,7 @@ class MainApp extends StatelessWidget {
         '/switch-user-type': (context) => const SwitchUserType(),
         '/admin-signin': (context) => const AdminSignInPage(),
         '/admin-signup': (context) => const AdminSignUpPage(),
-        '/admin': (context) => const AdminDashboard(),
+        '/admin': (context) => const Admin(),
         '/monitor-signin': (context) => const MonitorSignInPage(),
         '/monitor-signup': (context) => const MonitorSignUpPage(),
         '/monitor': (context) => const MonitorDashboard()

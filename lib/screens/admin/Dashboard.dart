@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import '../../provider/user_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:pie_chart/pie_chart.dart';
-import './StudentEntries.dart';
-import './StudentQuarantine.dart';
-import './StudentMonitoring.dart';
-import './EntryRequest.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdminDashboard extends StatefulWidget {
-  const AdminDashboard({super.key});
+class Dashboard extends StatefulWidget {
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
-  State<AdminDashboard> createState() => _AdminDashboardState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _AdminDashboardState extends State<AdminDashboard> {
-  int _pageIndex = 0;
-
-  late PageController _pageController;
-  GlobalKey _bottomNavigationKey = GlobalKey();
-
-  final String logo = 'assets/images/Logo.svg';
-
+class _DashboardState extends State<Dashboard> {
   final List<ChartData> chartData = [
     ChartData(1, 10),
     ChartData(2, 18),
@@ -42,163 +33,27 @@ class _AdminDashboardState extends State<AdminDashboard> {
   };
 
   @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(initialPage: _pageIndex);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  Widget bottomNavFunction() {
-    return PageView(
-      controller: _pageController,
-      onPageChanged: (index) {
-        setState(() {
-          _pageIndex = index;
-        });
-      },
-      children: <Widget>[
-        homepage(),
-        const StudentEntries(),
-        const StudentQuarantine(),
-        const StudentMonitoring(),
-        const EntryRequest(),
-      ],
-    );
-  }
-
-  void _swipeLeft() {
-    if (_pageIndex > 0) {
-      _pageController.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  void _swipeRight() {
-    if (_pageIndex < 4) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              automaticallyImplyLeading: false,
-              title:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 7.5),
-                  child: SvgPicture.asset(
-                    logo,
-                    width: 40,
-                    colorFilter: const ColorFilter.mode(
-                        Color(0xFF526bf2), BlendMode.srcIn),
-                  ),
-                ),
-                const Text(
-                  "OHMS",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: 'SF-UI-Display',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
-                ),
-                const Text(
-                  "Mobile",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontFamily: 'SF-UI-Display',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300),
-                ),
-              ]),
-              backgroundColor: const Color(0xFF090c12),
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              key: _bottomNavigationKey,
-              backgroundColor: const Color(0xFF090c12),
-              currentIndex: _pageIndex,
-              type: BottomNavigationBarType.fixed,
-              onTap: (index) {
-                setState(() {
-                  _pageIndex = index;
-                  _pageController.animateToPage(
-                    index,
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                });
-              },
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people),
-                  label: 'Students',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.sick),
-                  label: 'Quarantined',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.safety_check),
-                  label: 'Monitor',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.list_alt_rounded),
-                  label: 'Entry Request',
-                ),
-              ],
-            ),
-            body: GestureDetector(
-              onHorizontalDragEnd: (details) {
-                if (details.primaryVelocity! < 0) {
-                  _swipeRight();
-                } else if (details.primaryVelocity! > 0) {
-                  _swipeLeft();
-                }
-              },
-              child: bottomNavFunction(),
-            )));
-  }
-
-  Widget homepage() {
-    return Center(
-        child: Container(
-            width: 600,
-            // color: const Color(0xFF090c12),
-            color: Colors.white70,
-            child: ListView(children: [
-              Row(
-                children: [Expanded(child: header())],
-              ),
-              Row(
-                children: [Expanded(child: title())],
-              ),
-              Row(
-                children: [Expanded(child: lineGraph())],
-              ),
-              const Divider(),
-              Row(
-                children: [
-                  Expanded(flex: 1, child: pieGraph()),
-                  Expanded(flex: 1, child: dataNumbers())
-                ],
-              ),
-            ])));
+    return Container(
+        color: const Color(0xFF090c12),
+        child: ListView(children: [
+          Row(
+            children: [Expanded(child: header())],
+          ),
+          Row(
+            children: [Expanded(child: title())],
+          ),
+          Row(
+            children: [Expanded(child: lineGraph())],
+          ),
+          const Divider(),
+          Row(
+            children: [
+              Expanded(flex: 1, child: pieGraph()),
+              Expanded(flex: 1, child: dataNumbers())
+            ],
+          ),
+        ]));
   }
 
   Widget header() {
@@ -211,7 +66,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       height: 80,
-      child: Text(
+      child: const Text(
         ('Welcome, Admin'),
         style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
       ),
@@ -225,7 +80,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Colors.blueGrey.shade400,
-          borderRadius: BorderRadius.all(Radius.circular(15)),
+          borderRadius: const BorderRadius.all(Radius.circular(15)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,14 +107,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
           // color: const Color(0xFF222429),
           color: Colors.white,
           borderRadius: BorderRadius.circular(35),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.6),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
         ),
         // height: 300,
         child: Column(
@@ -268,7 +115,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
               'Number of Quarantined Students',
               style: TextStyle(fontSize: 16, color: Colors.black),
             ),
-            Container(
+            SizedBox(
               height: 200,
               child: SfCartesianChart(
                 primaryXAxis: NumericAxis(
@@ -276,7 +123,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   minorGridLines: const MinorGridLines(width: 0),
                   labelStyle: const TextStyle(color: Colors.black),
                   title: AxisTitle(
-                      text: 'Days', textStyle: TextStyle(color: Colors.black)),
+                      text: 'Days',
+                      textStyle: const TextStyle(color: Colors.black)),
                 ),
                 primaryYAxis: NumericAxis(
                   majorGridLines: const MajorGridLines(width: 0),
@@ -307,14 +155,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
         // color: const Color(0xFF222429),
         color: Colors.white,
         borderRadius: BorderRadius.circular(35),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.6),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: Offset(0, 3),
-          ),
-        ],
       ),
       height: 300,
       child: Column(children: [
@@ -323,15 +163,18 @@ class _AdminDashboardState extends State<AdminDashboard> {
           style: TextStyle(fontSize: 20, color: Colors.black),
         ),
         Container(
-            margin: const EdgeInsets.only(top: 30),
+            margin: const EdgeInsets.only(top: 10),
             child: PieChart(
               dataMap: dataMap,
               colorList: const [Colors.green, Colors.orange, Colors.red],
+              chartType: ChartType.disc, // Set the chartType to 'disc'
               legendOptions: const LegendOptions(
                 showLegends: false,
               ),
               chartValuesOptions: const ChartValuesOptions(
-                  showChartValues: false, showChartValueBackground: false),
+                showChartValues: false,
+                showChartValueBackground: false,
+              ),
             ))
       ]),
     );
@@ -346,14 +189,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
           decoration: BoxDecoration(
             color: const Color(0xFF55d993),
             borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.6),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
           ),
           height: 90,
           width: 250,
@@ -383,14 +218,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
           decoration: BoxDecoration(
             color: const Color(0xFFfca562),
             borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.6),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
           ),
           height: 90,
           width: 250,
@@ -420,14 +247,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
           decoration: BoxDecoration(
             color: const Color(0xFFfc6265),
             borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.6),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
           ),
           height: 90,
           width: 250,
