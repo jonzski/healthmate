@@ -17,24 +17,24 @@ class _EditEntryState extends State<EditEntry> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _remarkController = TextEditingController();
 
-  final Map<String, bool> symptomsList = {
-    "Fever (37.8 C and above)": false,
-    "Feeling feverish": true,
-    "Muscle or joint pains": false,
-    "Cough": false,
-    "Colds": false,
-    "Sore throat": false,
-    "Difficulty of breathing": false,
-    "Diarrhea": false,
-    "Loss of taste": false,
-    "Loss of smell": false,
-  };
+  Map<String, bool> symptomsList = {};
 
   String? inContact;
+  DailyEntry? dailyEntry;
 
   @override
   Widget build(BuildContext context) {
     User user = context.watch<AuthProvider>().currentUser;
+    context.read<EntryProvider>().getTodayEntry(user);
+    dailyEntry = context.watch<EntryProvider>().entryToday;
+
+    symptomsList = dailyEntry!.symptoms;
+
+    if (dailyEntry?.closeContact == true) {
+      inContact = 'yes';
+    } else {
+      inContact = 'no';
+    }
 
     return Scaffold(
         appBar: AppBar(
@@ -109,15 +109,15 @@ class _EditEntryState extends State<EditEntry> {
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return CheckboxListTile(
-              title: Text(symptomsList.keys.elementAt(index)),
-              value: symptomsList[symptomsList.keys.elementAt(index)],
+              title: Text(symptomsList!.keys.elementAt(index)),
+              value: symptomsList![symptomsList!.keys.elementAt(index)],
               onChanged: (bool? value) {
                 setState(() {
-                  symptomsList[symptomsList.keys.elementAt(index)] = value!;
+                  symptomsList![symptomsList!.keys.elementAt(index)] = value!;
                 });
               });
         },
-        itemCount: symptomsList.length,
+        itemCount: symptomsList!.length,
       ),
     );
   }
@@ -222,13 +222,9 @@ class _EditEntryState extends State<EditEntry> {
               } else {
                 contact = false;
               }
-              DailyEntry dailyEntry = DailyEntry(
-                  uid: context.read<AuthProvider>().currentUser.uid,
-                  symptoms: symptomsList,
-                  closeContact: contact,
-                  entryDate: dateToday);
-              User user = context.read<AuthProvider>().currentUser;
-              entryProvider.addEntry(dailyEntry, user);
+
+              entryProvider.editEntryRequest(dailyEntry!.entryId!, dailyEntry!);
+
               formKey.currentState?.save();
 
               Navigator.pushNamed(context, '/');
