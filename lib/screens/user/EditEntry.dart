@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,12 +21,26 @@ class _EditEntryState extends State<EditEntry> {
   String? inContact;
   DailyEntry? dailyEntry;
 
+  void initState() {
+    super.initState();
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    User user = context.read<AuthProvider>().currentUser;
+    context.read<EntryProvider>().getTodayEntry(user);
+    DailyEntry? entry = context.read<EntryProvider>().entryToday;
+    setState(() {
+      dailyEntry = entry;
+      symptomsList = dailyEntry!.symptoms;
+      if (dailyEntry?.closeContact == true) {
+        inContact = 'yes';
+      } else {
+        inContact = 'no';
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    User user = context.watch<AuthProvider>().currentUser;
-    context.watch<EntryProvider>().getTodayEntry(user);
-    DailyEntry? entryToday = context.watch<EntryProvider>().entryToday;
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('Edit Today\'s Entry'),
@@ -101,15 +114,15 @@ class _EditEntryState extends State<EditEntry> {
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return CheckboxListTile(
-              title: Text(symptomsList!.keys.elementAt(index)),
-              value: symptomsList![symptomsList!.keys.elementAt(index)],
+              title: Text(symptomsList.keys.elementAt(index)),
+              value: symptomsList[symptomsList.keys.elementAt(index)],
               onChanged: (bool? value) {
                 setState(() {
-                  symptomsList![symptomsList!.keys.elementAt(index)] = value!;
+                  symptomsList[symptomsList.keys.elementAt(index)] = value!;
                 });
               });
         },
-        itemCount: symptomsList!.length,
+        itemCount: symptomsList.length,
       ),
     );
   }
@@ -142,6 +155,7 @@ class _EditEntryState extends State<EditEntry> {
                         onChanged: (value) {
                           setState(() {
                             inContact = value!;
+                            dailyEntry!.closeContact = true;
                           });
                         }),
                     const Text('Yes')
@@ -157,6 +171,7 @@ class _EditEntryState extends State<EditEntry> {
                             onChanged: (value) {
                               setState(() {
                                 inContact = value!;
+                                dailyEntry!.closeContact = false;
                               });
                             }),
                         const Text('No')
@@ -181,17 +196,19 @@ class _EditEntryState extends State<EditEntry> {
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: TextFormField(
-        controller: _remarkController,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter a remark';
-          }
-          return null;
-        },
-        decoration: const InputDecoration(
-          labelText: 'Reason for editing entry',
-        ),
-      ),
+          controller: _remarkController,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a remark';
+            }
+            return null;
+          },
+          decoration: const InputDecoration(
+            labelText: 'Reason for editing entry',
+          ),
+          onChanged: (String value) {
+            dailyEntry!.remarks = value;
+          }),
     );
   }
 
@@ -206,15 +223,7 @@ class _EditEntryState extends State<EditEntry> {
                   content:
                       Text('Please select an answer in the last question')));
             } else {
-              bool contact;
-              DateTime dateToday = DateTime(DateTime.now().year,
-                  DateTime.now().month, DateTime.now().day);
-              if (inContact == 'yes') {
-                contact = true;
-              } else {
-                contact = false;
-              }
-
+              dailyEntry!.symptoms = symptomsList;
               entryProvider.editEntryRequest(dailyEntry!.entryId!, dailyEntry!);
 
               formKey.currentState?.save();

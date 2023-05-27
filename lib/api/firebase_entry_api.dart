@@ -21,7 +21,10 @@ class FirebaseEntryAPI {
 
     try {
       final docRef = await db.collection("entry").add(entry);
-      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      await db
+          .collection("entry")
+          .doc(docRef.id)
+          .update({'entryId': docRef.id});
 
       return "Successfully added entry!";
     } on FirebaseException catch (e) {
@@ -83,7 +86,10 @@ class FirebaseEntryAPI {
         'entryId': entryId,
         'status': 'Pending'
       });
-      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      await db
+          .collection("entryEditRequests")
+          .doc(docRef.id)
+          .update({'id': docRef.id});
 
       return "Successfully requested for editing entry!";
     } on FirebaseException catch (e) {

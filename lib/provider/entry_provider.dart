@@ -16,6 +16,23 @@ class EntryProvider with ChangeNotifier {
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
     fetchAllEntries();
+    _entryToday = DailyEntry(
+        uid: "",
+        symptoms: {
+          "Fever (37.8 C and above)": false,
+          "Feeling feverish": false,
+          "Muscle or joint pains": false,
+          "Cough": false,
+          "Colds": false,
+          "Sore throat": false,
+          "Difficulty of breathing": false,
+          "Diarrhea": false,
+          "Loss of taste": false,
+          "Loss of smell": false,
+        },
+        closeContact: false,
+        entryDate: DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day));
   }
 
   // getter
