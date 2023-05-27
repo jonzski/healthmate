@@ -35,24 +35,40 @@ class _StudentListState extends State<StudentList> {
               child: Text("No students found."),
             );
           }
-
-          return Padding(
-            padding: EdgeInsets.all(16.0), // Adjust the padding value as needed
-            child: ListView.builder(
-              itemCount: snapshot.data?.docs.length,
-              itemBuilder: ((context, index) {
-                UserDetails students = UserDetails.fromJson(
-                    snapshot.data?.docs[index].data() as Map<String, dynamic>,
-                    0);
-                return Card(
-                  color: const Color(0xFF222429),
-                  child: ListTile(
-                    title: Text(students.name),
-                    subtitle: Text(students.studentNum!),
-                  ),
-                );
-              }),
-            ),
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(height: 20.0),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10),
+                child: Text(
+                  'List of Students',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontFamily: 'SF-UI-Display', fontSize: 25),
+                ),
+              ),
+              Expanded(
+                  child: Padding(
+                padding:
+                    EdgeInsets.all(16.0), // Adjust the padding value as needed
+                child: ListView.builder(
+                  itemCount: snapshot.data?.docs.length,
+                  itemBuilder: ((context, index) {
+                    UserDetails students = UserDetails.fromJson(
+                        snapshot.data?.docs[index].data()
+                            as Map<String, dynamic>,
+                        0);
+                    return Card(
+                      color: const Color(0xFF222429),
+                      child: ListTile(
+                        title: Text(students.name),
+                        subtitle: Text(students.studentNum!),
+                      ),
+                    );
+                  }),
+                ),
+              )),
+            ],
           );
         },
       ),

@@ -1,59 +1,82 @@
 import 'package:flutter/material.dart';
-import '../../model/entry_model.dart';
-import '../../provider/entry_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'EditRequest.dart';
+import 'DeleteRequest.dart';
 
-class StudentMonitoring extends StatefulWidget {
-  const StudentMonitoring({Key? key}) : super(key: key);
+class EntryRequest extends StatefulWidget {
+  const EntryRequest({Key? key}) : super(key: key);
 
   @override
-  State<StudentMonitoring> createState() => _StudentMonitoringState();
+  State<EntryRequest> createState() => _EntryRequestState();
 }
 
-class _StudentMonitoringState extends State<StudentMonitoring> {
+class _EntryRequestState extends State<EntryRequest> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> editRequests =
-        context.watch<EntryProvider>().allRequestedEditEntries;
-
     return Container(
       color: const Color(0xFF090c12),
-      child: StreamBuilder(
-        stream: editRequests,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("Error encountered! ${snapshot.error}"),
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text("No students found."),
-            );
-          }
-
-          return Padding(
-            padding: const EdgeInsets.all(
-                16.0), // Adjust the padding value as needed
-            child: ListView.builder(
-              itemCount: snapshot.data?.docs.length,
-              itemBuilder: ((context, index) {
-                DailyEntry entry = DailyEntry.fromJson(
-                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
-                return Card(
-                  color: const Color(0xFF222429),
-                  child: ListTile(
-                    title: Text(entry.uid),
-                  ),
-                );
-              }),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          const SizedBox(height: 20.0),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10),
+            child: Text(
+              'Entry Request',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontFamily: 'SF-UI-Display', fontSize: 25),
             ),
-          );
-        },
+          ),
+          Expanded(
+            // Wrap the Column with Expanded widget
+            child: DefaultTabController(
+              length: 2, // length of tabs
+              initialIndex: 0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    child: const TabBar(
+                      labelColor: Color(0xFF526bf2),
+                      unselectedLabelColor: Colors.white,
+                      tabs: [
+                        Tab(
+                          child: Text(
+                            'Edit Request',
+                            style: TextStyle(
+                                fontFamily: 'SF-UI-Display', fontSize: 16.0),
+                          ),
+                        ),
+                        Tab(
+                          child: Text(
+                            'Delete Request',
+                            style: TextStyle(
+                                fontFamily: 'SF-UI-Display', fontSize: 16.0),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    // Wrap TabBarView with Expanded widget
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: Colors.grey, width: 0.5),
+                        ),
+                      ),
+                      child: const TabBarView(
+                        children: <Widget>[
+                          EditRequest(),
+                          DeleteRequest(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

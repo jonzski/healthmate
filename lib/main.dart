@@ -15,16 +15,16 @@ import 'screens/user/UserEntries.dart';
 import 'screens/auth/SwitchUserType.dart';
 import 'screens/auth/LoginPage.dart';
 import 'screens/auth/SignupPage.dart';
+import 'screens/auth/MonitorSignInPage.dart';
+import 'screens/auth/MonitorSignUpPage.dart';
+import 'screens/auth/AdminSignInPage.dart';
+import 'screens/auth/AdminSignUpPage.dart';
 
-// Admin Screens
+// Admin Screen
 import 'screens/admin/Admin.dart';
-import 'screens/admin/AdminSignInPage.dart';
-import 'screens/admin/AdminSignUpPage.dart';
 
-// Monitor Screens
+// Monitor Screen
 import 'screens/monitor/Monitor.dart';
-import 'screens/monitor/MonitorSignInPage.dart';
-import 'screens/monitor/MonitorSignUpPage.dart';
 
 // Proviers
 import 'provider/auth_provider.dart';

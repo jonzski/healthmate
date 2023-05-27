@@ -16,6 +16,8 @@ class EntryProvider with ChangeNotifier {
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
     fetchAllEntries();
+    fetchAllEntryDeleteRequests();
+    fetchAllRequestedEntries();
   }
 
   // getter
