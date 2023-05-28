@@ -21,7 +21,6 @@ class FirebaseEntryAPI {
 
     try {
       final docRef = await db.collection("entry").add(entry);
-      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
       await db
           .collection("entry")
           .doc(docRef.id)
@@ -90,7 +89,7 @@ class FirebaseEntryAPI {
       await db
           .collection("entryEditRequests")
           .doc(docRef.id)
-          .update({'id': docRef.id});
+          .update({'entryRequestId': docRef.id});
 
       return "Successfully requested for editing entry!";
     } on FirebaseException catch (e) {
@@ -102,7 +101,7 @@ class FirebaseEntryAPI {
     try {
       return db
           .collection("entry")
-          .orderBy('date', descending: true)
+          .orderBy('entryDate', descending: true)
           .snapshots();
     } on FirebaseException catch (e) {
       throw e;
@@ -152,7 +151,7 @@ class FirebaseEntryAPI {
     try {
       return db
           .collection("entryEditRequests")
-          .orderBy('date', descending: true)
+          .orderBy('requestDate', descending: true)
           .snapshots();
     } on FirebaseException catch (e) {
       throw e;
@@ -176,7 +175,11 @@ class FirebaseEntryAPI {
         'entryId': entryId,
         'status': 'Pending'
       });
-      await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      // await db.collection("entry").doc(docRef.id).update({'id': docRef.id});
+      await db
+          .collection("entryDeleteRequests")
+          .doc(docRef.id)
+          .update({'entryRequestId': docRef.id});
 
       return "Successfully requested for deleting entry!";
     } on FirebaseException catch (e) {
@@ -188,7 +191,7 @@ class FirebaseEntryAPI {
     try {
       return db
           .collection("entryDeleteRequests")
-          .orderBy('date', descending: true)
+          .orderBy('requestDate', descending: true)
           .snapshots();
     } on FirebaseException catch (e) {
       throw e;
