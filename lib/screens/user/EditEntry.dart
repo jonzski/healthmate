@@ -251,7 +251,8 @@ class _EditEntryState extends State<EditEntry> {
             entryProvider.editEntryRequest(dailyEntry!.entryId!, dailyEntry!);
 
             // formKey.currentState?.save();
-
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text('Successfully requested for editing entry!')));
             Navigator.pushNamed(context, '/user');
           }
         }

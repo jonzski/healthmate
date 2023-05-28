@@ -210,6 +210,14 @@ class _UserDashboardState extends State<UserDashboard> {
                                           entry!.entryId!, entry);
 
                                       // formKey.currentState?.save();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(const SnackBar(
+                                              content: Text(
+                                                  'Successfully requested for deleting entry!')));
+                                      setState(() {
+                                        _remarkController.clear();
+                                      });
+
                                       Navigator.of(context).pop();
                                     }
                                   },
