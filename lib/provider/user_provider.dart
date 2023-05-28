@@ -7,7 +7,7 @@ class UserProvider with ChangeNotifier {
   late Stream<QuerySnapshot> _userStream;
   late Stream<QuerySnapshot> _quarantineStream;
   late Stream<QuerySnapshot> _monitorStream;
-  late Map<String, dynamic>? _specificUserStream;
+  late Map<String, dynamic>? _specificUserStream = {};
 
   UserProvider() {
     firebaseService = FirebaseUserAPI();
@@ -84,7 +84,7 @@ class UserProvider with ChangeNotifier {
 
   // View Specific Student
   void viewSpecificStudent(String uid) async {
-    _specificUserStream = firebaseService.getSpecificStudent(uid);
+    _specificUserStream = await firebaseService.getSpecificStudent(uid);
     notifyListeners();
   }
 }

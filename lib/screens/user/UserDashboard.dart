@@ -81,10 +81,9 @@ class _UserDashboardState extends State<UserDashboard> {
   }
 
   Widget header() {
-    // Stream<User?> currentUser = context.watch<AuthProvider>().uStream;
-    // String uid = context.watch<AuthProvider>().currentUser.uid;
-    // context.watch<UserProvider>().viewSpecificStudent(uid);
-    // Map<String, dynamic>? user = context.watch<UserProvider>().getUser;
+    String uid = context.watch<AuthProvider>().currentUser.uid;
+    context.watch<UserProvider>().viewSpecificStudent(uid);
+    Map<String, dynamic>? user = context.watch<UserProvider>().getUser;
 
     return Container(
         margin: const EdgeInsets.all(20.0),
@@ -98,8 +97,8 @@ class _UserDashboardState extends State<UserDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              ('Welcome '),
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+              ('Welcome ${user?['name'] ?? ''}'),
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
             ),
             const Padding(
               padding: EdgeInsets.only(top: 10),
