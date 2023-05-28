@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../model/entry_model.dart';
 import '../../provider/entry_provider.dart';
+import '../../provider/user_provider.dart';
 import './../components/UserDrawer.dart';
 
 class UserDashboard extends StatefulWidget {
@@ -80,7 +81,10 @@ class _UserDashboardState extends State<UserDashboard> {
   }
 
   Widget header() {
-    Stream<User?> user = context.watch<AuthProvider>().uStream;
+    // Stream<User?> currentUser = context.watch<AuthProvider>().uStream;
+    // String uid = context.watch<AuthProvider>().currentUser.uid;
+    // context.watch<UserProvider>().viewSpecificStudent(uid);
+    // Map<String, dynamic>? user = context.watch<UserProvider>().getUser;
 
     return Container(
         margin: const EdgeInsets.all(20.0),
@@ -94,7 +98,7 @@ class _UserDashboardState extends State<UserDashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              ('Welcome <username>'),
+              ('Welcome '),
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
             ),
             const Padding(
@@ -265,7 +269,7 @@ class _UserDashboardState extends State<UserDashboard> {
                     ),
                     Text(
                       'Number of Entries: ${numOfEntries()}',
-                      style: TextStyle(fontSize: 14, color: Colors.white),
+                      style: const TextStyle(fontSize: 14, color: Colors.white),
                     )
                   ],
                 )

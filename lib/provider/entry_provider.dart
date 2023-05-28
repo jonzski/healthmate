@@ -18,6 +18,7 @@ class EntryProvider with ChangeNotifier {
     fetchAllEntries();
     fetchAllEntryDeleteRequests();
     fetchAllRequestedEntries();
+    _entryToday = initializeEntry();
   }
 
   // getter
@@ -94,5 +95,13 @@ class EntryProvider with ChangeNotifier {
   Future<void> getTodayEntry(User user) async {
     _entryToday = await firebaseService.getTodayEntry(user);
     notifyListeners();
+  }
+
+  DailyEntry initializeEntry() {
+    DateTime timeToday = DateTime.now();
+
+    DailyEntry entry = DailyEntry(
+        uid: "", symptoms: {}, closeContact: false, entryDate: timeToday);
+    return entry;
   }
 }
