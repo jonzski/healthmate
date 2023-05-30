@@ -128,7 +128,7 @@ class FirebaseUserAPI {
       } else {
         return null;
       }
-    } on FirebaseException catch (e) {
+    } catch (e) {
       throw e;
     }
   }
