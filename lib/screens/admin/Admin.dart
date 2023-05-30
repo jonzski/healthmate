@@ -140,7 +140,7 @@ class _AdminState extends State<Admin> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Monitor',
+              label: 'Profile',
             ),
           ],
         ),
