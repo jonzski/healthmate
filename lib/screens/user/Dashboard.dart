@@ -1,22 +1,21 @@
-import 'dart:async';
-import 'package:cmsc_23_project/provider/auth_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../model/entry_model.dart';
-import '../../provider/entry_provider.dart';
+import '../../provider/auth_provider.dart';
 import '../../provider/user_provider.dart';
-import './../components/UserDrawer.dart';
+import '../../provider/entry_provider.dart';
 
-class UserDashboard extends StatefulWidget {
-  const UserDashboard({super.key});
+class Dashboard extends StatefulWidget {
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
-  State<UserDashboard> createState() => _UserDashboardState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _UserDashboardState extends State<UserDashboard> {
+class _DashboardState extends State<Dashboard> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _remarkController = TextEditingController();
 
@@ -24,43 +23,11 @@ class _UserDashboardState extends State<UserDashboard> {
 
   List<DocumentSnapshot> _documents = [];
 
-  void initState() {
-    super.initState();
-    StreamSubscription<QuerySnapshot> subscription = FirebaseFirestore.instance
-        .collection('entry')
-        .snapshots()
-        .listen((QuerySnapshot snapshot) {
-      setState(() {
-        _documents = snapshot.docs;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: const UserDrawer(),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF090c12),
-        centerTitle: true,
-      ),
-      body: homepage(),
-    );
-  }
-
-  Widget homepage() {
-    return Scaffold(
-        backgroundColor: const Color(0xFF090c12),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: currentIndex,
-            type: BottomNavigationBarType.fixed,
-            onTap: (index) => setState(() => currentIndex = index),
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: 'Profile'),
-            ]),
-        body: ListView(children: [
+    return Container(
+        color: const Color(0xFF090c12),
+        child: ListView(children: [
           Row(
             children: [Expanded(child: header())],
           ),
@@ -81,34 +48,55 @@ class _UserDashboardState extends State<UserDashboard> {
   }
 
   Widget header() {
-    String uid = context.watch<AuthProvider>().currentUser.uid;
-    context.watch<UserProvider>().viewSpecificStudent(uid);
-    Map<String, dynamic>? user = context.watch<UserProvider>().getUser;
+    String currentUserUid = context.read<AuthProvider>().currentUser.uid;
 
-    return Container(
-        margin: const EdgeInsets.all(20.0),
-        padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Color(0xFF526bf2),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        height: 100,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              ('Welcome ${user?['name'] ?? ''}'),
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Text(
-                'Your health deserves to be constantly checked.',
-                style: TextStyle(fontStyle: FontStyle.italic),
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: context.read<UserProvider>().viewSpecificStudent(currentUserUid),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error encountered! ${snapshot.error}"),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        Map<String, dynamic>? student = snapshot.data;
+
+        String firstName = student?['name'];
+
+        return Container(
+          margin: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
+            color: Color(0xFF526bf2),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          height: 100,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                ('Welcome ${firstName}'),
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            )
-          ],
-        ));
+              const Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text(
+                  'Your health deserves to be constantly checked.',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget todaysEntry() {

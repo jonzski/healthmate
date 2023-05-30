@@ -5,11 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 // User Screens
-import 'screens/user/UserDashboard.dart';
+import 'screens/user/User.dart';
 import 'screens/user/Profile.dart';
 import 'screens/user/AddEntry.dart';
 import 'screens/user/EditEntry.dart';
-import 'screens/user/UserEntries.dart';
 
 // Auth Screens
 import 'screens/auth/SwitchUserType.dart';
@@ -62,10 +61,9 @@ class MainApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
-        '/user': (context) => const UserDashboard(),
+        '/user': (context) => const User(),
         '/add-entry': (context) => const AddEntry(),
         '/edit-entry': (context) => const EditEntry(),
-        '/user-entries': (context) => const UserEntries(),
         '/profile': (context) => const Profile(),
         '/switch-user-type': (context) => const SwitchUserType(),
         '/admin-signin': (context) => const AdminSignInPage(),
