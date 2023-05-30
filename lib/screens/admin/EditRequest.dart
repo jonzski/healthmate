@@ -15,7 +15,7 @@ class _EditRequestState extends State<EditRequest> {
   @override
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> editRequests =
-        context.watch<EntryProvider>().allRequestedEditEntries;
+        context.watch<EntryProvider>().allRequestedDeleteEntries;
 
     return Container(
       color: const Color(0xFF090c12),
@@ -47,7 +47,7 @@ class _EditRequestState extends State<EditRequest> {
                 return Card(
                   color: const Color(0xFF222429),
                   child: ListTile(
-                    title: Text(entry.uid),
+                    title: Text(entry.requestDate.toString()),
                   ),
                 );
               }),

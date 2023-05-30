@@ -44,10 +44,12 @@ class _DeleteRequestState extends State<DeleteRequest> {
               itemBuilder: ((context, index) {
                 DailyEntry entry = DailyEntry.fromJson(
                     snapshot.data?.docs[index].data() as Map<String, dynamic>);
+
+                print(entry);
                 return Card(
                   color: const Color(0xFF222429),
                   child: ListTile(
-                    title: Text(entry.uid),
+                    title: Text(entry.requestDate.toString()),
                   ),
                 );
               }),
