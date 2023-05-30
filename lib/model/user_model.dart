@@ -105,6 +105,7 @@ class UserDetails {
     return ({
       'userId': user.userId,
       'userType': user.userType,
+      'name': user.name,
       'empNo': user.empNo,
       'position': user.position,
       'homeUnit': user.homeUnit,
