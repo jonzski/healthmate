@@ -48,11 +48,6 @@ class DailyEntry {
     );
   }
 
-  static List<DailyEntry> fromJsonArray(String jsonData) {
-    final Iterable<dynamic> data = jsonDecode(jsonData);
-    return data.map<DailyEntry>((dynamic d) => DailyEntry.fromJson(d)).toList();
-  }
-
   Map<String, dynamic> toJson(DailyEntry entry) {
     return {
       'uid': entry.uid,
