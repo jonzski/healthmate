@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                               Navigator.pushReplacementNamed(context, '/');
                             }
                           } catch (e) {
-                            print('Error: $e');
+                            print('Error: ${e}');
                           }
                         }
                       },

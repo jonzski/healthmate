@@ -15,9 +15,19 @@ class FirebaseAuthAPI {
       UserCredential credential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       return credential;
+    } on FirebaseAuthException catch (e) {
+      //possible to return something more useful
+      //than just print an error message to improve UI/UX
+      print("${e.code}: ${e.message}");
+      // get the portion inside parenthesis in e.message
+      // and return it
+      // From: https://stackoverflow.com/questions/57949887/how-do-i-use-regexp-in-flutter
+      String? message =
+          RegExp('\\(([^)]+)\\)').firstMatch(e.message!)?.group(1);
+      throw message!;
     } catch (e) {
       print(e);
-      throw e; // Rethrow the exception
+      rethrow;
     }
   }
 
@@ -66,6 +76,9 @@ class FirebaseAuthAPI {
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
+      String? message =
+          RegExp('\\(([^)]+)\\)').firstMatch(e.message!)?.group(1);
+      throw message!;
     } catch (e) {
       print(e);
     }
