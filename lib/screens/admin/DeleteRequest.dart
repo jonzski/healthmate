@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../model/entry_model.dart';
 import '../../provider/entry_provider.dart';
 import 'package:provider/provider.dart';
@@ -43,13 +44,13 @@ class _DeleteRequestState extends State<DeleteRequest> {
               itemCount: snapshot.data?.docs.length,
               itemBuilder: ((context, index) {
                 DailyEntry entry = DailyEntry.fromJson(
-                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>,
+                    'delete');
 
-                print(entry);
                 return Card(
                   color: const Color(0xFF222429),
                   child: ListTile(
-                    title: Text(entry.requestDate.toString()),
+                    title: Text(entry.entryRequestId!),
                   ),
                 );
               }),

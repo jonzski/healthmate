@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../model/entry_model.dart';
 import '../../provider/entry_provider.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,7 @@ class _EditRequestState extends State<EditRequest> {
   @override
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> editRequests =
-        context.watch<EntryProvider>().allRequestedDeleteEntries;
+        context.watch<EntryProvider>().allRequestedEditEntries;
 
     return Container(
       color: const Color(0xFF090c12),
@@ -43,11 +44,13 @@ class _EditRequestState extends State<EditRequest> {
               itemCount: snapshot.data?.docs.length,
               itemBuilder: ((context, index) {
                 DailyEntry entry = DailyEntry.fromJson(
-                    snapshot.data?.docs[index].data() as Map<String, dynamic>);
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>,
+                    'edit');
+
                 return Card(
                   color: const Color(0xFF222429),
                   child: ListTile(
-                    title: Text(entry.requestDate.toString()),
+                    title: Text(entry.entryRequestId!),
                   ),
                 );
               }),

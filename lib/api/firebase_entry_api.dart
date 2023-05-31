@@ -84,6 +84,7 @@ class FirebaseEntryAPI {
         'closeContact': entry.closeContact,
         'remarks': entry.remarks,
         'entryId': entryId,
+        'entryDate': entry.entryDate,
         'status': 'Pending'
       });
       await db
@@ -178,6 +179,7 @@ class FirebaseEntryAPI {
         'closeContact': entry.closeContact,
         'remarks': entry.remarks,
         'entryId': entryId,
+        'entryDate': entry.entryDate,
         'status': 'Pending'
       });
       // await db.collection("entry").doc(docRef.id).update({'id': docRef.id});

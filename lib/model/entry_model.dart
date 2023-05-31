@@ -55,7 +55,7 @@ class DailyEntry {
         status: json['status'],
         entryId: json['entryId'],
         entryRequestId: json['entryRequestId'],
-        requestDate: json['requestDate'],
+        requestDate: json['requestDate'].toDate(),
       );
     }
   }
