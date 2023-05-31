@@ -234,42 +234,37 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget listOfEntries() {
-    return GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/user-entries');
-        },
-        child: Container(
-            margin:
-                const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
-            padding: const EdgeInsets.only(left: 40, right: 40),
-            height: 70,
-            decoration: const BoxDecoration(
-                color: Color(0xFF222429),
-                borderRadius: BorderRadius.all(Radius.circular(50))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Container(
+        margin: const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
+        padding: const EdgeInsets.only(left: 40, right: 40),
+        height: 70,
+        decoration: const BoxDecoration(
+            color: Color(0xFF222429),
+            borderRadius: BorderRadius.all(Radius.circular(50))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const Icon(
+              Icons.list_alt_rounded,
+              size: 40,
+              color: Colors.white,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.list_alt_rounded,
-                  size: 40,
-                  color: Colors.white,
+                const Text(
+                  'List of Health Status Entries',
+                  style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'List of Health Status Entries',
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                    Text(
-                      'Number of Entries: ${numOfEntries()}',
-                      style: const TextStyle(fontSize: 14, color: Colors.white),
-                    )
-                  ],
+                Text(
+                  'Number of Entries: ${numOfEntries()}',
+                  style: const TextStyle(fontSize: 14, color: Colors.white),
                 )
               ],
-            )));
+            )
+          ],
+        ));
   }
 
   Widget isUnderQuarantine() {
@@ -343,8 +338,8 @@ class _DashboardState extends State<Dashboard> {
   int numOfEntries() {
     int counter = 0;
     for (int index = 0; index < _documents.length; index++) {
-      DailyEntry entry =
-          DailyEntry.fromJson(_documents[index].data() as Map<String, dynamic>);
+      DailyEntry entry = DailyEntry.fromJson(
+          _documents[index].data() as Map<String, dynamic>, 'fetch');
 
       if (entry.uid == context.read<AuthProvider>().currentUser.uid) {
         counter++;
