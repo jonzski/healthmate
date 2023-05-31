@@ -16,6 +16,9 @@ class EntryProvider with ChangeNotifier {
   EntryProvider() {
     firebaseService = FirebaseEntryAPI();
     fetchAllEntries();
+    fetchAllEntryDeleteRequests();
+    fetchAllRequestedEntries();
+    _entryToday = initializeEntry();
   }
 
   // getter
@@ -51,13 +54,18 @@ class EntryProvider with ChangeNotifier {
     return isValid;
   }
 
-  void fetchAllEntries() async {
+  void fetchAllEntries() {
     _entryStream = firebaseService.fetchAllEntries();
     notifyListeners();
   }
 
-  void fetchAllRequestedEntries() async {
+  void fetchAllRequestedEntries() {
     _entryEditRequestStream = firebaseService.fetchAllRequestedEntries();
+    notifyListeners();
+  }
+
+  void fetchAllEntryDeleteRequests() {
+    _entryDeleteRequestStream = firebaseService.fetchAllEntryDeleteRequests();
     notifyListeners();
   }
 
@@ -76,11 +84,6 @@ class EntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void fetchAllEntryDeleteRequests() {
-    _entryDeleteRequestStream = firebaseService.fetchAllRequestedEntries();
-    notifyListeners();
-  }
-
   void deleteRequest(DailyEntry entryRequest, String entryRequestId) async {
     String message =
         await firebaseService.deleteRequest(entryRequest, entryRequestId);
@@ -92,5 +95,13 @@ class EntryProvider with ChangeNotifier {
   Future<void> getTodayEntry(User user) async {
     _entryToday = await firebaseService.getTodayEntry(user);
     notifyListeners();
+  }
+
+  DailyEntry initializeEntry() {
+    DateTime timeToday = DateTime.now();
+
+    DailyEntry entry = DailyEntry(
+        uid: "", symptoms: {}, closeContact: false, entryDate: timeToday);
+    return entry;
   }
 }

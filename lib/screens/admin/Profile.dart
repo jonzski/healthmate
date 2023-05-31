@@ -23,12 +23,12 @@ class Profile extends StatelessWidget {
           );
         }
 
-        Map<String, dynamic>? user = snapshot.data;
+        Map<String, dynamic>? admin = snapshot.data;
 
-        String name = user?['name'];
-        String studentNum = user?['studentNum'];
-        String course = user?['course'];
-        String college = user?['college'];
+        String name = admin?['name'];
+        String empNo = admin?['empNo'];
+        String position = admin?['position'];
+        String homeUnit = admin?['homeUnit'];
 
         return Container(
           color: const Color(0xFF090c12),
@@ -54,28 +54,28 @@ class Profile extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      "Student Number: $studentNum",
+                      "Employee Number: $empNo",
                       style: const TextStyle(fontSize: 18),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      "College: $college",
+                      "Positiion: $position",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      "Course: $course",
+                      "Home Unit: $homeUnit",
                       style: const TextStyle(fontSize: 18),
                     ),
                   ),
                   TextButton(
                     onPressed: () {
                       context.read<AuthProvider>().signOut();
-                      Navigator.pushReplacementNamed(context, '/login');
+                      Navigator.pushReplacementNamed(context, '/admin-signin');
                     },
                     style: ButtonStyle(
                       backgroundColor:

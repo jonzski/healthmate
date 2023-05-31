@@ -35,13 +35,15 @@ class _StudentQuarantineState extends State<StudentQuarantine> {
         }
 
         return Padding(
-          padding: EdgeInsets.all(16.0), // Adjust the padding value as needed
+          padding:
+              const EdgeInsets.all(16.0), // Adjust the padding value as needed
           child: ListView.builder(
             itemCount: snapshot.data?.docs.length,
             itemBuilder: ((context, index) {
               UserDetails students = UserDetails.fromJson(
                   snapshot.data?.docs[index].data() as Map<String, dynamic>, 0);
               return Card(
+                color: const Color(0xFF222429),
                 child: ListTile(
                   title: Text(students.name),
                 ),

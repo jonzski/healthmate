@@ -5,26 +5,25 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 // User Screens
-import 'screens/user/UserDashboard.dart';
+import 'screens/user/User.dart';
 import 'screens/user/Profile.dart';
 import 'screens/user/AddEntry.dart';
 import 'screens/user/EditEntry.dart';
-import 'screens/user/UserEntries.dart';
 
 // Auth Screens
 import 'screens/auth/SwitchUserType.dart';
 import 'screens/auth/LoginPage.dart';
 import 'screens/auth/SignupPage.dart';
+import 'screens/auth/MonitorSignInPage.dart';
+import 'screens/auth/MonitorSignUpPage.dart';
+import 'screens/auth/AdminSignInPage.dart';
+import 'screens/auth/AdminSignUpPage.dart';
 
-// Admin Screens
+// Admin Screen
 import 'screens/admin/Admin.dart';
-import 'screens/admin/AdminSignInPage.dart';
-import 'screens/admin/AdminSignUpPage.dart';
 
-// Monitor Screens
+// Monitor Screen
 import 'screens/monitor/Monitor.dart';
-import 'screens/monitor/MonitorSignInPage.dart';
-import 'screens/monitor/MonitorSignUpPage.dart';
 
 // Proviers
 import 'provider/auth_provider.dart';
@@ -56,16 +55,15 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Routing',
+      title: 'OHMSMobile',
       theme: ThemeData.dark(),
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
-        '/': (context) => const UserDashboard(),
+        '/user': (context) => const User(),
         '/add-entry': (context) => const AddEntry(),
         '/edit-entry': (context) => const EditEntry(),
-        '/user-entries': (context) => const UserEntries(),
         '/profile': (context) => const Profile(),
         '/switch-user-type': (context) => const SwitchUserType(),
         '/admin-signin': (context) => const AdminSignInPage(),

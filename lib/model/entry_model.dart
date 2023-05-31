@@ -7,6 +7,7 @@ class DailyEntry {
   late String? remarks;
   late String? status;
   late String? entryId;
+  late String? entryRequestId;
   late DateTime? requestDate;
   DateTime entryDate;
   late bool canGenerateQR;
@@ -19,13 +20,14 @@ class DailyEntry {
     this.remarks,
     this.status,
     this.entryId,
+    this.entryRequestId,
     this.requestDate,
   }) {
     this.canGenerateQR =
         !(this.closeContact || this.symptoms.containsValue(true));
   }
 
-  factory DailyEntry.fromJson(Map<String, dynamic> json) {
+  factory DailyEntry.fromJson(Map<String, dynamic> json, String fetchType) {
     dynamic linkedMap = json['symptoms'];
 
     Map<String, bool> convertedMap = {};
@@ -35,21 +37,27 @@ class DailyEntry {
       }
     });
 
-    return DailyEntry(
-      uid: json['uid'],
-      symptoms: convertedMap,
-      closeContact: json['closeContact'],
-      entryDate: json['entryDate'].toDate(),
-      remarks: json['remarks'],
-      status: json['status'],
-      entryId: json['entryId'],
-      requestDate: json['requestDate'],
-    );
-  }
-
-  static List<DailyEntry> fromJsonArray(String jsonData) {
-    final Iterable<dynamic> data = jsonDecode(jsonData);
-    return data.map<DailyEntry>((dynamic d) => DailyEntry.fromJson(d)).toList();
+    if (fetchType == 'fetch') {
+      return DailyEntry(
+        uid: json['uid'],
+        symptoms: convertedMap,
+        closeContact: json['closeContact'],
+        entryDate: json['entryDate'].toDate(),
+        entryId: json['entryId'],
+      );
+    } else {
+      return DailyEntry(
+        uid: json['uid'],
+        symptoms: convertedMap,
+        closeContact: json['closeContact'],
+        entryDate: json['entryDate'].toDate(),
+        remarks: json['remarks'],
+        status: json['status'],
+        entryId: json['entryId'],
+        entryRequestId: json['entryRequestId'],
+        requestDate: json['requestDate'].toDate(),
+      );
+    }
   }
 
   Map<String, dynamic> toJson(DailyEntry entry) {
@@ -61,6 +69,7 @@ class DailyEntry {
       'remarks': entry.remarks,
       'status': entry.status,
       'entryId': entry.entryId,
+      'entryRequestId': entry.entryRequestId,
       'requestDate': entry.requestDate,
     };
   }

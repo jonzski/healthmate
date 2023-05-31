@@ -79,13 +79,6 @@ class UserDetails {
     }
   }
 
-  // static List<UserDetails> fromJsonArray(String jsonData) {
-  //   final Iterable<dynamic> data = jsonDecode(jsonData);
-  //   return data
-  //       .map<UserDetails>((dynamic d) => UserDetails.fromJson(d, int ))
-  //       .toList();
-  // }
-
   Map<String, dynamic> toJson(UserDetails user) {
     if (user.userType == 0) {
       return {
@@ -105,6 +98,7 @@ class UserDetails {
     return ({
       'userId': user.userId,
       'userType': user.userType,
+      'name': user.name,
       'empNo': user.empNo,
       'position': user.position,
       'homeUnit': user.homeUnit,

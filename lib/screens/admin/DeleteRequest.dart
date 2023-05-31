@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
-import '../../model/user_model.dart';
-import '../../provider/user_provider.dart';
+import 'package:intl/intl.dart';
+import '../../model/entry_model.dart';
+import '../../provider/entry_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StudentMonitoring extends StatefulWidget {
-  const StudentMonitoring({Key? key}) : super(key: key);
+class DeleteRequest extends StatefulWidget {
+  const DeleteRequest({Key? key}) : super(key: key);
 
   @override
-  State<StudentMonitoring> createState() => _StudentMonitoringState();
+  State<DeleteRequest> createState() => _DeleteRequestState();
 }
 
-class _StudentMonitoringState extends State<StudentMonitoring> {
+class _DeleteRequestState extends State<DeleteRequest> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> monitoredStudents =
-        context.watch<UserProvider>().allMonitoredStudents;
+    Stream<QuerySnapshot> deleteRequests =
+        context.watch<EntryProvider>().allRequestedDeleteEntries;
 
     return Container(
       color: const Color(0xFF090c12),
       child: StreamBuilder(
-        stream: monitoredStudents,
+        stream: deleteRequests,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -32,7 +33,7 @@ class _StudentMonitoringState extends State<StudentMonitoring> {
             );
           } else if (snapshot.data!.docs.isEmpty) {
             return const Center(
-              child: Text("No students found."),
+              child: Text("No request found."),
             );
           }
 
@@ -42,13 +43,14 @@ class _StudentMonitoringState extends State<StudentMonitoring> {
             child: ListView.builder(
               itemCount: snapshot.data?.docs.length,
               itemBuilder: ((context, index) {
-                UserDetails students = UserDetails.fromJson(
+                DailyEntry entry = DailyEntry.fromJson(
                     snapshot.data?.docs[index].data() as Map<String, dynamic>,
-                    0);
+                    'delete');
+
                 return Card(
                   color: const Color(0xFF222429),
                   child: ListTile(
-                    title: Text(students.name),
+                    title: Text(entry.entryRequestId!),
                   ),
                 );
               }),

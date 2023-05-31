@@ -119,21 +119,17 @@ class FirebaseUserAPI {
   }
 
   // View Specific Student
-  Map<String, dynamic>? getSpecificStudent(String uid) {
+  Future<Map<String, dynamic>?> getSpecificStudent(String uid) async {
     try {
       final docRef = db.collection("user").doc(uid);
-      docRef.get().then((doc) {
-        if (doc.exists) {
-          (DocumentSnapshot doc) {
-            return doc.data() as Map<String, dynamic>;
-          };
-        } else {
-          return null;
-        }
-      });
-    } on FirebaseException catch (e) {
+      final docSnapshot = await docRef.get();
+      if (docSnapshot.exists) {
+        return docSnapshot.data() as Map<String, dynamic>;
+      } else {
+        return null;
+      }
+    } catch (e) {
       throw e;
     }
-    return null;
   }
 }

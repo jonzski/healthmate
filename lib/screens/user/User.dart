@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:cmsc_23_project/provider/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'Dashboard.dart';
-import 'Scanner.dart';
+import 'UserEntries.dart';
+import 'Profile.dart';
 
-class Monitor extends StatefulWidget {
-  const Monitor({super.key});
+class User extends StatefulWidget {
+  const User({super.key});
 
   @override
-  State<Monitor> createState() => _MonitorState();
+  State<User> createState() => _UserState();
 }
 
-class _MonitorState extends State<Monitor> {
+class _UserState extends State<User> {
   int _pageIndex = 0;
 
   late PageController _pageController;
+  GlobalKey _bottomNavigationKey = GlobalKey();
 
   final String logo = 'assets/images/Logo.svg';
   @override
@@ -36,13 +40,7 @@ class _MonitorState extends State<Monitor> {
           _pageIndex = index;
         });
       },
-      children: const <Widget>[
-        Dashboard(),
-        Scanner(),
-        // StudentQuarantine(),
-        // StudentMonitoring(),
-        // EntryRequest(),
-      ],
+      children: const <Widget>[Dashboard(), UserEntries(), Profile()],
     );
   }
 
@@ -66,6 +64,7 @@ class _MonitorState extends State<Monitor> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AuthProvider>().currentUser;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -100,10 +99,11 @@ class _MonitorState extends State<Monitor> {
           backgroundColor: const Color(0xFF090c12),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: const Color(0xFF526bf2),
           showSelectedLabels: false,
           showUnselectedLabels: false,
+          key: _bottomNavigationKey,
           backgroundColor: const Color(0xFF090c12),
+          selectedItemColor: const Color(0xFF526bf2),
           currentIndex: _pageIndex,
           type: BottomNavigationBarType.fixed,
           onTap: (index) {
@@ -119,12 +119,12 @@ class _MonitorState extends State<Monitor> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'Students',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.list_alt_rounded),
               label: 'Entry Request',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
             ),
           ],
         ),
