@@ -57,8 +57,9 @@ class _UserEntriesState extends State<UserEntries> {
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: ((context, index) {
                     DailyEntry entry = DailyEntry.fromJson(
-                      snapshot.data?.docs[index].data() as Map<String, dynamic>,
-                    );
+                        snapshot.data?.docs[index].data()
+                            as Map<String, dynamic>,
+                        'fetch');
                     String date =
                         DateFormat('dd MMMM yyyy').format(entry.entryDate);
                     String currentUserUid =

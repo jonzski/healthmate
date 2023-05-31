@@ -41,7 +41,7 @@ class _EditEntryState extends State<EditEntry> {
         Map<String, dynamic> entryData =
             document.data() as Map<String, dynamic>;
         // Use the entryData map as needed
-        DailyEntry entry = DailyEntry.fromJson(entryData);
+        DailyEntry entry = DailyEntry.fromJson(entryData, 'fetch');
         setState(() {
           dailyEntry = entry;
           symptomsList = dailyEntry!.symptoms;
