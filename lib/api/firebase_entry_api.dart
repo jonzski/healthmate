@@ -58,7 +58,7 @@ class FirebaseEntryAPI {
         Map<String, dynamic> entryData =
             document.data() as Map<String, dynamic>;
         // Use the entryData map as needed
-        DailyEntry entry = DailyEntry.fromJson(entryData);
+        DailyEntry entry = DailyEntry.fromJson(entryData, 'fetch');
         return entry;
       } else {
         print('No matching documents found.');
@@ -90,6 +90,11 @@ class FirebaseEntryAPI {
           .collection("entryEditRequests")
           .doc(docRef.id)
           .update({'entryRequestId': docRef.id});
+
+      await db
+          .collection("entryEditRequests")
+          .doc(docRef.id)
+          .update({'uid': docRef.id});
 
       return "Successfully requested for editing entry!";
     } on FirebaseException catch (e) {
@@ -180,6 +185,11 @@ class FirebaseEntryAPI {
           .collection("entryDeleteRequests")
           .doc(docRef.id)
           .update({'entryRequestId': docRef.id});
+
+      await db
+          .collection("entryDeleteRequests")
+          .doc(docRef.id)
+          .update({'uid': docRef.id});
 
       return "Successfully requested for deleting entry!";
     } on FirebaseException catch (e) {
