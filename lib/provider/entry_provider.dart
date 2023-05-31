@@ -54,13 +54,18 @@ class EntryProvider with ChangeNotifier {
     return isValid;
   }
 
-  void fetchAllEntries() async {
+  void fetchAllEntries() {
     _entryStream = firebaseService.fetchAllEntries();
     notifyListeners();
   }
 
-  void fetchAllRequestedEntries() async {
+  void fetchAllRequestedEntries() {
     _entryEditRequestStream = firebaseService.fetchAllRequestedEntries();
+    notifyListeners();
+  }
+
+  void fetchAllEntryDeleteRequests() {
+    _entryDeleteRequestStream = firebaseService.fetchAllEntryDeleteRequests();
     notifyListeners();
   }
 
@@ -76,11 +81,6 @@ class EntryProvider with ChangeNotifier {
     String message = await firebaseService.entryDeleteRequest(entryId, entry);
     print(message);
 
-    notifyListeners();
-  }
-
-  void fetchAllEntryDeleteRequests() {
-    _entryDeleteRequestStream = firebaseService.fetchAllRequestedEntries();
     notifyListeners();
   }
 
