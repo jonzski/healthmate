@@ -235,7 +235,7 @@ class FirebaseEntryAPI {
       DailyEntry entryRequest, String entryRequestId, String status) async {
     try {
       await db.collection("entryEditRequests").doc(entryRequestId).update({
-        'status': entryRequest.status,
+        'status': status,
       });
 
       return "Successfully edited entry!";
