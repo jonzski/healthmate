@@ -19,6 +19,19 @@ class _EditEntryState extends State<EditEntry> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _remarkController = TextEditingController();
 
+  List<String> symptomsListKeys = [
+    "Fever (37.8 C and above)",
+    "Feeling feverish",
+    "Muscle or joint pains",
+    "Cough",
+    "Colds",
+    "Sore throat",
+    "Difficulty of breathing",
+    "Diarrhea",
+    "Loss of taste",
+    "Loss of smell"
+  ];
+
   Map<String, bool> symptomsList = {};
 
   String? inContact;
@@ -44,7 +57,9 @@ class _EditEntryState extends State<EditEntry> {
         DailyEntry entry = DailyEntry.fromJson(entryData, 'fetch');
         setState(() {
           dailyEntry = entry;
-          symptomsList = dailyEntry!.symptoms;
+          for (String key in symptomsListKeys) {
+            symptomsList[key] = dailyEntry!.symptoms[key]!;
+          }
           if (dailyEntry?.closeContact == true) {
             inContact = 'yes';
           } else {
