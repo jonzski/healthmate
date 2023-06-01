@@ -40,7 +40,7 @@ class _UserState extends State<User> {
           _pageIndex = index;
         });
       },
-      children: const <Widget>[Dashboard(), UserEntries(), Profile()],
+      children: <Widget>[Dashboard(), UserEntries(), Profile()],
     );
   }
 

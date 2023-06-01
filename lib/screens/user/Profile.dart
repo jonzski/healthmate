@@ -1,11 +1,56 @@
-import 'package:cmsc_23_project/provider/auth_provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import '../../provider/user_provider.dart';
-import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import '../../model/entry_model.dart';
+import '../../provider/auth_provider.dart';
+import '../../provider/user_provider.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({super.key});
+class Profile extends StatefulWidget {
+  Profile({super.key});
+
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  bool generateQRcode = false;
+
+  void initState() {
+    super.initState();
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    StreamSubscription<QuerySnapshot> subscription = FirebaseFirestore.instance
+        .collection("entry")
+        .where('uid', isEqualTo: context.read<AuthProvider>().currentUser.uid)
+        .where('entryDate', isEqualTo: timeToday)
+        .snapshots()
+        .listen((QuerySnapshot snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot document = snapshot.docs[0];
+        Map<String, dynamic> entryData =
+            document.data() as Map<String, dynamic>;
+        // Use the entryData map as needed
+        DailyEntry entry = DailyEntry.fromJson(entryData, 'fetch');
+
+        bool hasSymptoms = false;
+
+        for (var val in entry.symptoms.entries) {
+          if (val.value == true) {
+            hasSymptoms = true;
+            break;
+          }
+        }
+
+        if (hasSymptoms == false) {
+          setState(() {
+            generateQRcode = true;
+          });
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +76,11 @@ class Profile extends StatelessWidget {
         String course = user?['course'];
         String college = user?['college'];
         String uid = user?['userId'];
+        bool underQuarantine = user?['underQuarantine'];
+
+        if (underQuarantine) {
+          generateQRcode = false;
+        }
 
         return Container(
             width: 500,
@@ -104,40 +154,57 @@ class Profile extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 20, bottom: 20),
-                          child: Text(
-                            "Scan QR Code",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontFamily: 'SF-UI-Display',
-                                fontSize: 22,
-                                color: Colors.black),
-                          ),
-                        ),
-                        Center(
-                            child: SizedBox(
-                          width: 360,
-                          height: 360,
-                          child: CustomPaint(
-                            painter:
-                                MyCustomPainter(frameSFactor: .08, padding: 10),
-                            child: Center(
-                              child: QrImageView(
-                                data: uid,
-                                version: QrVersions.auto,
-                                size: 260,
-                                gapless: false,
-                              ),
-                            ),
-                          ),
-                        )),
+                        qRcode(uid)
                       ]),
                     )),
               ],
             )));
       },
     );
+  }
+
+  Widget qRcode(String uid) {
+    if (generateQRcode == false) {
+      return const SizedBox(
+        width: 360,
+        height: 360,
+        child: Center(
+            child: Text(
+          'No generated QR code',
+          style: TextStyle(
+              fontFamily: 'SF-UI-Display', fontSize: 20, color: Colors.black),
+        )),
+      );
+    }
+
+    return Center(
+        child: Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(top: 20, bottom: 20),
+          child: Text(
+            "Scan QR Code",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontFamily: 'SF-UI-Display', fontSize: 22, color: Colors.black),
+          ),
+        ),
+        SizedBox(
+          width: 360,
+          height: 360,
+          child: CustomPaint(
+              painter: MyCustomPainter(frameSFactor: .08, padding: 10),
+              child: Center(
+                child: QrImageView(
+                  data: uid,
+                  version: QrVersions.auto,
+                  size: 260,
+                  gapless: false,
+                ),
+              )),
+        ),
+      ],
+    ));
   }
 }
 

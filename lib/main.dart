@@ -64,7 +64,7 @@ class MainApp extends StatelessWidget {
         '/user': (context) => const User(),
         '/add-entry': (context) => const AddEntry(),
         '/edit-entry': (context) => const EditEntry(),
-        '/profile': (context) => const Profile(),
+        '/profile': (context) => Profile(),
         '/switch-user-type': (context) => const SwitchUserType(),
         '/admin-signin': (context) => const AdminSignInPage(),
         '/admin-signup': (context) => const AdminSignUpPage(),
