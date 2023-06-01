@@ -49,8 +49,66 @@ class _DeleteRequestState extends State<DeleteRequest> {
 
                 return Card(
                   color: const Color(0xFF222429),
-                  child: ListTile(
-                    title: Text(entry.entryRequestId!),
+                  child: Padding(
+                    padding: EdgeInsets.all(15),
+                    child: ListTile(
+                        title: Text('Request ID: ${entry.entryId!}'),
+                        trailing: SizedBox(
+                          width:
+                              90, // Adjust the width as per your requirements
+                          height:
+                              56, // Adjust the height as per your requirements
+                          child: Row(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.green,
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    context.read<EntryProvider>().editRequest(
+                                        entry, entry.entryRequestId!);
+                                  },
+                                  icon: const Icon(Icons.check),
+                                  color: Colors.white,
+                                  hoverColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                ),
+                                child: IconButton(
+                                  onPressed: () {
+                                    context.read<EntryProvider>().editRequest(
+                                        entry, entry.entryRequestId!);
+                                  },
+                                  icon: const Icon(Icons.close),
+                                  color: Colors.white,
+                                  hoverColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Request Date: ${DateFormat('MM/dd/yyyy').format(entry.entryDate)}',
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                              'Reason for editing: ${entry.remarks}',
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        )),
                   ),
                 );
               }),

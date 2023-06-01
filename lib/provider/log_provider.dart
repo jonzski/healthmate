@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../api/firebase_log_api.dart';
+import '../model/user_model.dart';
+import '../model/log_model.dart';
 
 class LogProvider with ChangeNotifier {
   late FirebaseLogAPI firebaseService;
@@ -22,6 +24,28 @@ class LogProvider with ChangeNotifier {
 
   void fetchAllLogsByDate(DateTime date, String userId) async {
     _logStream = firebaseService.fetchAllLogsByDate(date, userId);
+    notifyListeners();
+  }
+
+  void addLogs(String status, UserDetails user, String location,
+      String monitorId) async {
+    String message =
+        await firebaseService.addLogs(status, user, location, monitorId);
+    notifyListeners();
+  }
+
+  void updateStatus(MonitorLog log) async {
+    String message = await firebaseService.updateStatus(log);
+    notifyListeners();
+  }
+
+  void updateStudentNum(String uid, MonitorLog log) async {
+    String message = await firebaseService.updateStudentNum(uid, log);
+    notifyListeners();
+  }
+
+  void updateLocation(String uid, MonitorLog log) async {
+    String message = await firebaseService.updateLocation(uid, log);
     notifyListeners();
   }
 }

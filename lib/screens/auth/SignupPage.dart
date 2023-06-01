@@ -256,8 +256,12 @@ class _SignupPageState extends State<SignupPage> {
                               "allergies": allergiesEntry
                             };
 
-                            authProvider.signUp(
-                                email, password, 0, name, newUser);
+                            try {
+                              await authProvider.signUp(
+                                  email, password, 0, name, newUser);
+                            } catch (e) {
+                              print(e);
+                            }
                           } // return to login page
                         },
                         child: const Text(
