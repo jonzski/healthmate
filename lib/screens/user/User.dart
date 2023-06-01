@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cmsc_23_project/provider/auth_provider.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:provider/provider.dart';
 import 'Dashboard.dart';
 import 'UserEntries.dart';
@@ -97,6 +98,31 @@ class _UserState extends State<User> {
             ),
           ]),
           backgroundColor: const Color(0xFF090c12),
+        ),
+        floatingActionButtonLocation: ExpandableFab.location,
+        floatingActionButton: ExpandableFab(
+          backgroundColor: const Color(0xFF526bf2),
+          type: ExpandableFabType.up,
+          children: [
+            FloatingActionButton.small(
+              backgroundColor: Colors.green,
+              heroTag: null,
+              child: const Icon(Icons.add),
+              onPressed: () {},
+            ),
+            FloatingActionButton.small(
+              backgroundColor: const Color(0xFF526bf2),
+              heroTag: null,
+              child: const Icon(Icons.edit),
+              onPressed: () {},
+            ),
+            FloatingActionButton.small(
+              backgroundColor: Colors.red,
+              heroTag: null,
+              child: const Icon(Icons.delete),
+              onPressed: () {},
+            ),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           showSelectedLabels: false,
