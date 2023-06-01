@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'Dashboard.dart';
 import 'Scanner.dart';
+import 'ViewLogs.dart';
+import 'Profile.dart';
 
 class Monitor extends StatefulWidget {
   const Monitor({super.key});
@@ -38,10 +40,8 @@ class _MonitorState extends State<Monitor> {
       },
       children: const <Widget>[
         Dashboard(),
-        Scanner(),
-        // StudentQuarantine(),
-        // StudentMonitoring(),
-        // EntryRequest(),
+        ViewLogs(),
+        Profile(),
       ],
     );
   }
@@ -99,6 +99,13 @@ class _MonitorState extends State<Monitor> {
           ]),
           backgroundColor: const Color(0xFF090c12),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/scanner');
+          },
+          backgroundColor: const Color(0xFF526bf2),
+          child: const Icon(Icons.qr_code_scanner),
+        ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: const Color(0xFF526bf2),
           showSelectedLabels: false,
@@ -119,11 +126,11 @@ class _MonitorState extends State<Monitor> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
-              icon: Icon(Icons.people),
+              icon: Icon(Icons.list_alt_rounded),
               label: 'Students',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.list_alt_rounded),
+              icon: Icon(Icons.person),
               label: 'Entry Request',
             ),
           ],

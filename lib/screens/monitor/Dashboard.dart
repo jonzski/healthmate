@@ -64,7 +64,7 @@ class _DashboardState extends State<Dashboard> {
       ),
       height: 80,
       child: const Text(
-        ('Welcome, Admin'),
+        ('Welcome, Monitor'),
         style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
       ),
     );

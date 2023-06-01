@@ -24,6 +24,7 @@ import 'screens/admin/Admin.dart';
 
 // Monitor Screen
 import 'screens/monitor/Monitor.dart';
+import 'screens/monitor/Scanner.dart';
 
 // Proviers
 import 'provider/auth_provider.dart';
@@ -71,7 +72,8 @@ class MainApp extends StatelessWidget {
         '/admin': (context) => const Admin(),
         '/monitor-signin': (context) => const MonitorSignInPage(),
         '/monitor-signup': (context) => const MonitorSignUpPage(),
-        '/monitor': (context) => const Monitor()
+        '/monitor': (context) => const Monitor(),
+        '/scanner': (context) => const Scanner(),
       },
     );
   }

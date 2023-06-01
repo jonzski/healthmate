@@ -230,4 +230,17 @@ class FirebaseEntryAPI {
       return "Failed with error '${e.code}: ${e.message}";
     }
   }
+
+  Future<String> updateStatus(
+      DailyEntry entryRequest, String entryRequestId, String status) async {
+    try {
+      await db.collection("entryEditRequests").doc(entryRequestId).update({
+        'status': status,
+      });
+
+      return "Successfully edited entry!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
 }

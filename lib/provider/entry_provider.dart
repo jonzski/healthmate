@@ -104,4 +104,12 @@ class EntryProvider with ChangeNotifier {
         uid: "", symptoms: {}, closeContact: false, entryDate: timeToday);
     return entry;
   }
+
+  void updateStatus(
+      DailyEntry entryRequest, String entryRequestId, String status) async {
+    String message = await firebaseService.updateStatus(
+        entryRequest, entryRequestId, status);
+  }
+
+  notifyListeners();
 }
