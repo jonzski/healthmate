@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../model/user_model.dart';
+import '../../provider/auth_provider.dart';
 import '../../provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,20 +22,23 @@ class _StudentListState extends State<StudentList> {
   List<UserDetails> filteredStudents = [];
 
   bool startSearch = false;
+  bool selectedAdmin = false;
+  bool selectedMonitor = false;
 
   void search(String searchText) {
-    print(filteredStudents.length);
     setState(() {
       if (_filterByValue == "Course") {
         filteredStudents = students
             .where((item) =>
                 item.course!.toLowerCase().startsWith(searchText.toLowerCase()))
+            .where((element) => element.userType == 0)
             .toList();
       } else if (_filterByValue == "College") {
         filteredStudents = students
             .where((item) => item.college!
                 .toLowerCase()
                 .startsWith(searchText.toLowerCase()))
+            .where((element) => element.userType == 0)
             .toList();
       } else {
         filteredStudents = students
@@ -72,9 +76,7 @@ class _StudentListState extends State<StudentList> {
           for (int index = 0; index < snapshot.data!.docs.length; index++) {
             UserDetails student = UserDetails.fromJson(
                 snapshot.data?.docs[index].data() as Map<String, dynamic>, 0);
-            if (!students.contains(student)) {
-              temp.add(student);
-            }
+            temp.add(student);
           }
           students = temp;
 
@@ -149,16 +151,194 @@ class _StudentListState extends State<StudentList> {
                       startSearch ? filteredStudents.length : students.length,
                   itemBuilder: ((context, index) {
                     return Card(
-                      color: const Color(0xFF222429),
-                      child: ListTile(
-                        title: Text(startSearch
-                            ? filteredStudents[index].name
-                            : students[index].name),
-                        subtitle: Text(startSearch
-                            ? filteredStudents[index].studentNum!
-                            : students[index].studentNum!),
-                      ),
-                    );
+                        color: const Color(0xFF222429),
+                        child: ListTile(
+                          title: Text(startSearch
+                              ? filteredStudents[index].name
+                              : students[index].name),
+                          subtitle: Text(startSearch
+                              ? filteredStudents[index].studentNum!
+                              : students[index].studentNum!),
+                          trailing: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                                color: const Color(0xFF5c61cc),
+                              ),
+                              child: IconButton(
+                                icon: const Icon(Icons.upgrade),
+                                hoverColor: Colors.transparent,
+                                splashColor: Colors.transparent,
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        title: const Text(
+                                          'Elevate User Type',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontFamily: 'SF-UI-Display',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        content: StatefulBuilder(builder:
+                                            (BuildContext context,
+                                                StateSetter setState) {
+                                          return Container(
+                                            padding:
+                                                const EdgeInsets.only(top: 10),
+                                            height: 90,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    IconButton(
+                                                      color: selectedAdmin
+                                                          ? const Color(
+                                                              0xFF52d9c3)
+                                                          : Colors.white,
+                                                      iconSize: 40,
+                                                      icon: const Icon(
+                                                        Icons
+                                                            .admin_panel_settings_outlined,
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          selectedAdmin = true;
+                                                          selectedMonitor =
+                                                              false;
+                                                        });
+                                                      },
+                                                    ),
+                                                    Text(
+                                                      'Admin',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: selectedAdmin
+                                                            ? const Color(
+                                                                0xFF52d9c3)
+                                                            : Colors.white,
+                                                        fontFamily:
+                                                            'SF-UI-Display',
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    IconButton(
+                                                      color: selectedMonitor
+                                                          ? const Color(
+                                                              0xFF52d9c3)
+                                                          : Colors.white,
+                                                      iconSize: 40,
+                                                      icon: const Icon(
+                                                        Icons.monitor,
+                                                      ),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          selectedAdmin = false;
+                                                          selectedMonitor =
+                                                              true;
+                                                        });
+                                                      },
+                                                    ),
+                                                    Text(
+                                                      'Monitor',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: selectedMonitor
+                                                            ? const Color(
+                                                                0xFF52d9c3)
+                                                            : Colors.white,
+                                                        fontFamily:
+                                                            'SF-UI-Display',
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                        actions: [
+                                          TextButton(
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.transparent),
+                                                overlayColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.transparent),
+                                              ),
+                                              child: const Center(
+                                                child: Text(
+                                                  "Confirm",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'SF-UI-Display',
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                String uid = startSearch
+                                                    ? filteredStudents[index]
+                                                        .userId!
+                                                    : students[index].userId!;
+                                                String uname = startSearch
+                                                    ? filteredStudents[index]
+                                                        .name
+                                                    : students[index].name;
+                                                if (selectedAdmin &&
+                                                    !selectedMonitor) {
+                                                  context
+                                                      .read<UserProvider>()
+                                                      .elevateUserToAdminOrMonitor(
+                                                          uid, 2);
+                                                  filteredStudents.remove(
+                                                      filteredStudents[index]);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content: Text(
+                                                              'Successfully elevated user $uname to Admin!')));
+                                                } else if (!selectedAdmin &&
+                                                    selectedMonitor) {
+                                                  context
+                                                      .read<UserProvider>()
+                                                      .elevateUserToAdminOrMonitor(
+                                                          uid, 3);
+                                                  filteredStudents.remove(
+                                                      filteredStudents[index]);
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                          content: Text(
+                                                              'Successfully elevated user $uname to Monitor')));
+                                                }
+
+                                                selectedAdmin = false;
+                                                selectedMonitor = false;
+                                                Navigator.of(context).pop();
+                                              })
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              )),
+                        ));
                   }),
                 ),
               )),
