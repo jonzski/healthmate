@@ -59,7 +59,7 @@ class UserDetails {
           name: json['name'],
           college: json['college'],
           course: json['course'],
-          studentNum: json['userName'],
+          studentNum: json['studentNum'],
           preExistingDisease: convertedMap,
           allergies: allergiesStringList,
           underMonitoring: json['underMonitoring'],

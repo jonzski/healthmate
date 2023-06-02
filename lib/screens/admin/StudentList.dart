@@ -3,6 +3,7 @@ import '../../model/user_model.dart';
 import '../../provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 // Reverted
 class StudentList extends StatefulWidget {
   const StudentList({Key? key}) : super(key: key);
@@ -12,38 +13,38 @@ class StudentList extends StatefulWidget {
 }
 
 class _StudentListState extends State<StudentList> {
-  @override
-  bool _isExpanded = false;
-  double _expandedHeight = 160.0; // Set the desired expanded height
-  double _collapsedHeight = 50.0; // Set the desired collapsed height
-  Duration _animationDuration =
-      Duration(milliseconds: 500); // Set the animation duration
+  final TextEditingController _searchController = TextEditingController();
+  static final List<String> filterBy = ["Course", "College", "Student No"];
+  String _filterByValue = filterBy.first;
 
-  DateTime _selectedDate = DateTime.now();
-  bool hasPickedDate = false;
+  List<UserDetails> students = [];
+  List<UserDetails> filteredStudents = [];
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
-    );
+  bool startSearch = false;
 
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        hasPickedDate = true;
-      });
-    }
-  }
-
-  void _toggleContainer() {
+  void search(String searchText) {
+    print(filteredStudents.length);
     setState(() {
-      _isExpanded = !_isExpanded;
+      if (_filterByValue == "Course") {
+        filteredStudents = students
+            .where((item) =>
+                item.course!.toLowerCase().startsWith(searchText.toLowerCase()))
+            .toList();
+      } else if (_filterByValue == "College") {
+        filteredStudents = students
+            .where((item) => item.college!
+                .toLowerCase()
+                .startsWith(searchText.toLowerCase()))
+            .toList();
+      } else {
+        filteredStudents = students
+            .where((item) => item.studentNum!.startsWith(searchText))
+            .toList();
+      }
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> allStudents =
         context.watch<UserProvider>().allStudents;
@@ -66,6 +67,17 @@ class _StudentListState extends State<StudentList> {
               child: Text("No students found."),
             );
           }
+
+          List<UserDetails> temp = [];
+          for (int index = 0; index < snapshot.data!.docs.length; index++) {
+            UserDetails student = UserDetails.fromJson(
+                snapshot.data?.docs[index].data() as Map<String, dynamic>, 0);
+            if (!students.contains(student)) {
+              temp.add(student);
+            }
+          }
+          students = temp;
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -78,81 +90,73 @@ class _StudentListState extends State<StudentList> {
                   style: TextStyle(fontFamily: 'SF-UI-Display', fontSize: 25),
                 ),
               ),
-              GestureDetector(
-                onTap: _toggleContainer,
-                child: AnimatedContainer(
-                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF526bf2),
+              Container(
+                  margin:
+                      const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+                  // padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.indigo.shade800,
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
-                  duration: _animationDuration,
-                  curve: Curves.easeInOut,
-                  height: _isExpanded ? _expandedHeight : _collapsedHeight,
-                  child: _isExpanded
-                      ? Container(
-                          padding: const EdgeInsets.all(15),
-                          child: Column(
-                            children: [
-                              const Text(
-                                'Filter By:',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontFamily: 'SF-UI-Display', fontSize: 18),
-                              ),
-                              Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text('Select Date: '),
-                                          IconButton(
-                                            onPressed: () =>
-                                                _selectDate(context),
-                                            icon: const Icon(
-                                                Icons.calendar_month_outlined),
-                                          ),
-                                        ],
-                                      ),
-                                      const Text('Student No:')
-                                    ],
-                                  )),
-                              hasPickedDate
-                                  ? Text(
-                                      _selectedDate.toString(),
-                                    )
-                                  : const SizedBox(height: 16.0)
-                            ],
-                          ))
-                      : Container(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: const Text(
-                            'Filter By:',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontFamily: 'SF-UI-Display', fontSize: 18),
-                          )),
-                ),
-              ),
+                  child: Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      const Text(
+                        "Filter by",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                      DropdownButton<String>(
+                        // isExpanded: true,
+                        value: _filterByValue,
+                        onChanged: (String? value) {
+                          setState(() {
+                            _filterByValue = value!;
+                          });
+                        },
+                        items: filterBy.map<DropdownMenuItem<String>>(
+                          (String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                      Container(
+                          width: 150,
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: TextField(
+                              onChanged: (value) {
+                                search(value);
+                                startSearch = true;
+                              },
+                              controller: _searchController,
+                              style: const TextStyle(fontSize: 16),
+                              decoration: const InputDecoration(
+                                labelText: 'Search',
+                                labelStyle: TextStyle(height: 1),
+                              )))
+                    ],
+                  ))),
               Expanded(
                   child: Padding(
                 padding: const EdgeInsets.all(
                     16.0), // Adjust the padding value as needed
                 child: ListView.builder(
-                  itemCount: snapshot.data?.docs.length,
+                  itemCount:
+                      startSearch ? filteredStudents.length : students.length,
                   itemBuilder: ((context, index) {
-                    UserDetails students = UserDetails.fromJson(
-                        snapshot.data?.docs[index].data()
-                            as Map<String, dynamic>,
-                        0);
                     return Card(
                       color: const Color(0xFF222429),
                       child: ListTile(
-                        title: Text(students.name),
-                        subtitle: Text(students.studentNum!),
+                        title: Text(startSearch
+                            ? filteredStudents[index].name
+                            : students[index].name),
+                        subtitle: Text(startSearch
+                            ? filteredStudents[index].studentNum!
+                            : students[index].studentNum!),
                       ),
                     );
                   }),
@@ -165,17 +169,3 @@ class _StudentListState extends State<StudentList> {
     );
   }
 }
-
-// class ExpandableContainerDemo extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Expandable Container Demo'),
-//       ),
-//       body: Center(
-//         child: ExpandableContainer(),
-//       ),
-//     );
-//   }
-// }
