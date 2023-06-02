@@ -48,7 +48,55 @@ class _StudentMonitoringState extends State<StudentMonitoring> {
                 return Card(
                   color: const Color(0xFF222429),
                   child: ListTile(
-                    title: Text(students.name),
+                    title: Text('Name: ${students.name}'),
+                    subtitle: Text('Student Number: ${students.studentNum}'),
+                    trailing: SizedBox(
+                      width: 90, // Adjust the width as per your requirements
+                      height: 56, // Adjust the height as per your requirements
+                      child: Row(
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.green,
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                context
+                                    .read<UserProvider>()
+                                    .endUserMonitoring(students.userId!);
+                              },
+                              icon: const Icon(Icons.mood),
+                              color: Colors.white,
+                              hoverColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.red,
+                            ),
+                            child: IconButton(
+                              onPressed: () {
+                                DateTime now = DateTime.now();
+                                DateTime futureDate =
+                                    now.add(const Duration(days: 7));
+                                context
+                                    .read<UserProvider>()
+                                    .addUserToQuarantine(
+                                        students.userId!, now, futureDate);
+                              },
+                              icon: const Icon(Icons.sick),
+                              color: Colors.white,
+                              hoverColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 );
               }),

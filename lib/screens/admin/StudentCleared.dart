@@ -14,13 +14,13 @@ class StudentClearing extends StatefulWidget {
 class _StudentClearingState extends State<StudentClearing> {
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> monitoredStudents =
-        context.watch<UserProvider>().allMonitoredStudents;
+    Stream<QuerySnapshot> clearedStudents =
+        context.watch<UserProvider>().allClearedStudent;
 
     return Container(
       color: const Color(0xFF090c12),
       child: StreamBuilder(
-        stream: monitoredStudents,
+        stream: clearedStudents,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(

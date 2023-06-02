@@ -45,7 +45,25 @@ class _StudentQuarantineState extends State<StudentQuarantine> {
               return Card(
                 color: const Color(0xFF222429),
                 child: ListTile(
-                  title: Text(students.name),
+                  title: Text('Name: ${students.name}'),
+                  subtitle: Text('Student Number: ${students.studentNum}'),
+                  trailing: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green,
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        context
+                            .read<UserProvider>()
+                            .endUserMonitoring(students.userId!);
+                      },
+                      icon: const Icon(Icons.mood),
+                      color: Colors.white,
+                      hoverColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                    ),
+                  ),
                 ),
               );
             }),
