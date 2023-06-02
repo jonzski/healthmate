@@ -13,6 +13,37 @@ class StudentList extends StatefulWidget {
 
 class _StudentListState extends State<StudentList> {
   @override
+  bool _isExpanded = false;
+  double _expandedHeight = 160.0; // Set the desired expanded height
+  double _collapsedHeight = 50.0; // Set the desired collapsed height
+  Duration _animationDuration =
+      Duration(milliseconds: 500); // Set the animation duration
+
+  DateTime _selectedDate = DateTime.now();
+  bool hasPickedDate = false;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+        hasPickedDate = true;
+      });
+    }
+  }
+
+  void _toggleContainer() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
+
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> allStudents =
         context.watch<UserProvider>().allStudents;
@@ -47,10 +78,69 @@ class _StudentListState extends State<StudentList> {
                   style: TextStyle(fontFamily: 'SF-UI-Display', fontSize: 25),
                 ),
               ),
+              GestureDetector(
+                onTap: _toggleContainer,
+                child: AnimatedContainer(
+                  margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF526bf2),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                  ),
+                  duration: _animationDuration,
+                  curve: Curves.easeInOut,
+                  height: _isExpanded ? _expandedHeight : _collapsedHeight,
+                  child: _isExpanded
+                      ? Container(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Filter By:',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontFamily: 'SF-UI-Display', fontSize: 18),
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Text('Select Date: '),
+                                          IconButton(
+                                            onPressed: () =>
+                                                _selectDate(context),
+                                            icon: const Icon(
+                                                Icons.calendar_month_outlined),
+                                          ),
+                                        ],
+                                      ),
+                                      const Text('Student No:')
+                                    ],
+                                  )),
+                              hasPickedDate
+                                  ? Text(
+                                      _selectedDate.toString(),
+                                    )
+                                  : const SizedBox(height: 16.0)
+                            ],
+                          ))
+                      : Container(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: const Text(
+                            'Filter By:',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontFamily: 'SF-UI-Display', fontSize: 18),
+                          )),
+                ),
+              ),
               Expanded(
                   child: Padding(
-                padding:
-                    EdgeInsets.all(16.0), // Adjust the padding value as needed
+                padding: const EdgeInsets.all(
+                    16.0), // Adjust the padding value as needed
                 child: ListView.builder(
                   itemCount: snapshot.data?.docs.length,
                   itemBuilder: ((context, index) {
@@ -75,3 +165,17 @@ class _StudentListState extends State<StudentList> {
     );
   }
 }
+
+// class ExpandableContainerDemo extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Expandable Container Demo'),
+//       ),
+//       body: Center(
+//         child: ExpandableContainer(),
+//       ),
+//     );
+//   }
+// }
