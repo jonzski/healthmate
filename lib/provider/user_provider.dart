@@ -7,17 +7,20 @@ class UserProvider with ChangeNotifier {
   late Stream<QuerySnapshot> _userStream;
   late Stream<QuerySnapshot> _quarantineStream;
   late Stream<QuerySnapshot> _monitorStream;
+  late Stream<QuerySnapshot> _clearedStream;
 
   UserProvider() {
     firebaseService = FirebaseUserAPI();
     getAllStudents();
     viewAllStudentsUnderQuarantine();
     viewAllStudentsUnderMonitoring();
+    viewAllStudentCleared();
   }
 
   Stream<QuerySnapshot> get allStudents => _userStream;
   Stream<QuerySnapshot> get allQuarantinedStudents => _quarantineStream;
   Stream<QuerySnapshot> get allMonitoredStudents => _monitorStream;
+  Stream<QuerySnapshot> get allClearedStudent => _clearedStream;
 
   // Add User to Quarantine
   Future<String> addUserToQuarantine(
@@ -56,6 +59,11 @@ class UserProvider with ChangeNotifier {
   // View all students under Quarantine
   void viewAllStudentsUnderQuarantine() async {
     _quarantineStream = firebaseService.getUsersUnderQuarantine();
+    notifyListeners();
+  }
+
+  void viewAllStudentCleared() async {
+    _clearedStream = firebaseService.getUserCleared();
     notifyListeners();
   }
 

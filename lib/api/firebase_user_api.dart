@@ -75,6 +75,18 @@ class FirebaseUserAPI {
     }
   }
 
+  Stream<QuerySnapshot> getUserCleared() {
+    try {
+      return db
+          .collection("user")
+          .where('underMonitoring', isEqualTo: false)
+          .where('underQuarantine', isEqualTo: false)
+          .snapshots();
+    } on FirebaseException catch (e) {
+      throw e;
+    }
+  }
+
   // View all users under quarantine
   Stream<QuerySnapshot> getUsersUnderQuarantine() {
     try {
