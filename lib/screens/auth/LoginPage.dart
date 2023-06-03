@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(15),
           color: const Color(0xFF222429),
         ),
-        width: 500,
         height: 400,
         margin: const EdgeInsets.only(left: 50.0, right: 50.0),
         child: Padding(

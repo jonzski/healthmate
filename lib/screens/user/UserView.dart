@@ -44,8 +44,8 @@ class _UserViewState extends State<UserView> {
         });
       },
       children: <Widget>[
-        Dashboard(viewer: viewer),
         const UserEntries(),
+        Dashboard(viewer: viewer),
         Profile(viewer: viewer)
       ],
     );
@@ -124,11 +124,11 @@ class _UserViewState extends State<UserView> {
             });
           },
           items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
               icon: Icon(Icons.list_alt_rounded),
               label: 'Entry Request',
             ),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',
@@ -172,8 +172,7 @@ class _UserViewState extends State<UserView> {
                                 Navigator.pop(context);
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Colors.white54, // Background color
+                                backgroundColor: Colors.white54,
                               ),
                               child: const Text(
                                 'Exit View',

@@ -116,7 +116,7 @@ class _ProfileState extends State<Profile> {
                     margin: const EdgeInsets.only(
                         top: 20, bottom: 5, left: 40, right: 40),
                     decoration: const BoxDecoration(
-                      color: Color(0xFF222429),
+                      color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     child: Center(
@@ -131,7 +131,7 @@ class _ProfileState extends State<Profile> {
                                   fontFamily: 'SF-UI-Display',
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16,
-                                  color: Colors.white),
+                                  color: Colors.black),
                             ),
                             Text(
                               studentNum,
@@ -140,7 +140,7 @@ class _ProfileState extends State<Profile> {
                                   fontFamily: 'SF-UI-Display',
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16,
-                                  color: Colors.white),
+                                  color: Colors.black),
                             ),
                           ],
                         ),
@@ -154,7 +154,7 @@ class _ProfileState extends State<Profile> {
                                   fontFamily: 'SF-UI-Display',
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16,
-                                  color: Colors.white),
+                                  color: Colors.black),
                             ),
                             Text(
                               college,
@@ -163,7 +163,7 @@ class _ProfileState extends State<Profile> {
                                   fontFamily: 'SF-UI-Display',
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16,
-                                  color: Colors.white),
+                                  color: Colors.black),
                             ),
                           ],
                         ),
@@ -197,8 +197,8 @@ class _ProfileState extends State<Profile> {
   Widget qRcode(String uid) {
     if (generateQRcode == false) {
       return const SizedBox(
-        width: 360,
-        height: 360,
+        width: 260,
+        height: 260,
         child: Center(
             child: Text(
           'No generated QR code',
@@ -206,11 +206,10 @@ class _ProfileState extends State<Profile> {
               fontFamily: 'SF-UI-Display',
               fontWeight: FontWeight.w700,
               fontSize: 20,
-              color: Colors.white),
+              color: Colors.black),
         )),
       );
     }
-
     return Center(
         child: Column(
       children: [
@@ -220,17 +219,21 @@ class _ProfileState extends State<Profile> {
             "Scan QR Code",
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontFamily: 'SF-UI-Display', fontSize: 22, color: Colors.black),
+                fontFamily: 'SF-UI-Display',
+                fontSize: 22,
+                color: Colors.indigoAccent),
           ),
         ),
         SizedBox(
+          width: 280,
+          height: 260,
           child: CustomPaint(
-              painter: MyCustomPainter(frameSFactor: .08, padding: 10),
+              painter: MyCustomPainter(frameSFactor: .08, padding: 2),
               child: Center(
                 child: QrImageView(
                   data: uid,
                   version: QrVersions.auto,
-                  size: 260,
+                  size: 210,
                   gapless: false,
                 ),
               )),

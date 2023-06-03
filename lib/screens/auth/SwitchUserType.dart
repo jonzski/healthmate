@@ -14,8 +14,8 @@ class _SwitchUserTypeState extends State<SwitchUserType> {
         backgroundColor: const Color(0xFF090c12),
         body: Center(
           child: Container(
-            height: 250,
-            margin: const EdgeInsets.all(150),
+            height: 350,
+            margin: const EdgeInsets.only(right: 100, left: 100),
             padding: const EdgeInsets.all(20),
             child: ListView(
               children: [

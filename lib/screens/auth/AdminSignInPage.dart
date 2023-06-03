@@ -29,10 +29,9 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
           color: const Color(0xFF222429),
         ),
         height: 450,
-        width: 400,
-        margin: const EdgeInsets.only(left: 80.0, right: 80.0),
+        margin: const EdgeInsets.only(left: 40.0, right: 40.0),
         child: Padding(
-            padding: const EdgeInsets.all(30),
+            padding: const EdgeInsets.only(left: 30, right: 30),
             child: Center(
                 child: Form(
               key: loginKey,
@@ -158,24 +157,20 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
             ))),
       )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        height: 20,
-        margin: const EdgeInsets.all(10),
-        child: TextButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/login');
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.transparent),
-            overlayColor: MaterialStateProperty.all(Colors.transparent),
-          ),
-          child: const Text(
-            'Log in as Student',
-            style: TextStyle(
-                fontFamily: 'SF-UI-Display',
-                fontWeight: FontWeight.w700,
-                fontSize: 15),
-          ),
+      floatingActionButton: TextButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/login');
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          overlayColor: MaterialStateProperty.all(Colors.transparent),
+        ),
+        child: const Text(
+          'Log in as Student',
+          style: TextStyle(
+              fontFamily: 'SF-UI-Display',
+              fontWeight: FontWeight.w700,
+              fontSize: 15),
         ),
       ),
     );
