@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,10 +16,6 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _remarkController = TextEditingController();
-
-  int currentIndex = 0;
-
-  List<DocumentSnapshot> _documents = [];
 
   @override
   Widget build(BuildContext context) {
@@ -239,152 +233,197 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget listOfEntries() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        color: Color(0xFF222429),
-        borderRadius: BorderRadius.all(Radius.circular(50)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: const Icon(
-              Icons.list_alt_rounded,
-              size: 25,
-              color: Colors.white,
+    String currentUserUid = context.read<AuthProvider>().currentUser.uid;
+
+    return FutureBuilder<Map<String, dynamic>?>(
+        future:
+            context.read<UserProvider>().viewSpecificStudent(currentUserUid),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error encountered! ${snapshot.error}"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              color: Color(0xFF222429),
+              borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'List of Health Status Entries',
-                style: TextStyle(
-                  fontFamily: 'SF-UI-Display',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.list_alt_rounded,
+                    size: 25,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              Text(
-                'Number of Entries: ${numOfEntries()}',
-                style: const TextStyle(
-                  fontFamily: 'SF-UI-Display',
-                  fontWeight: FontWeight.w300,
-                  fontSize: 16,
-                  color: Colors.white,
+                const SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'List of Health Status Entries',
+                      style: TextStyle(
+                        fontFamily: 'SF-UI-Display',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    // Text(
+                    //   'Number of Entries: ${numOfEntries()}',
+                    //   style: const TextStyle(
+                    //     fontFamily: 'SF-UI-Display',
+                    //     fontWeight: FontWeight.w300,
+                    //     fontSize: 16,
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+              ],
+            ),
+          );
+        });
   }
 
   Widget isUnderQuarantine() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        color: Color(0xFF222429),
-        borderRadius: BorderRadius.all(Radius.circular(50)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Icon(
-              Icons.sick,
-              size: 25,
-              color: Colors.white,
+    String currentUserUid = context.read<AuthProvider>().currentUser.uid;
+
+    return FutureBuilder<Map<String, dynamic>?>(
+        future:
+            context.read<UserProvider>().viewSpecificStudent(currentUserUid),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error encountered! ${snapshot.error}"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          Map<String, dynamic>? student = snapshot.data;
+
+          bool isQuarantine = student?['underQuarantine'];
+
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              color: Color(0xFF222429),
+              borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                'Is under quarantine?',
-                style: TextStyle(
-                  fontFamily: 'SF-UI-Display',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Icon(
+                    Icons.sick,
+                    size: 25,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              Text(
-                'No',
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+                const SizedBox(width: 10),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Is under quarantine?',
+                      style: TextStyle(
+                        fontFamily: 'SF-UI-Display',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      isQuarantine ? 'Yes' : 'No',
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   Widget isUnderMonitoring() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(
-        color: Color(0xFF222429),
-        borderRadius: BorderRadius.all(Radius.circular(50)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Icon(
-              Icons.monitor,
-              size: 25,
-              color: Colors.white,
-            ),
+    String currentUserUid = context.read<AuthProvider>().currentUser.uid;
+
+    return FutureBuilder<Map<String, dynamic>?>(
+      future: context.read<UserProvider>().viewSpecificStudent(currentUserUid),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error encountered! ${snapshot.error}"),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        Map<String, dynamic>? student = snapshot.data;
+
+        bool isQuarantine = student?['underMonitoring'];
+
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+          padding: const EdgeInsets.all(20),
+          decoration: const BoxDecoration(
+            color: Color(0xFF222429),
+            borderRadius: BorderRadius.all(Radius.circular(50)),
           ),
-          const SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                'Is under monitoring?',
-                style: TextStyle(
-                  fontFamily: 'SF-UI-Display',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Icon(
+                  Icons.monitor,
+                  size: 25,
                   color: Colors.white,
                 ),
               ),
-              Text(
-                'No',
-                style: TextStyle(fontSize: 16, color: Colors.white),
+              const SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Is under monitoring?',
+                    style: TextStyle(
+                      fontFamily: 'SF-UI-Display',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text(
+                    isQuarantine ? 'Yes' : 'No',
+                    style: const TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
-  }
-
-  int numOfEntries() {
-    int counter = 0;
-    for (int index = 0; index < _documents.length; index++) {
-      DailyEntry entry = DailyEntry.fromJson(
-          _documents[index].data() as Map<String, dynamic>, 'fetch');
-
-      if (entry.uid == context.read<AuthProvider>().currentUser.uid) {
-        counter++;
-      }
-    }
-    return counter;
   }
 }
