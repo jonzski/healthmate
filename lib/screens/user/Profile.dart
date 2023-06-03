@@ -104,7 +104,7 @@ class _ProfileState extends State<Profile> {
                 Container(
                     padding: const EdgeInsets.all(35),
                     margin: const EdgeInsets.only(
-                        top: 20, bottom: 20, left: 40, right: 40),
+                        top: 20, bottom: 5, left: 40, right: 40),
                     decoration: const BoxDecoration(
                       color: Color(0xFF222429),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -160,6 +160,24 @@ class _ProfileState extends State<Profile> {
                         qRcode(uid)
                       ]),
                     )),
+                TextButton(
+                  onPressed: () {
+                    context.read<AuthProvider>().signOut();
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                  ),
+                  child: const Text(
+                    'Sign Out',
+                    style: TextStyle(
+                        fontFamily: 'SF-UI-Display',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15),
+                  ),
+                ),
               ],
             )));
       },
