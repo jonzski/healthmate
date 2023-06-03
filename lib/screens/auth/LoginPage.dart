@@ -28,11 +28,10 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.circular(15),
           color: const Color(0xFF222429),
         ),
-        height: 450,
-        width: 400,
-        margin: const EdgeInsets.only(left: 80.0, right: 80.0),
+        width: 500,
+        margin: const EdgeInsets.only(left: 50.0, right: 50.0),
         child: Padding(
-            padding: const EdgeInsets.all(30),
+            padding: const EdgeInsets.all(20),
             child: Center(
                 child: Form(
               key: loginKey,
@@ -41,10 +40,10 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 15),
+                      padding: const EdgeInsets.only(right: 10),
                       child: SvgPicture.asset(
                         logo,
-                        width: 60,
+                        width: 36,
                         colorFilter: const ColorFilter.mode(
                             Color(0xFF526bf2), BlendMode.srcIn),
                       ),
@@ -67,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ]),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 25),
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     child: Column(children: [
                       TextFormField(
                         controller: _emailController,
@@ -103,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xFF526bf2)),
                         minimumSize:
-                            MaterialStateProperty.all(const Size(100, 50)),
+                            MaterialStateProperty.all(const Size(36, 36)),
                       ),
                       onPressed: () async {
                         if (loginKey.currentState!.validate()) {
@@ -133,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextButton(
                       onPressed: () async {
                         Navigator.pushNamed(context, '/signup');
@@ -159,7 +158,6 @@ class _LoginPageState extends State<LoginPage> {
       )),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Container(
-        height: 20,
         margin: const EdgeInsets.all(10),
         child: TextButton(
           onPressed: () {

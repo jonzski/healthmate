@@ -72,36 +72,57 @@ class _UserEntriesState extends State<UserEntries> {
                 borderRadius: BorderRadius.all(Radius.circular(10))),
             child: Table(
               columnWidths: const {
-                0: FixedColumnWidth(130),
+                0: FixedColumnWidth(100),
                 1: FixedColumnWidth(100),
-                2: FixedColumnWidth(190),
+                2: FixedColumnWidth(100),
               },
               children: [
                 TableRow(
                   children: [
                     Container(
                       margin: const EdgeInsets.all(5),
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(7),
                       decoration: const BoxDecoration(
-                          color: Colors.indigo,
+                          color: Color(0xFF526bf2),
                           borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: const Center(child: Text('Date')),
+                      child: const Center(
+                        child: Text(
+                          'Date',
+                          style: TextStyle(
+                              fontFamily: 'SF-UI-Display',
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
                     ),
                     Container(
                       margin: const EdgeInsets.all(5),
                       padding: const EdgeInsets.all(8),
                       decoration: const BoxDecoration(
-                          color: Colors.indigo,
+                          color: Color(0xFF526bf2),
                           borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: const Center(child: Text('In Contact')),
+                      child: const Center(
+                        child: Text(
+                          'In Contact',
+                          style: TextStyle(
+                              fontFamily: 'SF-UI-Display',
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
                     ),
                     Container(
                       margin: const EdgeInsets.all(5),
                       padding: const EdgeInsets.all(8),
                       decoration: const BoxDecoration(
-                          color: Colors.indigo,
+                          color: Color(0xFF526bf2),
                           borderRadius: BorderRadius.all(Radius.circular(5))),
-                      child: const Center(child: Text('Symptoms')),
+                      child: const Center(
+                        child: Text(
+                          'Symptoms',
+                          style: TextStyle(
+                              fontFamily: 'SF-UI-Display',
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -157,7 +178,8 @@ class _UserEntriesState extends State<UserEntries> {
     String listOfSymptoms = '';
     for (var val in entry.symptoms.entries) {
       if (val.value == true) {
-        listOfSymptoms += '${val.key} ';
+        listOfSymptoms +=
+            '• ${val.key}\n'; // Add a bullet point (•) before each symptom
       }
     }
 

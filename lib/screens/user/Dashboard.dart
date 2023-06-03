@@ -68,28 +68,32 @@ class _DashboardState extends State<Dashboard> {
         String firstName = student?['name'];
 
         return Container(
-          margin: const EdgeInsets.all(20.0),
-          padding: const EdgeInsets.all(10),
+          margin:
+              const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 15),
+          padding: const EdgeInsets.all(12),
           decoration: const BoxDecoration(
             color: Color(0xFF526bf2),
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          height: 100,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                ('Welcome ${firstName}'),
+                ('Welcome, ${firstName} !'),
                 style: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w500,
+                  fontFamily: 'SF-UI-Display',
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: 5),
                 child: Text(
                   'Your health deserves to be constantly checked.',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+                  style: TextStyle(
+                      fontFamily: 'SF-UI-Display',
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.w400),
                 ),
               ),
             ],
@@ -107,19 +111,20 @@ class _DashboardState extends State<Dashboard> {
     DailyEntry? entry = context.read<EntryProvider>().entryToday;
 
     return Container(
-      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+      margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 8),
       padding: const EdgeInsets.all(10),
       decoration: const BoxDecoration(
         color: Color(0xFF222429),
         borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
-      height: 100,
       child: Column(children: [
         const Text(
           'Today\'s Entry',
-          style: TextStyle(fontSize: 16),
+          style: TextStyle(
+              fontFamily: 'SF-UI-Display',
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
         ),
-        const Divider(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -235,104 +240,139 @@ class _DashboardState extends State<Dashboard> {
 
   Widget listOfEntries() {
     return Container(
-        margin: const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
-        padding: const EdgeInsets.only(left: 40, right: 40),
-        height: 70,
-        decoration: const BoxDecoration(
-            color: Color(0xFF222429),
-            borderRadius: BorderRadius.all(Radius.circular(50))),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Icon(
+      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Color(0xFF222429),
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: const Icon(
               Icons.list_alt_rounded,
-              size: 40,
+              size: 25,
               color: Colors.white,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'List of Health Status Entries',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          const SizedBox(width: 10),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'List of Health Status Entries',
+                style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  color: Colors.white,
                 ),
-                Text(
-                  'Number of Entries: ${numOfEntries()}',
-                  style: const TextStyle(fontSize: 14, color: Colors.white),
-                )
-              ],
-            )
-          ],
-        ));
+              ),
+              Text(
+                'Number of Entries: ${numOfEntries()}',
+                style: const TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontWeight: FontWeight.w300,
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget isUnderQuarantine() {
     return Container(
-        margin: const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
-        padding: const EdgeInsets.only(left: 50, right: 40),
-        height: 70,
-        decoration: const BoxDecoration(
-            color: Color(0xFF222429),
-            borderRadius: BorderRadius.all(Radius.circular(50))),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Icon(
+      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Color(0xFF222429),
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Icon(
               Icons.sick,
-              size: 40,
+              size: 25,
               color: Colors.white,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Is under quarantine?',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          const SizedBox(width: 10),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                'Is under quarantine?',
+                style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  color: Colors.white,
                 ),
-                Text(
-                  'No',
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                )
-              ],
-            )
-          ],
-        ));
+              ),
+              Text(
+                'No',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget isUnderMonitoring() {
     return Container(
-        margin: const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
-        padding: const EdgeInsets.only(left: 50, right: 40),
-        height: 70,
-        decoration: const BoxDecoration(
-            color: Color(0xFF222429),
-            borderRadius: BorderRadius.all(Radius.circular(50))),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            const Icon(
+      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: Color(0xFF222429),
+        borderRadius: BorderRadius.all(Radius.circular(50)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Icon(
               Icons.monitor,
-              size: 40,
+              size: 25,
               color: Colors.white,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Is under monitoring?',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          const SizedBox(width: 10),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text(
+                'Is under monitoring?',
+                style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  color: Colors.white,
                 ),
-                Text(
-                  'No',
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                )
-              ],
-            )
-          ],
-        ));
+              ),
+              Text(
+                'No',
+                style: TextStyle(fontSize: 16, color: Colors.white),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   int numOfEntries() {

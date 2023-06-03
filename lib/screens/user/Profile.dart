@@ -83,7 +83,6 @@ class _ProfileState extends State<Profile> {
         }
 
         return Container(
-            width: 500,
             color: const Color(0xFF090c12),
             child: Center(
                 child: ListView(
@@ -107,7 +106,7 @@ class _ProfileState extends State<Profile> {
                     margin: const EdgeInsets.only(
                         top: 20, bottom: 20, left: 40, right: 40),
                     decoration: const BoxDecoration(
-                      color: Colors.white,
+                      color: Color(0xFF222429),
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     child: Center(
@@ -120,16 +119,18 @@ class _ProfileState extends State<Profile> {
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontFamily: 'SF-UI-Display',
-                                  fontSize: 24,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  color: Colors.white),
                             ),
                             Text(
                               studentNum,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontFamily: 'SF-UI-Display',
-                                  fontSize: 24,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  color: Colors.white),
                             ),
                           ],
                         ),
@@ -141,16 +142,18 @@ class _ProfileState extends State<Profile> {
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontFamily: 'SF-UI-Display',
-                                  fontSize: 20,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  color: Colors.white),
                             ),
                             Text(
                               college,
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontFamily: 'SF-UI-Display',
-                                  fontSize: 20,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  color: Colors.white),
                             ),
                           ],
                         ),
@@ -172,7 +175,10 @@ class _ProfileState extends State<Profile> {
             child: Text(
           'No generated QR code',
           style: TextStyle(
-              fontFamily: 'SF-UI-Display', fontSize: 20, color: Colors.black),
+              fontFamily: 'SF-UI-Display',
+              fontWeight: FontWeight.w700,
+              fontSize: 20,
+              color: Colors.white),
         )),
       );
     }
@@ -190,8 +196,6 @@ class _ProfileState extends State<Profile> {
           ),
         ),
         SizedBox(
-          width: 360,
-          height: 360,
           child: CustomPaint(
               painter: MyCustomPainter(frameSFactor: .08, padding: 10),
               child: Center(
