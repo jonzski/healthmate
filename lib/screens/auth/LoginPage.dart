@@ -29,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
           color: const Color(0xFF222429),
         ),
         width: 500,
+        height: 400,
         margin: const EdgeInsets.only(left: 50.0, right: 50.0),
         child: Padding(
             padding: const EdgeInsets.all(20),
