@@ -72,12 +72,9 @@ class FirebaseEntryAPI {
   Future<String> editEntryRequest(String entryId, DailyEntry entry) async {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+
     try {
-      await db
-          .collection("entry")
-          .doc(entryId)
-          .update({'remarks': entry.remarks, 'status': "Pending"});
-      print(entryId);
+      // print(entry.symptoms);
       final docRef = await db.collection("entryEditRequests").add({
         'symptoms': entry.symptoms,
         'requestDate': timeToday,
@@ -87,6 +84,12 @@ class FirebaseEntryAPI {
         'entryDate': entry.entryDate,
         'status': 'Pending'
       });
+
+      await db
+          .collection("entry")
+          .doc(entryId)
+          .update({'remarks': entry.remarks, 'status': "Pending"});
+      // print(entry.symptoms);
       await db
           .collection("entryEditRequests")
           .doc(docRef.id)
@@ -118,11 +121,14 @@ class FirebaseEntryAPI {
 
   // Method to validateQRCode by checking if the entryId is valid and if the uid is the same as the uid of the entry
   Future<bool> validateQRCode(String uid, String entryId) {
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     try {
       return db
           .collection("entry")
           .where('id', isEqualTo: entryId)
           .where('uid', isEqualTo: uid)
+          .where('entryDate', isEqualTo: timeToday)
           .get()
           .then((value) => value.docs.isNotEmpty);
     } on FirebaseException catch (e) {
@@ -131,9 +137,9 @@ class FirebaseEntryAPI {
   }
 
   Future<String> editRequest(
-      DailyEntry entryRequest, String entryRequestId) async {
+      DailyEntry entryRequest, String entryRequestId, String status) async {
     try {
-      if (entryRequest.status == "Approved") {
+      if (status == "Approved") {
         await db.collection("entry").doc(entryRequest.entryId).update({
           'symptoms': entryRequest.symptoms,
           'closeContact': entryRequest.closeContact,
@@ -146,7 +152,7 @@ class FirebaseEntryAPI {
           'status': entryRequest.status,
         });
       }
-      await db.collection("entryEditRequests").doc(entryRequestId).delete();
+      // await db.collection("entryEditRequests").doc(entryRequestId).delete();
       return "Successfully edited entry!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
@@ -231,14 +237,13 @@ class FirebaseEntryAPI {
     }
   }
 
-  Future<String> updateStatus(
-      DailyEntry entryRequest, String entryRequestId, String status) async {
+  Future<String> updateStatus(String entryRequestId, String status) async {
     try {
       await db.collection("entryEditRequests").doc(entryRequestId).update({
         'status': status,
       });
 
-      return "Successfully edited entry!";
+      return "Successfully edited status entry!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
     }

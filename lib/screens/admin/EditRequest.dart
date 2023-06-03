@@ -4,6 +4,7 @@ import '../../model/entry_model.dart';
 import '../../provider/entry_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
 
 class EditRequest extends StatefulWidget {
   const EditRequest({Key? key}) : super(key: key);
@@ -61,14 +62,20 @@ class _EditRequestState extends State<EditRequest> {
                           child: Row(
                             children: [
                               Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.green,
                                 ),
                                 child: IconButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    // await context
+                                    //     .read<EntryProvider>()
+                                    //     .updateStatus(
+                                    //         entry.entryRequestId!, 'Approved');
                                     context.read<EntryProvider>().editRequest(
-                                        entry, entry.entryRequestId!);
+                                        entry,
+                                        entry.entryRequestId!,
+                                        'Approved');
                                   },
                                   icon: const Icon(Icons.check),
                                   color: Colors.white,
@@ -78,14 +85,20 @@ class _EditRequestState extends State<EditRequest> {
                               ),
                               const SizedBox(width: 10),
                               Container(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.red,
                                 ),
                                 child: IconButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    // await context
+                                    //     .read<EntryProvider>()
+                                    //     .updateStatus(
+                                    //         entry.entryRequestId!, 'Rejected');
                                     context.read<EntryProvider>().editRequest(
-                                        entry, entry.entryRequestId!);
+                                        entry,
+                                        entry.entryRequestId!,
+                                        'Rejected');
                                   },
                                   icon: const Icon(Icons.close),
                                   color: Colors.white,

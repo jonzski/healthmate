@@ -69,9 +69,10 @@ class EntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void editRequest(DailyEntry entryRequest, String entryRequestId) async {
+  Future<void> editRequest(
+      DailyEntry entryRequest, String entryRequestId, String status) async {
     String message =
-        await firebaseService.editRequest(entryRequest, entryRequestId);
+        await firebaseService.editRequest(entryRequest, entryRequestId, status);
     print(message);
 
     notifyListeners();
@@ -105,11 +106,9 @@ class EntryProvider with ChangeNotifier {
     return entry;
   }
 
-  void updateStatus(
-      DailyEntry entryRequest, String entryRequestId, String status) async {
-    String message = await firebaseService.updateStatus(
-        entryRequest, entryRequestId, status);
+  Future<void> updateStatus(String entryRequestId, String status) async {
+    String message = await firebaseService.updateStatus(entryRequestId, status);
+    print(message);
+    notifyListeners();
   }
-
-  notifyListeners();
 }
