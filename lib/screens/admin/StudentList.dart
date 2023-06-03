@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../model/user_model.dart';
-import '../../provider/auth_provider.dart';
 import '../../provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -98,7 +97,7 @@ class _StudentListState extends State<StudentList> {
                   // padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     color: Colors.indigo.shade800,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Center(
                       child: Row(
@@ -165,7 +164,7 @@ class _StudentListState extends State<StudentList> {
                                 color: const Color(0xFF5c61cc),
                               ),
                               child: IconButton(
-                                icon: const Icon(Icons.upgrade),
+                                icon: const Icon(Icons.trending_up_rounded),
                                 hoverColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                                 onPressed: () {

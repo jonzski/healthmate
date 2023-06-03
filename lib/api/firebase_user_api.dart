@@ -92,6 +92,7 @@ class FirebaseUserAPI {
     try {
       return db
           .collection("user")
+          .where('underMonitoring', isEqualTo: false)
           .where('underQuarantine', isEqualTo: true)
           .snapshots();
     } on FirebaseException catch (e) {

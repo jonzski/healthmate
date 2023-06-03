@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:pie_chart/pie_chart.dart';
+
+import '../../model/user_model.dart';
+import '../../provider/user_provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -24,33 +29,69 @@ class _DashboardState extends State<Dashboard> {
   ];
 
   Map<String, double> dataMap = {
-    "Cleared": 10,
-    "Monitoring": 3,
-    "Quarantined": 2,
+    "Cleared": 0,
+    "Monitoring": 0,
+    "Quarantined": 0,
   };
 
   @override
   Widget build(BuildContext context) {
+    Stream<QuerySnapshot> allStudents =
+        context.watch<UserProvider>().allStudents;
+
     return Container(
         color: const Color(0xFF090c12),
-        child: ListView(children: [
-          Row(
-            children: [Expanded(child: header())],
-          ),
-          Row(
-            children: [Expanded(child: title())],
-          ),
-          Row(
-            children: [Expanded(child: lineGraph())],
-          ),
-          const Divider(),
-          Row(
-            children: [
-              Expanded(flex: 1, child: pieGraph()),
-              Expanded(flex: 1, child: dataNumbers())
-            ],
-          ),
-        ]));
+        child: StreamBuilder(
+            stream: allStudents,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Error encountered! ${snapshot.error}"),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              Map<String, double> temp = {
+                "Cleared": 0,
+                "Monitoring": 0,
+                "Quarantined": 0,
+              };
+
+              for (int index = 0; index < snapshot.data!.docs.length; index++) {
+                UserDetails student = UserDetails.fromJson(
+                    snapshot.data?.docs[index].data() as Map<String, dynamic>,
+                    0);
+                if (student.userType == 0) {
+                  if (!student.underMonitoring! && !student.underQuarantine!) {
+                    temp["Cleared"] = (temp["Cleared"]! + 1);
+                  } else if (student.underMonitoring!) {
+                    temp["Monitoring"] = (temp["Monitoring"]! + 1);
+                  } else if (student.underQuarantine!) {
+                    temp["Quarantined"] = (temp["Quarantined"]! + 1);
+                  }
+                }
+              }
+
+              dataMap = temp;
+
+              return Container(
+                  color: const Color(0xFF090c12),
+                  child: ListView(children: [
+                    Row(
+                      children: [Expanded(child: header())],
+                    ),
+                    Row(
+                      children: [Expanded(child: title())],
+                    ),
+                    Row(
+                      children: [Expanded(child: lineGraph())],
+                    ),
+                    pieGraph()
+                  ]));
+            }));
   }
 
   Widget header() {
@@ -104,11 +145,9 @@ class _DashboardState extends State<Dashboard> {
         padding:
             const EdgeInsets.only(top: 40, left: 30, right: 30, bottom: 10),
         decoration: BoxDecoration(
-          // color: const Color(0xFF222429),
           color: Colors.white,
           borderRadius: BorderRadius.circular(35),
         ),
-        // height: 300,
         child: Column(
           children: [
             const Text(
@@ -149,122 +188,166 @@ class _DashboardState extends State<Dashboard> {
 
   Widget pieGraph() {
     return Container(
-      margin: const EdgeInsets.only(left: 30, right: 10, bottom: 10),
-      padding: const EdgeInsets.all(25),
-      decoration: BoxDecoration(
-        // color: const Color(0xFF222429),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(35),
-      ),
-      height: 300,
-      child: Column(children: [
-        const Text(
-          'Daily Status',
-          style: TextStyle(fontSize: 20, color: Colors.black),
+        margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
+        padding: const EdgeInsets.all(25),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(35),
         ),
-        Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: PieChart(
-              dataMap: dataMap,
-              colorList: const [Colors.green, Colors.orange, Colors.red],
-              chartType: ChartType.disc, // Set the chartType to 'disc'
-              legendOptions: const LegendOptions(
-                showLegends: false,
-              ),
-              chartValuesOptions: const ChartValuesOptions(
-                showChartValues: false,
-                showChartValueBackground: false,
-              ),
-            ))
-      ]),
-    );
+        child: Row(
+          children: [
+            Expanded(
+                flex: 1,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Daily Status',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontFamily: 'SF-UI-Display'),
+                      ),
+                      Container(
+                          constraints: const BoxConstraints(
+                            maxHeight: 200,
+                          ),
+                          padding: const EdgeInsets.all(25),
+                          child: PieChart(
+                            dataMap: dataMap,
+                            colorList: const [
+                              Colors.green,
+                              Colors.orange,
+                              Colors.red
+                            ],
+                            chartType:
+                                ChartType.disc, // Set the chartType to 'disc'
+                            legendOptions: const LegendOptions(
+                              showLegends: false,
+                            ),
+                            chartValuesOptions: const ChartValuesOptions(
+                              showChartValues: false,
+                              showChartValueBackground: false,
+                            ),
+                          ))
+                    ])),
+            Expanded(flex: 1, child: dataNumbers())
+          ],
+        ));
   }
 
   Widget dataNumbers() {
     return Column(
       children: [
         Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFF55d993),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          height: 90,
-          width: 250,
+          margin: const EdgeInsets.only(left: 10, right: 30, top: 5),
+          height: 70,
           child: Column(children: [
             const Text(
               'Cleared Students',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontFamily: 'SF-UI-Display'),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.emoji_emotions,
-                  size: 40,
+                Container(
+                  margin: const EdgeInsets.only(top: 5, left: 50, right: 20),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.green,
+                  ),
+                  child: const Icon(
+                    Icons.mood,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 Text(
                   '${dataMap["Cleared"]}',
-                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                  style: const TextStyle(
+                      fontSize: 22,
+                      color: Colors.black,
+                      fontFamily: 'SF-UI-Display'),
                 ),
               ],
             )
           ]),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFfca562),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          height: 90,
-          width: 250,
+          margin: const EdgeInsets.only(left: 10, right: 30, top: 5),
+          height: 70,
           child: Column(children: [
             const Text(
-              'Monitoring Student',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              'Monitoring Students',
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontFamily: 'SF-UI-Display'),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.monitor_rounded,
-                  size: 40,
+                Container(
+                  margin: const EdgeInsets.only(top: 5, left: 50, right: 20),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.orange,
+                  ),
+                  child: const Icon(
+                    Icons.monitor_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 Text(
                   '${dataMap["Monitoring"]}',
-                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                  style: const TextStyle(
+                      fontSize: 22,
+                      color: Colors.black,
+                      fontFamily: 'SF-UI-Display'),
                 ),
               ],
             )
           ]),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFfc6265),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          height: 90,
-          width: 250,
+          margin: const EdgeInsets.only(left: 10, right: 10, top: 5),
+          height: 70,
           child: Column(children: [
             const Text(
               'Quarantined Students',
-              style: TextStyle(fontSize: 19, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                  fontFamily: 'SF-UI-Display'),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.sick,
-                  size: 40,
+                Container(
+                  margin: const EdgeInsets.only(top: 5, left: 50, right: 20),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.red,
+                  ),
+                  child: const Icon(
+                    Icons.sick,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
                 Text(
                   '${dataMap["Quarantined"]}',
-                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                  style: const TextStyle(
+                      fontSize: 22,
+                      color: Colors.black,
+                      fontFamily: 'SF-UI-Display'),
                 ),
               ],
             )
