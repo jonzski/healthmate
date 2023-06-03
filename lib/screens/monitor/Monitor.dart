@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../user/UserView.dart';
 import 'Dashboard.dart';
 import 'Scanner.dart';
 import 'ViewLogs.dart';
@@ -99,12 +101,45 @@ class _MonitorState extends State<Monitor> {
           ]),
           backgroundColor: const Color(0xFF090c12),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/scanner');
-          },
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     Navigator.pushNamed(context, '/scanner');
+        //   },
+        //   backgroundColor: const Color(0xFF526bf2),
+        //   child: const Icon(Icons.qr_code_scanner),
+        // ),
+        floatingActionButtonLocation: ExpandableFab.location,
+        floatingActionButton: ExpandableFab(
           backgroundColor: const Color(0xFF526bf2),
-          child: const Icon(Icons.qr_code_scanner),
+          type: ExpandableFabType.up,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/scanner');
+              },
+              backgroundColor: const Color(0xFF526bf2),
+              child: const Icon(Icons.qr_code_scanner),
+            ),
+            FloatingActionButton(
+              backgroundColor: const Color(0xFF42a0d6),
+              heroTag: null,
+              child: const Icon(Icons.phone_android),
+              onPressed: () {
+                Navigator.pushNamed(context, '/user',
+                    arguments: const UserView(
+                      viewer: 'Monitor',
+                    ));
+              },
+            ),
+            FloatingActionButton(
+              backgroundColor: const Color(0xFF5e7a8a),
+              heroTag: null,
+              child: const Icon(Icons.logout),
+              onPressed: () {
+                Navigator.pushNamed(context, '/monitor-signin');
+              },
+            ),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: const Color(0xFF526bf2),

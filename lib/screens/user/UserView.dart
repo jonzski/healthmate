@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cmsc_23_project/provider/auth_provider.dart';
-import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:provider/provider.dart';
 import 'Dashboard.dart';
 import 'UserEntries.dart';
 import 'Profile.dart';
 
-class User extends StatefulWidget {
-  const User({super.key});
+class UserView extends StatefulWidget {
+  final String viewer;
+  const UserView({super.key, required this.viewer});
 
   @override
-  State<User> createState() => _UserState();
+  State<UserView> createState() => _UserViewState();
 }
 
-class _UserState extends State<User> {
+class _UserViewState extends State<UserView> {
+  late String viewer;
   int _pageIndex = 0;
 
   late PageController _pageController;
@@ -23,6 +24,7 @@ class _UserState extends State<User> {
   final String logo = 'assets/images/Logo.svg';
   @override
   void initState() {
+    viewer = widget.viewer;
     super.initState();
     _pageController = PageController(initialPage: _pageIndex);
   }
@@ -41,7 +43,11 @@ class _UserState extends State<User> {
           _pageIndex = index;
         });
       },
-      children: <Widget>[Dashboard(), UserEntries(), Profile()],
+      children: <Widget>[
+        Dashboard(viewer: viewer),
+        const UserEntries(),
+        Profile(viewer: viewer)
+      ],
     );
   }
 
@@ -129,15 +135,63 @@ class _UserState extends State<User> {
             ),
           ],
         ),
-        body: GestureDetector(
-          onHorizontalDragEnd: (details) {
-            if (details.primaryVelocity! < 0) {
-              _swipeRight();
-            } else if (details.primaryVelocity! > 0) {
-              _swipeLeft();
-            }
-          },
-          child: bottomNavFunction(),
-        ));
+        body: viewer == 'Admin' || viewer == 'Monitor'
+            ? Stack(
+                children: [
+                  GestureDetector(
+                    onHorizontalDragEnd: (details) {
+                      if (details.primaryVelocity! < 0) {
+                        _swipeRight();
+                      } else if (details.primaryVelocity! > 0) {
+                        _swipeLeft();
+                      }
+                    },
+                    child: bottomNavFunction(),
+                  ),
+                  Container(
+                    color: const Color.fromRGBO(65, 67, 69, 0.7),
+                    height: 35,
+                    padding: const EdgeInsets.all(5),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 5, right: 8),
+                                child: Icon(Icons.remove_red_eye_outlined),
+                              ),
+                              Text(
+                                'Viewing user\'s interface as $viewer',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Colors.white54, // Background color
+                              ),
+                              child: const Text(
+                                'Exit View',
+                                style: TextStyle(color: Colors.black),
+                              ))
+                        ]),
+                  ),
+                ],
+              )
+            : GestureDetector(
+                onHorizontalDragEnd: (details) {
+                  if (details.primaryVelocity! < 0) {
+                    _swipeRight();
+                  } else if (details.primaryVelocity! > 0) {
+                    _swipeLeft();
+                  }
+                },
+                child: bottomNavFunction(),
+              ));
   }
 }

@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 // User Screens
-import 'screens/user/User.dart';
+import 'screens/user/UserView.dart';
 import 'screens/user/Profile.dart';
 import 'screens/user/AddEntry.dart';
 import 'screens/user/EditEntry.dart';
@@ -58,14 +58,12 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'OHMSMobile',
       theme: ThemeData.dark(),
-      initialRoute: '/login',
+      home: const LoginPage(),
       routes: {
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
-        '/user': (context) => const User(),
         '/add-entry': (context) => const AddEntry(),
         '/edit-entry': (context) => const EditEntry(),
-        '/profile': (context) => Profile(),
         '/switch-user-type': (context) => const SwitchUserType(),
         '/admin-signin': (context) => const AdminSignInPage(),
         '/admin-signup': (context) => const AdminSignUpPage(),
@@ -74,6 +72,20 @@ class MainApp extends StatelessWidget {
         '/monitor-signup': (context) => const MonitorSignUpPage(),
         '/monitor': (context) => const Monitor(),
         '/scanner': (context) => const Scanner(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/user') {
+          final args = settings.arguments as UserView;
+          return MaterialPageRoute(builder: (context) {
+            return UserView(viewer: args.viewer);
+          });
+        } else if (settings.name == '/profile') {
+          final args = settings.arguments as Profile;
+          return MaterialPageRoute(builder: (context) {
+            return Profile(viewer: args.viewer);
+          });
+        }
+        return null;
       },
     );
   }

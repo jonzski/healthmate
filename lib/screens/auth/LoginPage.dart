@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../../provider/auth_provider.dart';
+import '../user/UserView.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -116,7 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                                     _passwordController.text.trim());
 
                             if (user != null && context.mounted) {
-                              Navigator.pushReplacementNamed(context, '/user');
+                              Navigator.pushNamed(context, '/user',
+                                  arguments: const UserView(
+                                    viewer: 'Student',
+                                  ));
                             }
                           } catch (e) {
                             print('Error: ${e}');

@@ -7,15 +7,23 @@ import '../../provider/user_provider.dart';
 import '../../provider/entry_provider.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  String viewer;
+  Dashboard({Key? key, required this.viewer}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+  late String viewer;
+
   final formKey = GlobalKey<FormState>();
   final TextEditingController _remarkController = TextEditingController();
+
+  void initState() {
+    viewer = widget.viewer;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +67,9 @@ class _DashboardState extends State<Dashboard> {
 
         Map<String, dynamic>? student = snapshot.data;
 
-        String firstName = student?['name'];
+        String name = viewer == 'Admin' || viewer == 'Monitor'
+            ? viewer
+            : student?['name'];
 
         return Container(
           margin:
@@ -73,7 +83,7 @@ class _DashboardState extends State<Dashboard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                ('Welcome, ${firstName} !'),
+                ('Welcome, ${name} !'),
                 style: const TextStyle(
                   fontFamily: 'SF-UI-Display',
                   fontSize: 24,
@@ -193,10 +203,10 @@ class _DashboardState extends State<Dashboard> {
                                     if (formKey.currentState!.validate()) {
                                       final entryProvider =
                                           context.read<EntryProvider>();
+                                      // entry.entryId causes error (returns null value)
                                       entryProvider.entryDeleteRequest(
                                           entry!.entryId!, entry);
 
-                                      // formKey.currentState?.save();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
                                               content: Text(
@@ -270,8 +280,8 @@ class _DashboardState extends State<Dashboard> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       'List of Health Status Entries',
                       style: TextStyle(
                         fontFamily: 'SF-UI-Display',

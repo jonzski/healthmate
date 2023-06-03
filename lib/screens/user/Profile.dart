@@ -8,16 +8,19 @@ import '../../provider/auth_provider.dart';
 import '../../provider/user_provider.dart';
 
 class Profile extends StatefulWidget {
-  Profile({super.key});
+  String viewer;
+  Profile({super.key, required this.viewer});
 
   @override
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  late String viewer;
   bool generateQRcode = false;
 
   void initState() {
+    viewer = widget.viewer;
     super.initState();
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
@@ -71,10 +74,17 @@ class _ProfileState extends State<Profile> {
 
         Map<String, dynamic>? user = snapshot.data;
 
-        String name = user?['name'];
-        String studentNum = user?['studentNum'];
-        String course = user?['course'];
-        String college = user?['college'];
+        String name =
+            viewer == 'Admin' || viewer == 'Monitor' ? 'Name' : user?['name'];
+        String studentNum = viewer == 'Admin' || viewer == 'Monitor'
+            ? 'Student No'
+            : user?['studentNum'];
+        String course = viewer == 'Admin' || viewer == 'Monitor'
+            ? 'Course'
+            : user?['course'];
+        String college = viewer == 'Admin' || viewer == 'Monitor'
+            ? 'College'
+            : user?['college'];
         String uid = user?['userId'];
         bool underQuarantine = user?['underQuarantine'];
 

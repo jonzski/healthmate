@@ -196,7 +196,7 @@ class _EditEntryState extends State<EditEntry> {
                     groupValue: inContact,
                     onChanged: (value) {
                       setState(() {
-                        inContact = value as String?;
+                        inContact = value;
                         dailyEntry!.closeContact = true;
                       });
                     },
@@ -211,7 +211,7 @@ class _EditEntryState extends State<EditEntry> {
                     groupValue: inContact,
                     onChanged: (value) {
                       setState(() {
-                        inContact = value as String?;
+                        inContact = value;
                         dailyEntry!.closeContact = false;
                       });
                     },
@@ -269,7 +269,7 @@ class _EditEntryState extends State<EditEntry> {
             // formKey.currentState?.save();
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text('Successfully requested for editing entry!')));
-            Navigator.pushNamed(context, '/user');
+            Navigator.pop(context);
           }
         }
       },

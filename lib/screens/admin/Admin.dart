@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../provider/auth_provider.dart';
+import '../user/UserView.dart';
 import 'Dashboard.dart';
 import 'StudentList.dart';
 import 'StudentEntries.dart';
@@ -105,6 +107,32 @@ class _AdminState extends State<Admin> {
             ),
           ]),
           backgroundColor: const Color(0xFF090c12),
+        ),
+        floatingActionButtonLocation: ExpandableFab.location,
+        floatingActionButton: ExpandableFab(
+          backgroundColor: const Color(0xFF526bf2),
+          type: ExpandableFabType.up,
+          children: [
+            FloatingActionButton(
+              backgroundColor: const Color(0xFF42a0d6),
+              heroTag: null,
+              child: const Icon(Icons.phone_android),
+              onPressed: () {
+                Navigator.pushNamed(context, '/user',
+                    arguments: const UserView(
+                      viewer: 'Admin',
+                    ));
+              },
+            ),
+            FloatingActionButton(
+              backgroundColor: const Color(0xFF5e7a8a),
+              heroTag: null,
+              child: const Icon(Icons.logout),
+              onPressed: () {
+                Navigator.pushNamed(context, '/admin-signin');
+              },
+            ),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           showSelectedLabels: false,
