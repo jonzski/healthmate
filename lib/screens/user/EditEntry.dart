@@ -263,6 +263,7 @@ class _EditEntryState extends State<EditEntry> {
                 content: Text('Please select an answer in the last question')));
           } else {
             dailyEntry!.symptoms = symptomsList;
+            // print(dailyEntry!.symptoms);
             entryProvider.editEntryRequest(dailyEntry!.entryId!, dailyEntry!);
 
             // formKey.currentState?.save();

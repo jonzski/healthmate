@@ -67,8 +67,10 @@ class _DeleteRequestState extends State<DeleteRequest> {
                                 ),
                                 child: IconButton(
                                   onPressed: () {
-                                    context.read<EntryProvider>().editRequest(
-                                        entry, entry.entryRequestId!);
+                                    context.read<EntryProvider>().updateStatus(
+                                        entry.entryRequestId!, 'Approved');
+                                    // context.read<EntryProvider>().editRequest(
+                                    //     entry, entry.entryRequestId!);
                                   },
                                   icon: const Icon(Icons.check),
                                   color: Colors.white,
@@ -84,8 +86,10 @@ class _DeleteRequestState extends State<DeleteRequest> {
                                 ),
                                 child: IconButton(
                                   onPressed: () {
-                                    context.read<EntryProvider>().editRequest(
-                                        entry, entry.entryRequestId!);
+                                    context.read<EntryProvider>().updateStatus(
+                                        entry.entryRequestId!, 'Rejected');
+                                    // context.read<EntryProvider>().editRequest(
+                                    //     entry, entry.entryRequestId!);
                                   },
                                   icon: const Icon(Icons.close),
                                   color: Colors.white,
