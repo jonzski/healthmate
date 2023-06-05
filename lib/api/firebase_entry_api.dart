@@ -126,7 +126,7 @@ class FirebaseEntryAPI {
     try {
       return db
           .collection("entry")
-          .where('id', isEqualTo: entryId)
+          .where('entryId', isEqualTo: entryId)
           // .where('entryDate', isEqualTo: timeToday)
           .get()
           .then((value) => value.docs.isNotEmpty);
