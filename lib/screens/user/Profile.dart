@@ -18,6 +18,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   late String viewer;
   bool generateQRcode = false;
+  DailyEntry? entry;
 
   void initState() {
     viewer = widget.viewer;
@@ -35,11 +36,11 @@ class _ProfileState extends State<Profile> {
         Map<String, dynamic> entryData =
             document.data() as Map<String, dynamic>;
         // Use the entryData map as needed
-        DailyEntry entry = DailyEntry.fromJson(entryData, 'fetch');
+        entry = DailyEntry.fromJson(entryData, 'fetch');
 
         bool hasSymptoms = false;
 
-        for (var val in entry.symptoms.entries) {
+        for (var val in entry!.symptoms.entries) {
           if (val.value == true) {
             hasSymptoms = true;
             break;
@@ -167,7 +168,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ],
                         ),
-                        qRcode(uid)
+                        qRcode(entry!.entryId!)
                       ]),
                     )),
                 TextButton(
@@ -194,7 +195,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget qRcode(String uid) {
+  Widget qRcode(String eid) {
     if (generateQRcode == false) {
       return const SizedBox(
         width: 260,
@@ -231,7 +232,7 @@ class _ProfileState extends State<Profile> {
               painter: MyCustomPainter(frameSFactor: .08, padding: 2),
               child: Center(
                 child: QrImageView(
-                  data: uid,
+                  data: eid,
                   version: QrVersions.auto,
                   size: 210,
                   gapless: false,
