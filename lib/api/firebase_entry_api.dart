@@ -159,6 +159,27 @@ class FirebaseEntryAPI {
     }
   }
 
+  Future<String> deleteRequest(
+      DailyEntry entryRequest, String entryRequestId, String status) async {
+    try {
+      if (status == "Approved") {
+        await db
+            .collection("entryEditRequests")
+            .doc(entryRequest.entryId)
+            .delete();
+      } else {
+        await db.collection("entry").doc(entryRequest.entryId).update({
+          'remarks': entryRequest.remarks,
+          'status': entryRequest.status,
+        });
+      }
+      await db.collection("entryDeleteRequests").doc(entryRequestId).delete();
+      return "Successfully deleted entry!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
   Stream<QuerySnapshot> fetchAllRequestedEntries() {
     try {
       return db
@@ -213,27 +234,6 @@ class FirebaseEntryAPI {
           .snapshots();
     } on FirebaseException catch (e) {
       throw e;
-    }
-  }
-
-  Future<String> deleteRequest(
-      DailyEntry entryRequest, String entryRequestId) async {
-    try {
-      if (entryRequest.status == "Approved") {
-        await db
-            .collection("entryEditRequests")
-            .doc(entryRequest.entryId)
-            .delete();
-      } else {
-        await db.collection("entry").doc(entryRequest.entryId).update({
-          'remarks': entryRequest.remarks,
-          'status': entryRequest.status,
-        });
-      }
-      await db.collection("entryDeleteRequests").doc(entryRequestId).delete();
-      return "Successfully deleted entry!";
-    } on FirebaseException catch (e) {
-      return "Failed with error '${e.code}: ${e.message}";
     }
   }
 

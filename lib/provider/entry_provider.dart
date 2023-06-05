@@ -85,9 +85,10 @@ class EntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteRequest(DailyEntry entryRequest, String entryRequestId) async {
-    String message =
-        await firebaseService.deleteRequest(entryRequest, entryRequestId);
+  void deleteRequest(
+      DailyEntry entryRequest, String entryRequestId, String status) async {
+    String message = await firebaseService.deleteRequest(
+        entryRequest, entryRequestId, status);
     print(message);
 
     notifyListeners();
