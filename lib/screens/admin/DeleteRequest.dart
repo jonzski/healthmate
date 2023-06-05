@@ -67,8 +67,10 @@ class _DeleteRequestState extends State<DeleteRequest> {
                                 ),
                                 child: IconButton(
                                   onPressed: () {
-                                    context.read<EntryProvider>().updateStatus(
-                                        entry.entryRequestId!, 'Approved');
+                                    context.read<EntryProvider>().deleteRequest(
+                                        entry,
+                                        entry.entryRequestId!,
+                                        'Approved');
                                     // context.read<EntryProvider>().editRequest(
                                     //     entry, entry.entryRequestId!);
                                   },
@@ -86,8 +88,12 @@ class _DeleteRequestState extends State<DeleteRequest> {
                                 ),
                                 child: IconButton(
                                   onPressed: () {
-                                    context.read<EntryProvider>().updateStatus(
-                                        entry.entryRequestId!, 'Rejected');
+                                    context.read<EntryProvider>().deleteRequest(
+                                        entry,
+                                        entry.entryRequestId!,
+                                        'Rejected');
+                                    // context.read<EntryProvider>().updateStatus(
+                                    //     entry.entryRequestId!, 'Rejected');
                                     // context.read<EntryProvider>().editRequest(
                                     //     entry, entry.entryRequestId!);
                                   },

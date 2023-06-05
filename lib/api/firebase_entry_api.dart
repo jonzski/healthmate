@@ -163,16 +163,14 @@ class FirebaseEntryAPI {
       DailyEntry entryRequest, String entryRequestId, String status) async {
     try {
       if (status == "Approved") {
-        await db
-            .collection("entryEditRequests")
-            .doc(entryRequest.entryId)
-            .delete();
+        await db.collection("entry").doc(entryRequest.entryId).delete();
       } else {
         await db.collection("entry").doc(entryRequest.entryId).update({
           'remarks': entryRequest.remarks,
           'status': entryRequest.status,
         });
       }
+
       await db.collection("entryDeleteRequests").doc(entryRequestId).delete();
       return "Successfully deleted entry!";
     } on FirebaseException catch (e) {
