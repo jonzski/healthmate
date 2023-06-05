@@ -34,7 +34,7 @@ class FirebaseEntryAPI {
 
   Future<String> updateMonitoring(String uid) async {
     try {
-      await db.collection("user").doc(uid).update({'userMonitoring': true});
+      await db.collection("user").doc(uid).update({'underMonitoring': true});
 
       return "Successfully updated Monitoring!";
     } on FirebaseException catch (e) {
