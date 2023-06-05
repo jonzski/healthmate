@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'dart:developer';
+import 'package:cmsc_23_project/provider/entry_provider.dart';
+
+import '../../provider/log_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class Scanner extends StatefulWidget {
@@ -12,6 +16,7 @@ class Scanner extends StatefulWidget {
 
 class _ScannerState extends State<Scanner> {
   Barcode? result;
+  bool? isQrvalid;
   QRViewController? controller;
   GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
@@ -57,9 +62,17 @@ class _ScannerState extends State<Scanner> {
             ),
             onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
           ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: (result != null)
+                  ? Text('Valid QR: ${isQrvalid.toString()}}' + result!.code!)
+                  : Text('Scan a code'),
+            ),
+          ),
           Positioned(
-            top: 16,
-            left: 16,
+            top: 50,
+            left: 10,
             child: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
@@ -77,8 +90,12 @@ class _ScannerState extends State<Scanner> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
+      setState(() async {
         result = scanData;
+        if (result?.code != null) {
+          isQrvalid =
+              await context.read<EntryProvider>().validateQRCode(result!.code!);
+        }
       });
     });
   }
