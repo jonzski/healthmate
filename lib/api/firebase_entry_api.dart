@@ -120,15 +120,14 @@ class FirebaseEntryAPI {
   // gawa ng update monitoring. gawin true yung under monitoring kapag naglagay si user na may entry na may close contact siya
 
   // Method to validateQRCode by checking if the entryId is valid and if the uid is the same as the uid of the entry
-  Future<bool> validateQRCode(String uid, String entryId) {
+  Future<bool> validateQRCode(String entryId) {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     try {
       return db
           .collection("entry")
           .where('id', isEqualTo: entryId)
-          .where('uid', isEqualTo: uid)
-          .where('entryDate', isEqualTo: timeToday)
+          // .where('entryDate', isEqualTo: timeToday)
           .get()
           .then((value) => value.docs.isNotEmpty);
     } on FirebaseException catch (e) {
@@ -152,7 +151,7 @@ class FirebaseEntryAPI {
           'status': entryRequest.status,
         });
       }
-      // await db.collection("entryEditRequests").doc(entryRequestId).delete();
+      await db.collection("entryEditRequests").doc(entryRequestId).delete();
       return "Successfully edited entry!";
     } on FirebaseException catch (e) {
       return "Failed with error '${e.code}: ${e.message}";
