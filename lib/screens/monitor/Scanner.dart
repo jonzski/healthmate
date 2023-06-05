@@ -66,7 +66,29 @@ class _ScannerState extends State<Scanner> {
             flex: 1,
             child: Center(
               child: (result != null)
-                  ? Text('Valid QR: ${isQrvalid.toString()}}' + result!.code!)
+                  ? FutureBuilder(
+                      future: context
+                          .read<EntryProvider>()
+                          .validateQRCode(result!.code!),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(
+                            child: Text("Error encountered! ${snapshot.error}"),
+                          );
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return Text(
+                          'QR Code: ${result!.code}',
+                          style: TextStyle(
+                              color: snapshot.data == true
+                                  ? Colors.green
+                                  : Colors.red),
+                        );
+                      })
                   : Text('Scan a code'),
             ),
           ),
@@ -90,12 +112,8 @@ class _ScannerState extends State<Scanner> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() async {
+      setState(() {
         result = scanData;
-        if (result?.code != null) {
-          isQrvalid =
-              await context.read<EntryProvider>().validateQRCode(result!.code!);
-        }
       });
     });
   }
