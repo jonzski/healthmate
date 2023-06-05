@@ -10,7 +10,7 @@ class FirebaseLogAPI {
     try {
       return db
           .collection("log")
-          .where('userId', isEqualTo: userId)
+          .where('uid', isEqualTo: userId)
           .orderBy('date', descending: true)
           .snapshots();
     } on FirebaseException catch (e) {
