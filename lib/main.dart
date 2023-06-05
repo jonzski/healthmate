@@ -30,6 +30,7 @@ import 'screens/monitor/Scanner.dart';
 import 'provider/auth_provider.dart';
 import 'provider/entry_provider.dart';
 import 'provider/user_provider.dart';
+import 'provider/log_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +44,7 @@ void main() async {
         ChangeNotifierProvider(create: ((context) => EntryProvider())),
         ChangeNotifierProvider(create: ((context) => AuthProvider())),
         ChangeNotifierProvider(create: ((context) => UserProvider())),
+        ChangeNotifierProvider(create: ((context) => LogProvider())),
       ],
       child: const MainApp(),
     ),
