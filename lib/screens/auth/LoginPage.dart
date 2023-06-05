@@ -67,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ]),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(children: [
                       TextFormField(
                         controller: _emailController,
@@ -116,11 +116,11 @@ class _LoginPageState extends State<LoginPage> {
                                     _passwordController.text.trim());
 
                             if (user != null && context.mounted) {
-                              Navigator.pushReplacementNamed(context, '/admin');
-                              // Navigator.pushNamed(context, '/user',
-                              //     arguments: const UserView(
-                              //       viewer: 'Student',
-                              //     ));
+                              // Navigator.pushReplacementNamed(context, '/user');
+                              Navigator.pushNamed(context, '/user',
+                                  arguments: const UserView(
+                                    viewer: 'Student',
+                                  ));
                             }
                           } catch (e) {
                             print('Error: ${e}');
