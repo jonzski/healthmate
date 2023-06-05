@@ -67,11 +67,7 @@ class _EditRequestState extends State<EditRequest> {
                                   color: Colors.green,
                                 ),
                                 child: IconButton(
-                                  onPressed: () async {
-                                    // await context
-                                    //     .read<EntryProvider>()
-                                    //     .updateStatus(
-                                    //         entry.entryRequestId!, 'Approved');
+                                  onPressed: () {
                                     context.read<EntryProvider>().editRequest(
                                         entry,
                                         entry.entryRequestId!,
@@ -90,11 +86,7 @@ class _EditRequestState extends State<EditRequest> {
                                   color: Colors.red,
                                 ),
                                 child: IconButton(
-                                  onPressed: () async {
-                                    // await context
-                                    //     .read<EntryProvider>()
-                                    //     .updateStatus(
-                                    //         entry.entryRequestId!, 'Rejected');
+                                  onPressed: () {
                                     context.read<EntryProvider>().editRequest(
                                         entry,
                                         entry.entryRequestId!,
