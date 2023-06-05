@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:developer';
 import 'package:cmsc_23_project/provider/entry_provider.dart';
 
+import '../../provider/auth_provider.dart';
 import '../../provider/log_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,10 +43,11 @@ class _ScannerState extends State<Scanner> {
   }
 
   Widget _buildQrView(BuildContext context) {
+    String currentUserUid = context.read<AuthProvider>().currentUser.uid;
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
+        ? 200.0
+        : 400.0;
 
     return Scaffold(
       body: Stack(
@@ -69,7 +71,7 @@ class _ScannerState extends State<Scanner> {
                   ? FutureBuilder(
                       future: context
                           .read<EntryProvider>()
-                          .validateQRCode(result!.code!),
+                          .validateQRCode(result!.code!, currentUserUid),
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Center(
@@ -81,6 +83,8 @@ class _ScannerState extends State<Scanner> {
                             child: CircularProgressIndicator(),
                           );
                         }
+
+                        print(snapshot.data);
                         return Text(
                           'QR Code: ${result!.code}',
                           style: TextStyle(

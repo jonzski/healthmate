@@ -138,7 +138,7 @@ class FirebaseEntryAPI {
         // Get user
         final user = await db
             .collection("user")
-            .where('uid', isEqualTo: entryData['uid'])
+            .where('userId', isEqualTo: entryData['uid'])
             .get();
 
         if (user.docs.isNotEmpty) {
