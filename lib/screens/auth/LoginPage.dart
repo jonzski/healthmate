@@ -116,10 +116,11 @@ class _LoginPageState extends State<LoginPage> {
                                     _passwordController.text.trim());
 
                             if (user != null && context.mounted) {
-                              Navigator.pushNamed(context, '/user',
-                                  arguments: const UserView(
-                                    viewer: 'Student',
-                                  ));
+                              Navigator.pushReplacementNamed(context, '/admin');
+                              // Navigator.pushNamed(context, '/user',
+                              //     arguments: const UserView(
+                              //       viewer: 'Student',
+                              //     ));
                             }
                           } catch (e) {
                             print('Error: ${e}');

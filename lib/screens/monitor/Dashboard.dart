@@ -187,23 +187,20 @@ class _DashboardState extends State<Dashboard> {
             color: const Color(0xFF55d993),
             borderRadius: BorderRadius.circular(25),
           ),
-          height: 90,
-          width: 250,
           child: Column(children: [
             const Text(
               'Cleared Students',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: TextStyle(fontSize: 15, color: Colors.white),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(
                   Icons.emoji_emotions,
-                  size: 40,
                 ),
                 Text(
                   '${dataMap["Cleared"]}',
-                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
             )
@@ -216,23 +213,20 @@ class _DashboardState extends State<Dashboard> {
             color: const Color(0xFFfca562),
             borderRadius: BorderRadius.circular(25),
           ),
-          height: 90,
-          width: 250,
           child: Column(children: [
             const Text(
               'Monitoring Student',
-              style: TextStyle(fontSize: 20, color: Colors.white),
+              style: TextStyle(fontSize: 15, color: Colors.white),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(
                   Icons.monitor_rounded,
-                  size: 40,
                 ),
                 Text(
                   '${dataMap["Monitoring"]}',
-                  style: const TextStyle(fontSize: 32, color: Colors.white),
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ],
             )
@@ -245,12 +239,11 @@ class _DashboardState extends State<Dashboard> {
             color: const Color(0xFFfc6265),
             borderRadius: BorderRadius.circular(25),
           ),
-          height: 90,
           width: 250,
           child: Column(children: [
             const Text(
               'Quarantined Students',
-              style: TextStyle(fontSize: 19, color: Colors.white),
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
