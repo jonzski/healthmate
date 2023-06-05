@@ -7,7 +7,7 @@ class MonitorLog {
   final DateTime date;
   String? location;
   final String logId;
-  String? studentId;
+  String studentId;
 
   MonitorLog({
     this.status,
@@ -16,7 +16,7 @@ class MonitorLog {
     required this.date,
     this.location,
     required this.logId,
-    this.studentId,
+    required this.studentId,
   });
 
   factory MonitorLog.fromJson(Map<String, dynamic> json) {
@@ -27,6 +27,7 @@ class MonitorLog {
       date: json['date'].toDate(),
       location: json['location'],
       logId: json['logId'],
+      studentId: json['studentId'],
     );
   }
 
@@ -41,7 +42,8 @@ class MonitorLog {
       "studentNum": log.studentNum,
       "userId": log.userId,
       "date": log.date,
-      "location": log.location
+      "location": log.location,
+      "studentId": log.studentId
     };
   }
 }
