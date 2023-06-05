@@ -120,16 +120,52 @@ class FirebaseEntryAPI {
   // gawa ng update monitoring. gawin true yung under monitoring kapag naglagay si user na may entry na may close contact siya
 
   // Method to validateQRCode by checking if the entryId is valid and if the uid is the same as the uid of the entry
-  Future<bool> validateQRCode(String entryId) {
+  Future<bool> validateQRCode(String entryId, String monitorId) async {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     try {
-      return db
+      final entry = await db
           .collection("entry")
           .where('entryId', isEqualTo: entryId)
           // .where('entryDate', isEqualTo: timeToday)
-          .get()
-          .then((value) => value.docs.isNotEmpty);
+          .get();
+
+      if (entry.docs.isNotEmpty) {
+        // Get document
+        QueryDocumentSnapshot document = entry.docs[0];
+        Map<String, dynamic> entryData =
+            document.data() as Map<String, dynamic>;
+        // Get user
+        final user = await db
+            .collection("user")
+            .where('uid', isEqualTo: entryData['uid'])
+            .get();
+
+        if (user.docs.isNotEmpty) {
+          // Get document
+          QueryDocumentSnapshot document = user.docs[0];
+          Map<String, dynamic> userData =
+              document.data() as Map<String, dynamic>;
+          // Use the userData map as needed
+          final docRef = await db.collection("log").add({
+            'status': "Cleared",
+            'studentNum': userData['studentNum'],
+            'date': timeToday,
+            'uid': monitorId,
+            'studentId': userData['userId'],
+            'location': entryData['location'],
+          });
+          await db
+              .collection("log")
+              .doc(docRef.id)
+              .update({'logId': docRef.id});
+          return true;
+        } else {
+          print('No matching documents found.');
+          return false;
+        }
+      }
+      return false;
     } on FirebaseException catch (e) {
       rethrow;
     }
