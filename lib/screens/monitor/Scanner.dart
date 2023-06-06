@@ -75,11 +75,13 @@ class _ScannerState extends State<Scanner> {
                           result!.code!, currentUserUid, _location),
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
+                          controller!.pauseCamera();
                           return Center(
                             child: Text("Error encountered! ${snapshot.error}"),
                           );
                         } else if (snapshot.connectionState ==
                             ConnectionState.waiting) {
+                          controller!.pauseCamera();
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
