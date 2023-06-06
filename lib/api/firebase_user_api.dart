@@ -53,7 +53,7 @@ class FirebaseUserAPI {
       // Update underQuarantine and UnderMonitoring to false
       await db.collection("user").doc(uid).update({
         'underQuarantine': false,
-        'userMonitoring': false,
+        'underMonitoring': false,
       });
 
       return "Successfully updated user!";
