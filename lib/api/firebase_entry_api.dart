@@ -120,7 +120,8 @@ class FirebaseEntryAPI {
   // gawa ng update monitoring. gawin true yung under monitoring kapag naglagay si user na may entry na may close contact siya
 
   // Method to validateQRCode by checking if the entryId is valid and if the uid is the same as the uid of the entry
-  Future<bool> validateQRCode(String entryId, String monitorId) async {
+  Future<bool> validateQRCode(
+      String entryId, String monitorId, String location) async {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     try {
@@ -153,7 +154,7 @@ class FirebaseEntryAPI {
             'date': timeToday,
             'uid': monitorId,
             'studentId': userData['userId'],
-            'location': entryData['location'],
+            'location': location,
           });
           await db
               .collection("log")

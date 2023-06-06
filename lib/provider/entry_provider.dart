@@ -49,8 +49,10 @@ class EntryProvider with ChangeNotifier {
   }
 
   // Validate a QR Code by checking the uid and entryId
-  Future<bool> validateQRCode(String entryId, String monId) async {
-    bool isValid = await firebaseService.validateQRCode(entryId, monId);
+  Future<bool> validateQRCode(
+      String entryId, String monId, String location) async {
+    bool isValid =
+        await firebaseService.validateQRCode(entryId, monId, location);
     return isValid;
   }
 

@@ -3,7 +3,7 @@ import 'dart:convert';
 class MonitorLog {
   String? status;
   String? studentNum;
-  final String userId;
+  final String uid;
   final DateTime date;
   String? location;
   final String logId;
@@ -12,7 +12,7 @@ class MonitorLog {
   MonitorLog({
     this.status,
     this.studentNum,
-    required this.userId,
+    required this.uid,
     required this.date,
     this.location,
     required this.logId,
@@ -23,7 +23,7 @@ class MonitorLog {
     return MonitorLog(
       status: json['status'],
       studentNum: json['studentNum'],
-      userId: json['userId'],
+      uid: json['uid'],
       date: json['date'].toDate(),
       location: json['location'],
       logId: json['logId'],
@@ -40,7 +40,7 @@ class MonitorLog {
     return {
       'status': log.status,
       "studentNum": log.studentNum,
-      "userId": log.userId,
+      "uid": log.uid,
       "date": log.date,
       "location": log.location,
       "studentId": log.studentId

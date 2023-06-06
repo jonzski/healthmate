@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cmsc_23_project/provider/entry_provider.dart';
 
 import '../../provider/auth_provider.dart';
-import '../../provider/log_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -20,7 +19,7 @@ class _ScannerState extends State<Scanner> {
   bool? isQrvalid;
   QRViewController? controller;
   GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-
+  String qrText = "Scan QR Code";
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -69,9 +68,8 @@ class _ScannerState extends State<Scanner> {
             child: Center(
               child: (result != null)
                   ? FutureBuilder(
-                      future: context
-                          .read<EntryProvider>()
-                          .validateQRCode(result!.code!, currentUserUid),
+                      future: context.read<EntryProvider>().validateQRCode(
+                          result!.code!, currentUserUid, "UPLB"),
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Center(
@@ -82,18 +80,22 @@ class _ScannerState extends State<Scanner> {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
+                        } else if (snapshot.hasData && snapshot.data == true) {
+                          // Pop the screen
+                          controller!.pauseCamera();
+                          WidgetsBinding.instance!.addPostFrameCallback((_) {
+                            Navigator.pop(context);
+                          });
+                          return Container();
+                        } else {
+                          setState() {
+                            controller!.resumeCamera();
+                          }
                         }
-
-                        print(snapshot.data);
-                        return Text(
-                          'QR Code: ${result!.code}',
-                          style: TextStyle(
-                              color: snapshot.data == true
-                                  ? Colors.green
-                                  : Colors.red),
-                        );
-                      })
-                  : Text('Scan a code'),
+                        return Text(qrText);
+                      },
+                    )
+                  : Text(qrText),
             ),
           ),
           Positioned(

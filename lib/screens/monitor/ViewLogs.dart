@@ -22,12 +22,12 @@ class _ViewLogsState extends State<ViewLogs> {
 
     context.watch<LogProvider>().fetchAllLogs(currentUserUid);
 
-    Stream<QuerySnapshot> allStudents = context.watch<LogProvider>().allLogs;
+    Stream<QuerySnapshot> viewLogs = context.watch<LogProvider>().allLogs;
 
     return Container(
       color: const Color(0xFF090c12),
       child: StreamBuilder(
-        stream: allStudents,
+        stream: viewLogs,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -75,10 +75,12 @@ class _ViewLogsState extends State<ViewLogs> {
 
                     String name = user?['name'];
 
+                    // print(user);
+
                     return Card(
                       color: const Color(0xFF222429),
                       child: ListTile(
-                        title: Text(name),
+                        title: Text('Name: $name'),
                         subtitle: Text('Date: $date'),
                       ),
                     );
