@@ -40,10 +40,10 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 15),
+                      padding: const EdgeInsets.only(right: 10),
                       child: SvgPicture.asset(
                         logo,
-                        width: 60,
+                        width: 36,
                         colorFilter: const ColorFilter.mode(
                             Color(0xFF526bf2), BlendMode.srcIn),
                       ),
@@ -66,7 +66,7 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
                     ),
                   ]),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 25),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(children: [
                       TextFormField(
                         controller: _emailController,
@@ -102,7 +102,7 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xFF526bf2)),
                         minimumSize:
-                            MaterialStateProperty.all(const Size(100, 50)),
+                            MaterialStateProperty.all(const Size(36, 36)),
                       ),
                       onPressed: () async {
                         if (loginKey.currentState!.validate()) {
@@ -133,7 +133,7 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/monitor-signup');
