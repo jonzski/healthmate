@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../model/user_model.dart';
 import '../../provider/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,7 @@ class StudentClearing extends StatefulWidget {
 }
 
 class _StudentClearingState extends State<StudentClearing> {
+  final String logo = 'assets/images/Logo.svg';
   @override
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> clearedStudents =
@@ -31,8 +33,43 @@ class _StudentClearingState extends State<StudentClearing> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text("No students found."),
+            return Center(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Opacity(
+                    opacity: 0.1, // Set the desired opacity value (0.0 to 1.0)
+                    child: SvgPicture.asset(
+                      logo,
+                      width: 250,
+                      colorFilter: const ColorFilter.mode(
+                        Color(0xFF526bf2),
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const <Widget>[
+                      Text(
+                        "No",
+                        style: TextStyle(
+                          color: Color(0xFF526bf2),
+                          fontSize: 50,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        "Students found!",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             );
           }
 

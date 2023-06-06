@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:pie_chart/pie_chart.dart';
+
+import '../../provider/auth_provider.dart';
+import '../../provider/user_provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -54,20 +58,58 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget header() {
-    return Container(
-      margin:
-          const EdgeInsets.only(top: 30.0, left: 30.0, right: 30.0, bottom: 15),
-      padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Color(0xFF526bf2),
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      height: 80,
-      child: const Text(
-        ('Welcome, Monitor'),
-        style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
-      ),
-    );
+    String currentUserUid = context.read<AuthProvider>().currentUser.uid;
+    return FutureBuilder<Map<String, dynamic>?>(
+        future:
+            context.read<UserProvider>().viewSpecificStudent(currentUserUid),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error encountered! ${snapshot.error}"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          Map<String, dynamic>? monitor = snapshot.data;
+
+          String name = monitor?['name'];
+
+          return Container(
+            margin: const EdgeInsets.only(
+                top: 30.0, left: 30.0, right: 30.0, bottom: 15),
+            padding: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+              color: Color(0xFF526bf2),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  ('Welcome, Monitor $name !'),
+                  style: const TextStyle(
+                    fontFamily: 'SF-UI-Display',
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 5),
+                  child: Text(
+                    "Your student's health deserves to be constantly checked.",
+                    style: TextStyle(
+                        fontFamily: 'SF-UI-Display',
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   Widget title() {

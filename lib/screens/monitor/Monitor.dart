@@ -111,6 +111,7 @@ class _MonitorState extends State<Monitor> {
         floatingActionButtonLocation: ExpandableFab.location,
         floatingActionButton: ExpandableFab(
           backgroundColor: const Color(0xFF526bf2),
+          foregroundColor: Colors.white,
           type: ExpandableFabType.up,
           children: [
             FloatingActionButton(
@@ -118,12 +119,12 @@ class _MonitorState extends State<Monitor> {
                 Navigator.pushNamed(context, '/scanner');
               },
               backgroundColor: const Color(0xFF526bf2),
-              child: const Icon(Icons.qr_code_scanner),
+              child: const Icon(Icons.qr_code_scanner, color: Colors.white),
             ),
             FloatingActionButton(
-              backgroundColor: const Color(0xFF42a0d6),
+              backgroundColor: Colors.green,
               heroTag: null,
-              child: const Icon(Icons.phone_android),
+              child: const Icon(Icons.phone_android, color: Colors.white),
               onPressed: () {
                 Navigator.pushNamed(context, '/user',
                     arguments: const UserView(
@@ -132,9 +133,9 @@ class _MonitorState extends State<Monitor> {
               },
             ),
             FloatingActionButton(
-              backgroundColor: const Color(0xFF5e7a8a),
+              backgroundColor: Color.fromARGB(255, 255, 72, 59),
               heroTag: null,
-              child: const Icon(Icons.logout),
+              child: const Icon(Icons.logout, color: Colors.white),
               onPressed: () {
                 Navigator.pushNamed(context, '/monitor-signin');
               },

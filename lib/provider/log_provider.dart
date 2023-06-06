@@ -8,6 +8,7 @@ class LogProvider with ChangeNotifier {
   late FirebaseLogAPI firebaseService;
   late Stream<QuerySnapshot> _logStream;
   late Stream<QuerySnapshot> _logStreamByDate;
+  String _location = "UPLB";
 
   LogProvider() {
     firebaseService = FirebaseLogAPI();
@@ -16,6 +17,7 @@ class LogProvider with ChangeNotifier {
   // getter
   Stream<QuerySnapshot> get allLogs => _logStream;
   Stream<QuerySnapshot> get allLogsByDate => _logStreamByDate;
+  String get location => _location;
 
   void fetchAllLogs(String userId) async {
     _logStream = firebaseService.fetchAllLogs(userId);
@@ -46,6 +48,11 @@ class LogProvider with ChangeNotifier {
 
   void updateLocation(String uid, MonitorLog log) async {
     String message = await firebaseService.updateLocation(uid, log);
+    notifyListeners();
+  }
+
+  void updateMonitorLocation(String location) {
+    _location = location;
     notifyListeners();
   }
 }

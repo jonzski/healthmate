@@ -148,38 +148,42 @@ class _UserViewState extends State<UserView> {
                     },
                     child: bottomNavFunction(),
                   ),
-                  Container(
-                    color: const Color.fromRGBO(65, 67, 69, 0.7),
-                    height: 35,
-                    padding: const EdgeInsets.all(5),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(left: 5, right: 8),
-                                child: Icon(Icons.remove_red_eye_outlined),
-                              ),
-                              Text(
-                                'Viewing user\'s interface as $viewer',
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.white54,
-                              ),
-                              child: const Text(
-                                'Exit View',
-                                style: TextStyle(color: Colors.black),
-                              ))
-                        ]),
-                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Container(
+                      color: const Color(0xFF222429),
+                      height: 35,
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.all(5),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 5, right: 8),
+                                  child: Icon(Icons.remove_red_eye_outlined),
+                                ),
+                                Text(
+                                  'Viewing user\'s interface as $viewer',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF526bf2),
+                                ),
+                                child: const Text(
+                                  'Exit View',
+                                  style: TextStyle(color: Colors.white),
+                                ))
+                          ]),
+                    ),
+                  )
                 ],
               )
             : GestureDetector(
