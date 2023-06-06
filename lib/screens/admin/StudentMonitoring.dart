@@ -51,7 +51,9 @@ class _StudentMonitoringState extends State<StudentMonitoring> {
                     title: Text('Name: ${students.name}'),
                     subtitle: Text('Student Number: ${students.studentNum}'),
                     trailing: SizedBox(
-                      width: 90, // Adjust the width as per your requirements
+                      width: 106,
+                      // MediaQuery.of(context).size.width *
+                      //     0.1, // Adjust the width as per your requirements
                       height: 56, // Adjust the height as per your requirements
                       child: Row(
                         children: [
