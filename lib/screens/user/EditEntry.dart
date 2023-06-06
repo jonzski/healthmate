@@ -76,7 +76,7 @@ class _EditEntryState extends State<EditEntry> {
       appBar: AppBar(
         title: const Text('Edit Today\'s Entry'),
         centerTitle: true,
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF090c12),
       ),
       body: entry(),
     );

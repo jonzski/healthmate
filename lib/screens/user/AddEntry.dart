@@ -36,7 +36,7 @@ class _AddEntryState extends State<AddEntry> {
         appBar: AppBar(
           title: const Text('Add Today\'s Entry'),
           centerTitle: true,
-          backgroundColor: Colors.black,
+          backgroundColor: const Color(0xFF090c12),
         ),
         body: entry());
   }
