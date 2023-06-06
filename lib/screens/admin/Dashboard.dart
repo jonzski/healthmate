@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:pie_chart/pie_chart.dart';
-
-import '../../model/user_model.dart';
 import '../../provider/auth_provider.dart';
 import '../../provider/user_provider.dart';
 
@@ -24,59 +21,20 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> allStudents =
-        context.watch<UserProvider>().allStudents;
-
     return Container(
         color: const Color(0xFF090c12),
-        child: StreamBuilder(
-            stream: allStudents,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Error encountered! ${snapshot.error}"),
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              Map<String, double> temp = {
-                "Cleared": 0,
-                "Monitoring": 0,
-                "Quarantined": 0,
-              };
-
-              for (int index = 0; index < snapshot.data!.docs.length; index++) {
-                UserDetails student = UserDetails.fromJson(
-                    snapshot.data?.docs[index].data() as Map<String, dynamic>,
-                    0);
-                if (student.userType == 0) {
-                  if (!student.underMonitoring! && !student.underQuarantine!) {
-                    temp["Cleared"] = (temp["Cleared"]! + 1);
-                  } else if (student.underMonitoring!) {
-                    temp["Monitoring"] = (temp["Monitoring"]! + 1);
-                  } else if (student.underQuarantine!) {
-                    temp["Quarantined"] = (temp["Quarantined"]! + 1);
-                  }
-                }
-              }
-
-              dataMap = temp;
-
-              return Container(
-                  color: const Color(0xFF090c12),
-                  child: ListView(children: [
-                    Row(
-                      children: [Expanded(child: header())],
-                    ),
-                    Row(
-                      children: [Expanded(child: title())],
-                    ),
-                    pieGraph()
-                  ]));
-            }));
+        child: ListView(children: [
+          Row(
+            children: [Expanded(child: header())],
+          ),
+          Row(
+            children: [Expanded(child: title())],
+          ),
+          pieGraph(),
+          Column(
+            children: [cleared(), monitoring(), quarantine()],
+          )
+        ]));
   }
 
   Widget header() {
@@ -136,198 +94,232 @@ class _DashboardState extends State<Dashboard> {
 
   Widget title() {
     return Container(
-        margin: const EdgeInsets.only(
-            top: 10.0, left: 30.0, right: 30.0, bottom: 15),
+        margin: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
         padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.blueGrey.shade400,
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-        ),
-        child: Column(
+        child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Center(
               child: Text(
-                "Online Report",
+                "Daily Status",
                 style: TextStyle(
-                    fontSize: 20,
-                    // color: Colors.black,
-                    fontWeight: FontWeight.w500),
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            )
+            ),
+            Center(
+                child: Text("DailyStatus Underlineeeee",
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.transparent,
+                        decorationColor: Color(0xFFf56f42),
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 6)))
           ],
         ));
   }
 
   Widget pieGraph() {
     return Container(
-        margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
-        padding: const EdgeInsets.all(25),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(35),
+        margin: const EdgeInsets.only(left: 30, right: 30, bottom: 30, top: 10),
+        constraints: const BoxConstraints(
+          maxHeight: 200,
         ),
-        child: Row(
-          children: [
-            Expanded(
-                flex: 1,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Daily Status',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            fontFamily: 'SF-UI-Display'),
-                      ),
-                      Container(
-                          constraints: const BoxConstraints(
-                            maxHeight: 200,
-                          ),
-                          padding: const EdgeInsets.all(25),
-                          child: PieChart(
-                            dataMap: dataMap,
-                            colorList: const [
-                              Colors.green,
-                              Colors.orange,
-                              Colors.red
-                            ],
-                            chartType:
-                                ChartType.disc, // Set the chartType to 'disc'
-                            legendOptions: const LegendOptions(
-                              showLegends: false,
-                            ),
-                            chartValuesOptions: const ChartValuesOptions(
-                              showChartValues: false,
-                              showChartValueBackground: false,
-                            ),
-                          ))
-                    ])),
-            Expanded(flex: 1, child: dataNumbers())
-          ],
+        decoration: BoxDecoration(
+            color: Colors.white,
+            // borderRadius: BorderRadius.circular(35),
+            shape: BoxShape.circle,
+            border: Border.all(
+              // color: Colors.white, // Set the color of the border line to white
+              width: 0.5, // Set the thickness of the border line
+            )),
+        child: PieChart(
+          dataMap: dataMap,
+          colorList: const [Colors.green, Colors.orange, Colors.red],
+          chartType: ChartType.disc, // Set the chartType to 'disc'
+          legendOptions: const LegendOptions(
+            showLegends: false,
+          ),
+          chartValuesOptions: const ChartValuesOptions(
+            showChartValues: false,
+            showChartValueBackground: false,
+          ),
         ));
   }
 
-  Widget dataNumbers() {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, top: 5),
-          height: 70,
-          child: Column(children: [
-            const Text(
-              'Cleared Students',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontFamily: 'SF-UI-Display'),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 5, left: 50, right: 20),
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.green,
-                  ),
-                  child: const Icon(
-                    Icons.mood,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                Text(
-                  '${dataMap["Cleared"]}',
-                  style: const TextStyle(
-                      fontSize: 22,
-                      color: Colors.black,
-                      fontFamily: 'SF-UI-Display'),
-                ),
-              ],
-            )
-          ]),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, top: 5),
-          height: 70,
-          child: Column(children: [
-            const Text(
-              'Monitoring Students',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontFamily: 'SF-UI-Display'),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 5, left: 50, right: 20),
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.orange,
-                  ),
-                  child: const Icon(
-                    Icons.monitor_rounded,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                Text(
-                  '${dataMap["Monitoring"]}',
-                  style: const TextStyle(
-                      fontSize: 22,
-                      color: Colors.black,
-                      fontFamily: 'SF-UI-Display'),
-                ),
-              ],
-            )
-          ]),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 10, top: 5),
-          height: 70,
-          child: Column(children: [
-            const Text(
-              'Quarantined Students',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontFamily: 'SF-UI-Display'),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 5, left: 50, right: 20),
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red,
-                  ),
-                  child: const Icon(
-                    Icons.sick,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-                Text(
-                  '${dataMap["Quarantined"]}',
-                  style: const TextStyle(
-                      fontSize: 22,
-                      color: Colors.black,
-                      fontFamily: 'SF-UI-Display'),
-                ),
-              ],
-            )
-          ]),
-        )
-      ],
-    );
+  Widget cleared() {
+    Stream<QuerySnapshot> clearedStudents =
+        context.watch<UserProvider>().allClearedStudent;
+    return Container(
+        margin: const EdgeInsets.all(10),
+        // height: 70,
+        child: StreamBuilder(
+            stream: clearedStudents,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Error encountered! ${snapshot.error}"),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              dataMap["Cleared"] = snapshot.data!.docs.length.toDouble();
+
+              return Row(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 5, left: 20, right: 20),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.green,
+                      ),
+                      child: const Icon(
+                        Icons.emoji_emotions,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const Text(
+                      'Cleared\nStudents',
+                      style:
+                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        '${snapshot.data!.docs.length}',
+                        style: const TextStyle(
+                            fontSize: 22, fontFamily: 'SF-UI-Display'),
+                      ),
+                    )
+                  ],
+                )
+              ]);
+            }));
+  }
+
+  Widget monitoring() {
+    Stream<QuerySnapshot> monitoredStudents =
+        context.watch<UserProvider>().allMonitoredStudents;
+
+    return Container(
+        margin: const EdgeInsets.all(10),
+        height: 70,
+        child: StreamBuilder(
+            stream: monitoredStudents,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Error encountered! ${snapshot.error}"),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              dataMap["Monitoring"] = snapshot.data!.docs.length.toDouble();
+              return Row(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 5, left: 20, right: 20),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.orange,
+                      ),
+                      child: const Icon(
+                        Icons.monitor_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const Text(
+                      'Monitoring\nStudents',
+                      style:
+                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        '${snapshot.data!.docs.length}',
+                        style: const TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
+                            fontFamily: 'SF-UI-Display'),
+                      ),
+                    )
+                  ],
+                )
+              ]);
+            }));
+  }
+
+  Widget quarantine() {
+    Stream<QuerySnapshot> quarantinedStudents =
+        context.watch<UserProvider>().allQuarantinedStudents;
+
+    return Container(
+        margin: const EdgeInsets.all(10),
+        height: 70,
+        child: StreamBuilder(
+            stream: quarantinedStudents,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Error encountered! ${snapshot.error}"),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              dataMap["Quarantined"] = snapshot.data!.docs.length.toDouble();
+              return Row(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 5, left: 20, right: 20),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.red,
+                      ),
+                      child: const Icon(
+                        Icons.sick,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const Text(
+                      'Quarantined\nStudents',
+                      style:
+                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        '${snapshot.data!.docs.length}',
+                        style: const TextStyle(
+                            fontSize: 22, fontFamily: 'SF-UI-Display'),
+                      ),
+                    )
+                  ],
+                )
+              ]);
+            }));
   }
 }
 
