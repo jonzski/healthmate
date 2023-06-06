@@ -8,7 +8,7 @@ class LogProvider with ChangeNotifier {
   late FirebaseLogAPI firebaseService;
   late Stream<QuerySnapshot> _logStream;
   late Stream<QuerySnapshot> _logStreamByDate;
-  late String _location;
+  String _location = "UPLB";
 
   LogProvider() {
     firebaseService = FirebaseLogAPI();

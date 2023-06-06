@@ -149,10 +149,11 @@ class _UserViewState extends State<UserView> {
                     child: bottomNavFunction(),
                   ),
                   Positioned(
-                    bottom: 5,
+                    bottom: 0,
                     child: Container(
-                      color: const Color.fromRGBO(65, 67, 69, 0.7),
+                      color: const Color(0xFF222429),
                       height: 35,
+                      width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.all(5),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,17 +170,16 @@ class _UserViewState extends State<UserView> {
                                 ),
                               ],
                             ),
-                            const SizedBox(width: 5),
                             ElevatedButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white54,
+                                  backgroundColor: const Color(0xFF526bf2),
                                 ),
                                 child: const Text(
                                   'Exit View',
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(color: Colors.white),
                                 ))
                           ]),
                     ),

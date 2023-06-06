@@ -1,4 +1,5 @@
 import 'package:cmsc_23_project/provider/auth_provider.dart';
+import '../../provider/log_provider.dart';
 import '../../provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,8 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String currentUserUid = context.read<AuthProvider>().currentUser.uid;
+    TextEditingController _locationController = TextEditingController();
+    String _location = context.watch<LogProvider>().location;
 
     return FutureBuilder<Map<String, dynamic>?>(
       future: context.read<UserProvider>().viewSpecificStudent(currentUserUid),
@@ -72,25 +75,88 @@ class Profile extends StatelessWidget {
                       style: const TextStyle(fontSize: 18),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      context.read<AuthProvider>().signOut();
-                      Navigator.pushReplacementNamed(context, '/admin-signin');
-                    },
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.transparent),
-                      overlayColor:
-                          MaterialStateProperty.all(Colors.transparent),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      "Location: $_location",
+                      style: const TextStyle(fontSize: 18),
                     ),
-                    child: const Text(
-                      'Logout',
-                      style: TextStyle(
-                          fontFamily: 'SF-UI-Display',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15),
-                    ),
-                  )
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: const Color(0xFF222429),
+                                title: const Text('Enter current location'),
+                                content:
+                                    TextField(controller: _locationController),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text('Cancel'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('Update'),
+                                    onPressed: () {
+                                      String location =
+                                          _locationController.text;
+
+                                      context
+                                          .read<LogProvider>()
+                                          .updateMonitorLocation(location);
+
+                                      // Close the dialog
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
+                        child: const Text(
+                          'Update Location',
+                          style: TextStyle(
+                              fontFamily: 'SF-UI-Display',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          context.read<AuthProvider>().signOut();
+                          Navigator.pushReplacementNamed(
+                              context, '/admin-signin');
+                        },
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                        ),
+                        child: const Text(
+                          'Logout',
+                          style: TextStyle(
+                              fontFamily: 'SF-UI-Display',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15),
+                        ),
+                      )
+                    ],
+                  ),
                 ]),
               )),
         );

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:developer';
 import 'package:cmsc_23_project/provider/entry_provider.dart';
+import 'package:cmsc_23_project/provider/log_provider.dart';
 
 import '../../provider/auth_provider.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class _ScannerState extends State<Scanner> {
   }
 
   Widget _buildQrView(BuildContext context) {
+    String _location = context.read()<LogProvider>().location;
     String currentUserUid = context.read<AuthProvider>().currentUser.uid;
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
@@ -55,7 +57,7 @@ class _ScannerState extends State<Scanner> {
             key: qrKey,
             onQRViewCreated: _onQRViewCreated,
             overlay: QrScannerOverlayShape(
-              borderColor: Colors.red,
+              borderColor: const Color(0xFF526bf2),
               borderRadius: 10,
               borderLength: 30,
               borderWidth: 10,
@@ -69,7 +71,7 @@ class _ScannerState extends State<Scanner> {
               child: (result != null)
                   ? FutureBuilder(
                       future: context.read<EntryProvider>().validateQRCode(
-                          result!.code!, currentUserUid, "UPLB"),
+                          result!.code!, currentUserUid, _location),
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Center(
