@@ -136,9 +136,9 @@ class _StudentListState extends State<StudentList> {
                   margin:
                       const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
                   // padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF526bf2),
-                    borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF526bf2),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Center(
                       child: Row(
@@ -192,6 +192,87 @@ class _StudentListState extends State<StudentList> {
                     return Card(
                         color: const Color(0xFF222429),
                         child: ListTile(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: const Color(
+                                      0xFF222429), // Example color, choose a modern color
+                                  title: const Text(
+                                    'Student Info',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  content: Container(
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF526bf2),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Name: ${students[index].name}',
+                                          style: const TextStyle(
+                                            fontFamily: 'SF-UI-Display',
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        Text(
+                                          'Student Number: ${students[index].studentNum}',
+                                          style: const TextStyle(
+                                            fontFamily: 'SF-UI-Display',
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        Text(
+                                          'Course: ${students[index].course}',
+                                          style: const TextStyle(
+                                            fontFamily: 'SF-UI-Display',
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        Text(
+                                          'College: ${students[index].college}',
+                                          style: const TextStyle(
+                                            fontFamily: 'SF-UI-Display',
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                      },
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.transparent),
+                                        overlayColor: MaterialStateProperty.all(
+                                            Colors.transparent),
+                                      ),
+                                      child: const Text(
+                                        "Back",
+                                        style: TextStyle(
+                                          fontFamily: 'SF-UI-Display',
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                           title: Text(startSearch
                               ? filteredStudents[index].name
                               : students[index].name),
