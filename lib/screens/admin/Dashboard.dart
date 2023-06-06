@@ -96,15 +96,15 @@ class _DashboardState extends State<Dashboard> {
     return Container(
         margin: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
         padding: const EdgeInsets.all(15),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: const <Widget>[
             Center(
               child: Text(
                 "Daily Status",
                 style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 25,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -152,8 +152,7 @@ class _DashboardState extends State<Dashboard> {
     Stream<QuerySnapshot> clearedStudents =
         context.watch<UserProvider>().allClearedStudent;
     return Container(
-        margin: const EdgeInsets.all(10),
-        // height: 70,
+        margin: const EdgeInsets.symmetric(vertical: 10),
         child: StreamBuilder(
             stream: clearedStudents,
             builder: (context, snapshot) {
@@ -169,40 +168,37 @@ class _DashboardState extends State<Dashboard> {
 
               dataMap["Cleared"] = snapshot.data!.docs.length.toDouble();
 
-              return Row(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin:
-                          const EdgeInsets.only(top: 5, left: 20, right: 20),
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.green,
-                      ),
-                      child: const Icon(
-                        Icons.emoji_emotions,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+              return Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green,
                     ),
-                    const Text(
-                      'Cleared\nStudents',
-                      style:
-                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                    child: const Icon(
+                      Icons.emoji_emotions,
+                      color: Colors.white,
+                      size: 20,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Text(
-                        '${snapshot.data!.docs.length}',
-                        style: const TextStyle(
-                            fontSize: 22, fontFamily: 'SF-UI-Display'),
-                      ),
-                    )
-                  ],
-                )
-              ]);
+                  ),
+                  const Text(
+                    'Cleared\nStudents',
+                    style: TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      '${snapshot.data!.docs.length}',
+                      style: const TextStyle(
+                          fontSize: 22, fontFamily: 'SF-UI-Display'),
+                    ),
+                  )
+                ],
+              ));
             }));
   }
 
@@ -211,58 +207,55 @@ class _DashboardState extends State<Dashboard> {
         context.watch<UserProvider>().allMonitoredStudents;
 
     return Container(
-        margin: const EdgeInsets.all(10),
-        height: 70,
-        child: StreamBuilder(
-            stream: monitoredStudents,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Error encountered! ${snapshot.error}"),
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              dataMap["Monitoring"] = snapshot.data!.docs.length.toDouble();
-              return Row(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin:
-                          const EdgeInsets.only(top: 5, left: 20, right: 20),
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.orange,
-                      ),
-                      child: const Icon(
-                        Icons.monitor_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                    const Text(
-                      'Monitoring\nStudents',
-                      style:
-                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 20),
-                      child: Text(
-                        '${snapshot.data!.docs.length}',
-                        style: const TextStyle(
-                            fontSize: 22,
-                            color: Colors.white,
-                            fontFamily: 'SF-UI-Display'),
-                      ),
-                    )
-                  ],
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: StreamBuilder(
+        stream: monitoredStudents,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error encountered! ${snapshot.error}"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          dataMap["Monitoring"] = snapshot.data!.docs.length.toDouble();
+          return Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.orange,
+                  ),
+                  child: const Icon(
+                    Icons.monitor_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                const Text(
+                  'Monitoring\nStudents',
+                  style: TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text(
+                    '${snapshot.data!.docs.length}',
+                    style: const TextStyle(
+                        fontSize: 22, fontFamily: 'SF-UI-Display'),
+                  ),
                 )
-              ]);
-            }));
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
   Widget quarantine() {
@@ -270,56 +263,55 @@ class _DashboardState extends State<Dashboard> {
         context.watch<UserProvider>().allQuarantinedStudents;
 
     return Container(
-        margin: const EdgeInsets.all(10),
-        height: 70,
-        child: StreamBuilder(
-            stream: quarantinedStudents,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Error encountered! ${snapshot.error}"),
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              dataMap["Quarantined"] = snapshot.data!.docs.length.toDouble();
-              return Row(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin:
-                          const EdgeInsets.only(top: 5, left: 20, right: 20),
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.red,
-                      ),
-                      child: const Icon(
-                        Icons.sick,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                    const Text(
-                      'Quarantined\nStudents',
-                      style:
-                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Text(
-                        '${snapshot.data!.docs.length}',
-                        style: const TextStyle(
-                            fontSize: 22, fontFamily: 'SF-UI-Display'),
-                      ),
-                    )
-                  ],
-                )
-              ]);
-            }));
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: StreamBuilder(
+        stream: quarantinedStudents,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("Error encountered! ${snapshot.error}"),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          dataMap["Quarantined"] = snapshot.data!.docs.length.toDouble();
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 5, left: 20, right: 20),
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+                child: const Icon(
+                  Icons.sick,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const Text(
+                'Quarantined\nStudents',
+                style: TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  '${snapshot.data!.docs.length}',
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontFamily: 'SF-UI-Display',
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }
 
