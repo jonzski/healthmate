@@ -113,7 +113,7 @@ class _DashboardState extends State<Dashboard> {
                     style: TextStyle(
                         fontSize: 10,
                         color: Colors.transparent,
-                        decorationColor: Color(0xFFf56f42),
+                        decorationColor: Color(0xFF526bf2),
                         decoration: TextDecoration.underline,
                         decorationThickness: 6)))
           ],
@@ -313,10 +313,4 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
-}
-
-class ChartData {
-  ChartData(this.day, this.numOfQuar);
-  final int day;
-  final int numOfQuar;
 }

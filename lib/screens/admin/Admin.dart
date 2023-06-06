@@ -114,7 +114,7 @@ class _AdminState extends State<Admin> {
           type: ExpandableFabType.up,
           children: [
             FloatingActionButton(
-              backgroundColor: const Color(0xFF42a0d6),
+              backgroundColor: const Color(0xFF526bf2),
               heroTag: null,
               child: const Icon(Icons.phone_android),
               onPressed: () {

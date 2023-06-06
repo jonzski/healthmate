@@ -28,10 +28,10 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
           borderRadius: BorderRadius.circular(15),
           color: const Color(0xFF222429),
         ),
-        height: 450,
-        margin: const EdgeInsets.only(left: 40.0, right: 40.0),
+        height: 400,
+        margin: const EdgeInsets.only(left: 50.0, right: 50.0),
         child: Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
+            padding: const EdgeInsets.all(20),
             child: Center(
                 child: Form(
               key: loginKey,

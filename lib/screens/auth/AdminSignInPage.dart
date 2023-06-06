@@ -29,9 +29,9 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
           color: const Color(0xFF222429),
         ),
         height: 450,
-        margin: const EdgeInsets.only(left: 40.0, right: 40.0),
+        margin: const EdgeInsets.only(left: 50.0, right: 50.0),
         child: Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
+            padding: const EdgeInsets.all(20),
             child: Center(
                 child: Form(
               key: loginKey,
@@ -40,10 +40,10 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                 children: [
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 15),
+                      padding: const EdgeInsets.only(right: 10),
                       child: SvgPicture.asset(
                         logo,
-                        width: 60,
+                        width: 36,
                         colorFilter: const ColorFilter.mode(
                             Color(0xFF526bf2), BlendMode.srcIn),
                       ),
@@ -53,7 +53,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
-                          fontSize: 30,
+                          fontSize: 10,
                           fontWeight: FontWeight.w700),
                     ),
                     const Text(

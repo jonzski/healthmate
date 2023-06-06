@@ -137,7 +137,7 @@ class _StudentListState extends State<StudentList> {
                       const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
                   // padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: Colors.indigo.shade800,
+                    color: const Color(0xFF526bf2),
                     borderRadius: const BorderRadius.all(Radius.circular(5)),
                   ),
                   child: Center(
@@ -178,7 +178,6 @@ class _StudentListState extends State<StudentList> {
                               style: const TextStyle(fontSize: 16),
                               decoration: const InputDecoration(
                                 labelText: 'Search',
-                                labelStyle: TextStyle(height: 1),
                               )))
                     ],
                   ))),
@@ -202,7 +201,7 @@ class _StudentListState extends State<StudentList> {
                           trailing: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.0),
-                                color: const Color(0xFF5c61cc),
+                                color: const Color(0xFF526bf2),
                               ),
                               child: IconButton(
                                 icon: const Icon(Icons.trending_up_rounded),
