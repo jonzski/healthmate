@@ -16,19 +16,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final List<ChartData> chartData = [
-    ChartData(1, 10),
-    ChartData(2, 18),
-    ChartData(3, 14),
-    ChartData(4, 32),
-    ChartData(5, 40),
-    ChartData(6, 35),
-    ChartData(7, 28),
-    ChartData(8, 34),
-    ChartData(9, 32),
-    ChartData(10, 40)
-  ];
-
   Map<String, double> dataMap = {
     "Cleared": 0,
     "Monitoring": 0,
@@ -86,9 +73,6 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Row(
                       children: [Expanded(child: title())],
-                    ),
-                    Row(
-                      children: [Expanded(child: lineGraph())],
                     ),
                     pieGraph()
                   ]));
@@ -169,53 +153,6 @@ class _DashboardState extends State<Dashboard> {
                     fontSize: 20,
                     // color: Colors.black,
                     fontWeight: FontWeight.w500),
-              ),
-            )
-          ],
-        ));
-  }
-
-  Widget lineGraph() {
-    return Container(
-        margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
-        padding:
-            const EdgeInsets.only(top: 40, left: 30, right: 30, bottom: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(35),
-        ),
-        child: Column(
-          children: [
-            const Text(
-              'Number of Quarantined Students',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-            SizedBox(
-              height: 200,
-              child: SfCartesianChart(
-                primaryXAxis: NumericAxis(
-                  majorGridLines: const MajorGridLines(width: 0),
-                  minorGridLines: const MinorGridLines(width: 0),
-                  labelStyle: const TextStyle(color: Colors.black),
-                  title: AxisTitle(
-                      text: 'Days',
-                      textStyle: const TextStyle(color: Colors.black)),
-                ),
-                primaryYAxis: NumericAxis(
-                  majorGridLines: const MajorGridLines(width: 0),
-                  minorGridLines: const MinorGridLines(width: 0),
-                  labelStyle: const TextStyle(color: Colors.black),
-                ),
-                series: <ChartSeries>[
-                  // Renders line chart
-                  LineSeries<ChartData, int>(
-                      color: Colors.amber.shade800,
-                      dataSource: chartData,
-                      xValueMapper: (ChartData data, _) => data.day,
-                      yValueMapper: (ChartData data, _) => data.numOfQuar)
-                ],
-                plotAreaBorderColor: Colors.transparent,
-                borderWidth: 0,
               ),
             )
           ],
