@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:developer';
-import 'package:cmsc_23_project/provider/entry_provider.dart';
-import 'package:cmsc_23_project/provider/log_provider.dart';
 
-import '../../provider/auth_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import '../../provider/auth_provider.dart';
+import '../../provider/log_provider.dart';
+import '../../provider/entry_provider.dart';
 
 class Scanner extends StatefulWidget {
   const Scanner({Key? key}) : super(key: key);
@@ -43,7 +44,7 @@ class _ScannerState extends State<Scanner> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    String _location = context.read()<LogProvider>().location;
+    String _location = context.read<LogProvider>().location;
     String currentUserUid = context.read<AuthProvider>().currentUser.uid;
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
