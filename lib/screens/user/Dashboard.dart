@@ -38,9 +38,6 @@ class _DashboardState extends State<Dashboard> {
           ),
           const Divider(),
           Row(
-            children: [Expanded(child: listOfEntries())],
-          ),
-          Row(
             children: [Expanded(child: isUnderQuarantine())],
           ),
           Row(
@@ -240,71 +237,6 @@ class _DashboardState extends State<Dashboard> {
         )
       ]),
     );
-  }
-
-  Widget listOfEntries() {
-    String currentUserUid = context.read<AuthProvider>().currentUser.uid;
-
-    return FutureBuilder<Map<String, dynamic>?>(
-        future:
-            context.read<UserProvider>().viewSpecificStudent(currentUserUid),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("Error encountered! ${snapshot.error}"),
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Color(0xFF222429),
-              borderRadius: BorderRadius.all(Radius.circular(50)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Icon(
-                    Icons.list_alt_rounded,
-                    size: 25,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'List of Health Status Entries',
-                      style: TextStyle(
-                        fontFamily: 'SF-UI-Display',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    // Text(
-                    //   'Number of Entries: ${numOfEntries()}',
-                    //   style: const TextStyle(
-                    //     fontFamily: 'SF-UI-Display',
-                    //     fontWeight: FontWeight.w300,
-                    //     fontSize: 16,
-                    //     color: Colors.white,
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        });
   }
 
   Widget isUnderQuarantine() {
