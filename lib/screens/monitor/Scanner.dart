@@ -44,6 +44,11 @@ class _ScannerState extends State<Scanner> {
   }
 
   Widget _buildQrView(BuildContext context) {
+    if (controller != null && mounted) {
+      controller!.pauseCamera();
+      controller!.resumeCamera();
+    }
+
     String _location = context.read<LogProvider>().location;
     String currentUserUid = context.read<AuthProvider>().currentUser.uid;
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
@@ -89,14 +94,11 @@ class _ScannerState extends State<Scanner> {
                           // Pop the screen
                           controller!.pauseCamera();
                           WidgetsBinding.instance!.addPostFrameCallback((_) {
+                            controller!.dispose();
                             Navigator.pop(context);
                           });
                           return Container();
-                        } else {
-                          setState() {
-                            controller!.resumeCamera();
-                          }
-                        }
+                        } else {}
                         return Text(qrText);
                       },
                     )
@@ -109,6 +111,7 @@ class _ScannerState extends State<Scanner> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
+                controller!.dispose();
                 Navigator.pop(context);
               },
             ),
@@ -137,6 +140,8 @@ class _ScannerState extends State<Scanner> {
         result = scanData;
       });
     });
+    controller.pauseCamera();
+    controller.resumeCamera();
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
