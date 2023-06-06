@@ -44,8 +44,8 @@ class _UserViewState extends State<UserView> {
         });
       },
       children: <Widget>[
-        const UserEntries(),
         Dashboard(viewer: viewer),
+        const UserEntries(),
         Profile(viewer: viewer)
       ],
     );
@@ -124,11 +124,11 @@ class _UserViewState extends State<UserView> {
             });
           },
           items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
               icon: Icon(Icons.list_alt_rounded),
               label: 'Entry Request',
             ),
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',
