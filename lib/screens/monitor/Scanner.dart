@@ -44,6 +44,11 @@ class _ScannerState extends State<Scanner> {
   }
 
   Widget _buildQrView(BuildContext context) {
+    if (controller != null && mounted) {
+      controller!.pauseCamera();
+      controller!.resumeCamera();
+    }
+
     String _location = context.read<LogProvider>().location;
     String currentUserUid = context.read<AuthProvider>().currentUser.uid;
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
@@ -66,42 +71,36 @@ class _ScannerState extends State<Scanner> {
             ),
             onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
           ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: (result != null)
-                  ? FutureBuilder(
-                      future: context.read<EntryProvider>().validateQRCode(
-                          result!.code!, currentUserUid, _location),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          controller!.pauseCamera();
-                          return Center(
-                            child: Text("Error encountered! ${snapshot.error}"),
-                          );
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          controller!.pauseCamera();
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasData && snapshot.data == true) {
-                          // Pop the screen
-                          controller!.pauseCamera();
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            Navigator.pop(context);
-                          });
-                          return Container();
-                        } else {
-                          setState() {
-                            controller!.resumeCamera();
-                          }
-                        }
-                        return Text(qrText);
-                      },
-                    )
-                  : Text(qrText),
-            ),
+          Center(
+            child: (result != null)
+                ? FutureBuilder(
+                    future: context.read<EntryProvider>().validateQRCode(
+                        result!.code!, currentUserUid, _location),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        controller!.pauseCamera();
+                        return Center(
+                          child: Text("Error encountered! ${snapshot.error}"),
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        controller!.pauseCamera();
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasData && snapshot.data == true) {
+                        // Pop the screen
+                        controller!.pauseCamera();
+                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          controller!.dispose();
+                          Navigator.pop(context);
+                        });
+                        return Container();
+                      } else {}
+                      return Text(qrText);
+                    },
+                  )
+                : Text(qrText),
           ),
           Positioned(
             top: 50,
@@ -109,6 +108,7 @@ class _ScannerState extends State<Scanner> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
+                controller!.dispose();
                 Navigator.pop(context);
               },
             ),
@@ -137,6 +137,8 @@ class _ScannerState extends State<Scanner> {
         result = scanData;
       });
     });
+    controller.pauseCamera();
+    controller.resumeCamera();
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
