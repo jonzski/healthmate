@@ -1,8 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:pie_chart/pie_chart.dart';
-
 import '../../provider/auth_provider.dart';
 import '../../provider/user_provider.dart';
 
@@ -14,23 +13,10 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final List<ChartData> chartData = [
-    ChartData(1, 10),
-    ChartData(2, 18),
-    ChartData(3, 14),
-    ChartData(4, 32),
-    ChartData(5, 40),
-    ChartData(6, 35),
-    ChartData(7, 28),
-    ChartData(8, 34),
-    ChartData(9, 32),
-    ChartData(10, 40)
-  ];
-
   Map<String, double> dataMap = {
-    "Cleared": 10,
-    "Monitoring": 3,
-    "Quarantined": 2,
+    "Cleared": 0,
+    "Monitoring": 0,
+    "Quarantined": 0,
   };
 
   @override
@@ -44,16 +30,10 @@ class _DashboardState extends State<Dashboard> {
           Row(
             children: [Expanded(child: title())],
           ),
-          Row(
-            children: [Expanded(child: lineGraph())],
-          ),
-          const Divider(),
-          Row(
-            children: [
-              Expanded(flex: 1, child: pieGraph()),
-              Expanded(flex: 1, child: dataNumbers())
-            ],
-          ),
+          pieGraph(),
+          Column(
+            children: [cleared(), monitoring(), quarantine()],
+          )
         ]));
   }
 
@@ -114,196 +94,232 @@ class _DashboardState extends State<Dashboard> {
 
   Widget title() {
     return Container(
-        margin: const EdgeInsets.only(
-            top: 10.0, left: 30.0, right: 30.0, bottom: 15),
+        margin: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
         padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.blueGrey.shade400,
-          borderRadius: const BorderRadius.all(Radius.circular(15)),
-        ),
-        child: Column(
+        child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Center(
               child: Text(
-                "Online Report",
+                "Daily Status",
                 style: TextStyle(
-                    fontSize: 20,
-                    // color: Colors.black,
-                    fontWeight: FontWeight.w500),
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            )
-          ],
-        ));
-  }
-
-  Widget lineGraph() {
-    return Container(
-        margin: const EdgeInsets.only(left: 30, right: 30, bottom: 10),
-        padding:
-            const EdgeInsets.only(top: 40, left: 30, right: 30, bottom: 10),
-        decoration: BoxDecoration(
-          // color: const Color(0xFF222429),
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(35),
-        ),
-        // height: 300,
-        child: Column(
-          children: [
-            const Text(
-              'Number of Quarantined Students',
-              style: TextStyle(fontSize: 16, color: Colors.black),
             ),
-            SizedBox(
-              height: 200,
-              child: SfCartesianChart(
-                primaryXAxis: NumericAxis(
-                  majorGridLines: const MajorGridLines(width: 0),
-                  minorGridLines: const MinorGridLines(width: 0),
-                  labelStyle: const TextStyle(color: Colors.black),
-                  title: AxisTitle(
-                      text: 'Days',
-                      textStyle: const TextStyle(color: Colors.black)),
-                ),
-                primaryYAxis: NumericAxis(
-                  majorGridLines: const MajorGridLines(width: 0),
-                  minorGridLines: const MinorGridLines(width: 0),
-                  labelStyle: const TextStyle(color: Colors.black),
-                ),
-                series: <ChartSeries>[
-                  // Renders line chart
-                  LineSeries<ChartData, int>(
-                      color: Colors.amber.shade800,
-                      dataSource: chartData,
-                      xValueMapper: (ChartData data, _) => data.day,
-                      yValueMapper: (ChartData data, _) => data.numOfQuar)
-                ],
-                plotAreaBorderColor: Colors.transparent,
-                borderWidth: 0,
-              ),
-            )
+            Center(
+                child: Text("DailyStatus Underlineeeee",
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.transparent,
+                        decorationColor: Color(0xFFf56f42),
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 6)))
           ],
         ));
   }
 
   Widget pieGraph() {
     return Container(
-      margin: const EdgeInsets.only(left: 30, right: 10, bottom: 10),
-      padding: const EdgeInsets.all(25),
-      decoration: BoxDecoration(
-        // color: const Color(0xFF222429),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(35),
-      ),
-      height: 300,
-      child: Column(children: [
-        const Text(
-          'Daily Status',
-          style: TextStyle(fontSize: 20, color: Colors.black),
+        margin: const EdgeInsets.only(left: 30, right: 30, bottom: 30, top: 10),
+        constraints: const BoxConstraints(
+          maxHeight: 200,
         ),
-        Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: PieChart(
-              dataMap: dataMap,
-              colorList: const [Colors.green, Colors.orange, Colors.red],
-              chartType: ChartType.disc, // Set the chartType to 'disc'
-              legendOptions: const LegendOptions(
-                showLegends: false,
-              ),
-              chartValuesOptions: const ChartValuesOptions(
-                showChartValues: false,
-                showChartValueBackground: false,
-              ),
-            ))
-      ]),
-    );
+        decoration: BoxDecoration(
+            color: Colors.white,
+            // borderRadius: BorderRadius.circular(35),
+            shape: BoxShape.circle,
+            border: Border.all(
+              // color: Colors.white, // Set the color of the border line to white
+              width: 0.5, // Set the thickness of the border line
+            )),
+        child: PieChart(
+          dataMap: dataMap,
+          colorList: const [Colors.green, Colors.orange, Colors.red],
+          chartType: ChartType.disc, // Set the chartType to 'disc'
+          legendOptions: const LegendOptions(
+            showLegends: false,
+          ),
+          chartValuesOptions: const ChartValuesOptions(
+            showChartValues: false,
+            showChartValueBackground: false,
+          ),
+        ));
   }
 
-  Widget dataNumbers() {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFF55d993),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Column(children: [
-            const Text(
-              'Cleared Students',
-              style: TextStyle(fontSize: 15, color: Colors.white),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Icon(
-                  Icons.emoji_emotions,
-                ),
-                Text(
-                  '${dataMap["Cleared"]}',
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              ],
-            )
-          ]),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFfca562),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: Column(children: [
-            const Text(
-              'Monitoring Student',
-              style: TextStyle(fontSize: 15, color: Colors.white),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Icon(
-                  Icons.monitor_rounded,
-                ),
-                Text(
-                  '${dataMap["Monitoring"]}',
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
-                ),
-              ],
-            )
-          ]),
-        ),
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 30, bottom: 10),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFFfc6265),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          width: 250,
-          child: Column(children: [
-            const Text(
-              'Quarantined Students',
-              style: TextStyle(fontSize: 20, color: Colors.white),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Icon(
-                  Icons.sick,
-                  size: 40,
-                ),
-                Text(
-                  '${dataMap["Quarantined"]}',
-                  style: const TextStyle(fontSize: 32, color: Colors.white),
-                ),
-              ],
-            )
-          ]),
-        )
-      ],
-    );
+  Widget cleared() {
+    Stream<QuerySnapshot> clearedStudents =
+        context.watch<UserProvider>().allClearedStudent;
+    return Container(
+        margin: const EdgeInsets.all(10),
+        // height: 70,
+        child: StreamBuilder(
+            stream: clearedStudents,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Error encountered! ${snapshot.error}"),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              dataMap["Cleared"] = snapshot.data!.docs.length.toDouble();
+
+              return Row(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 5, left: 20, right: 20),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.green,
+                      ),
+                      child: const Icon(
+                        Icons.emoji_emotions,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const Text(
+                      'Cleared\nStudents',
+                      style:
+                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        '${snapshot.data!.docs.length}',
+                        style: const TextStyle(
+                            fontSize: 22, fontFamily: 'SF-UI-Display'),
+                      ),
+                    )
+                  ],
+                )
+              ]);
+            }));
+  }
+
+  Widget monitoring() {
+    Stream<QuerySnapshot> monitoredStudents =
+        context.watch<UserProvider>().allMonitoredStudents;
+
+    return Container(
+        margin: const EdgeInsets.all(10),
+        height: 70,
+        child: StreamBuilder(
+            stream: monitoredStudents,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Error encountered! ${snapshot.error}"),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              dataMap["Monitoring"] = snapshot.data!.docs.length.toDouble();
+              return Row(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 5, left: 20, right: 20),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.orange,
+                      ),
+                      child: const Icon(
+                        Icons.monitor_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const Text(
+                      'Monitoring\nStudents',
+                      style:
+                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20),
+                      child: Text(
+                        '${snapshot.data!.docs.length}',
+                        style: const TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
+                            fontFamily: 'SF-UI-Display'),
+                      ),
+                    )
+                  ],
+                )
+              ]);
+            }));
+  }
+
+  Widget quarantine() {
+    Stream<QuerySnapshot> quarantinedStudents =
+        context.watch<UserProvider>().allQuarantinedStudents;
+
+    return Container(
+        margin: const EdgeInsets.all(10),
+        height: 70,
+        child: StreamBuilder(
+            stream: quarantinedStudents,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text("Error encountered! ${snapshot.error}"),
+                );
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              dataMap["Quarantined"] = snapshot.data!.docs.length.toDouble();
+              return Row(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 5, left: 20, right: 20),
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.red,
+                      ),
+                      child: const Icon(
+                        Icons.sick,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const Text(
+                      'Quarantined\nStudents',
+                      style:
+                          TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        '${snapshot.data!.docs.length}',
+                        style: const TextStyle(
+                            fontSize: 22, fontFamily: 'SF-UI-Display'),
+                      ),
+                    )
+                  ],
+                )
+              ]);
+            }));
   }
 }
 
