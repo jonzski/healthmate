@@ -14,10 +14,11 @@ class StudentList extends StatefulWidget {
 }
 
 class _StudentListState extends State<StudentList> {
+  final String logo = 'assets/images/Logo.svg';
+
   final TextEditingController _searchController = TextEditingController();
   static final List<String> filterBy = ["Course", "College", "Student No"];
   String _filterByValue = filterBy.first;
-  final String logo = 'assets/images/Logo.svg';
 
   List<UserDetails> students = [];
   List<UserDetails> filteredStudents = [];
