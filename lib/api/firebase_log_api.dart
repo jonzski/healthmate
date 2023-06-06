@@ -35,7 +35,9 @@ class FirebaseLogAPI {
   Future<String> addLogs(String status, UserDetails user, String location,
       String monitorId) async {
     DateTime timeToday = DateTime.now();
-    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day)
+        .copyWith(hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0)
+        .toUtc();
 
     try {
       final docRef = await db.collection("log").add({

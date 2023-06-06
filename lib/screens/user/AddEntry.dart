@@ -186,7 +186,14 @@ class _AddEntryState extends State<AddEntry> {
             } else {
               bool contact;
               DateTime dateToday = DateTime(DateTime.now().year,
-                  DateTime.now().month, DateTime.now().day);
+                      DateTime.now().month, DateTime.now().day)
+                  .copyWith(
+                      hour: 0,
+                      minute: 0,
+                      second: 0,
+                      millisecond: 0,
+                      microsecond: 0,
+                      isUtc: true);
               if (inContact == 'yes') {
                 contact = true;
               } else {
