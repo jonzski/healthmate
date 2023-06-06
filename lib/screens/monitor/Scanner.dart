@@ -71,39 +71,36 @@ class _ScannerState extends State<Scanner> {
             ),
             onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
           ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: (result != null)
-                  ? FutureBuilder(
-                      future: context.read<EntryProvider>().validateQRCode(
-                          result!.code!, currentUserUid, _location),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          controller!.pauseCamera();
-                          return Center(
-                            child: Text("Error encountered! ${snapshot.error}"),
-                          );
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          controller!.pauseCamera();
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasData && snapshot.data == true) {
-                          // Pop the screen
-                          controller!.pauseCamera();
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            controller!.dispose();
-                            Navigator.pop(context);
-                          });
-                          return Container();
-                        } else {}
-                        return Text(qrText);
-                      },
-                    )
-                  : Text(qrText),
-            ),
+          Center(
+            child: (result != null)
+                ? FutureBuilder(
+                    future: context.read<EntryProvider>().validateQRCode(
+                        result!.code!, currentUserUid, _location),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        controller!.pauseCamera();
+                        return Center(
+                          child: Text("Error encountered! ${snapshot.error}"),
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        controller!.pauseCamera();
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasData && snapshot.data == true) {
+                        // Pop the screen
+                        controller!.pauseCamera();
+                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          controller!.dispose();
+                          Navigator.pop(context);
+                        });
+                        return Container();
+                      } else {}
+                      return Text(qrText);
+                    },
+                  )
+                : Text(qrText),
           ),
           Positioned(
             top: 50,
