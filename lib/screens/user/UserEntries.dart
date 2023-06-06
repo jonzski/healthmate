@@ -47,7 +47,7 @@ class _UserEntriesState extends State<UserEntries> {
                 )),
               ),
               SizedBox(
-                width: 600,
+                width: 700,
                 child: dailyEntryStatus(snapshot),
               )
             ]));
@@ -63,10 +63,8 @@ class _UserEntriesState extends State<UserEntries> {
       String date = DateFormat('dd MMMM yyyy').format(entry.entryDate);
       if (entry.uid == context.read<AuthProvider>().currentUser.uid) {
         entryStatus.add(Container(
-            margin:
-                const EdgeInsets.only(right: 40, left: 40, top: 10, bottom: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
             padding: const EdgeInsets.all(5),
-            // height: 90,
             decoration: const BoxDecoration(
                 color: Color(0xFF222429),
                 borderRadius: BorderRadius.all(Radius.circular(10))),
