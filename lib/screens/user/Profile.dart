@@ -28,7 +28,9 @@ class _ProfileState extends State<Profile> {
     StreamSubscription<QuerySnapshot> subscription = FirebaseFirestore.instance
         .collection("entry")
         .where('uid', isEqualTo: context.read<AuthProvider>().currentUser.uid)
-        .where('entryDate', isEqualTo: timeToday)
+        .where('entryDate', isGreaterThanOrEqualTo: timeToday.toLocal())
+        .where('entryDate',
+            isLessThan: timeToday.add(Duration(days: 1)).toLocal())
         .snapshots()
         .listen((QuerySnapshot snapshot) {
       if (snapshot.docs.isNotEmpty) {

@@ -7,13 +7,12 @@ class FirebaseEntryAPI {
 
   Future<String> addEntry(Map<String, dynamic> entry, User user) async {
     DateTime timeToday = DateTime.now();
-    timeToday =
-        DateTime(timeToday.year, timeToday.month, timeToday.day, 0, 0, 0, 0, 0);
-
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('entry')
-        .where('entryDate', isGreaterThanOrEqualTo: timeToday)
         .where('uid', isEqualTo: user.uid)
+        .where('entryDate', isGreaterThanOrEqualTo: timeToday)
+        .where('entryDate', isLessThan: timeToday.add(Duration(days: 1)))
         .get();
 
     if (snapshot.docs.isNotEmpty) {
@@ -51,7 +50,9 @@ class FirebaseEntryAPI {
       final snapshot = await db
           .collection("entry")
           .where('uid', isEqualTo: user.uid)
-          .where('entryDate', isEqualTo: timeToday)
+          .where('entryDate', isGreaterThanOrEqualTo: timeToday.toLocal())
+          .where('entryDate',
+              isLessThan: timeToday.add(Duration(days: 1)).toLocal())
           .get();
 
       if (snapshot.docs.isNotEmpty) {
@@ -124,11 +125,14 @@ class FirebaseEntryAPI {
       String entryId, String monitorId, String location) async {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    DateTime timeTomorrow = timeToday.add(Duration(days: 1));
+
     try {
       final entry = await db
           .collection("entry")
           .where('entryId', isEqualTo: entryId)
-          .where('entryDate', isEqualTo: timeToday)
+          .where('entryDate', isGreaterThanOrEqualTo: timeToday)
+          .where('entryDate', isLessThan: timeTomorrow)
           .get();
 
       if (entry.docs.isNotEmpty) {
@@ -151,7 +155,7 @@ class FirebaseEntryAPI {
           final docRef = await db.collection("log").add({
             'status': "Cleared",
             'studentNum': userData['studentNum'],
-            'date': timeToday,
+            'date': DateTime.now(),
             'uid': monitorId,
             'studentId': userData['userId'],
             'location': location,
@@ -228,6 +232,7 @@ class FirebaseEntryAPI {
   Future<String> entryDeleteRequest(String entryId, DailyEntry entry) async {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+
     try {
       await db
           .collection("entry")

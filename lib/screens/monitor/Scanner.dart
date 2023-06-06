@@ -43,7 +43,7 @@ class _ScannerState extends State<Scanner> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    String _location = context.read()<LogProvider>().location;
+    String _location = context.read<LogProvider>().location;
     String currentUserUid = context.read<AuthProvider>().currentUser.uid;
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
@@ -74,11 +74,13 @@ class _ScannerState extends State<Scanner> {
                           result!.code!, currentUserUid, _location),
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
+                          controller!.pauseCamera();
                           return Center(
                             child: Text("Error encountered! ${snapshot.error}"),
                           );
                         } else if (snapshot.connectionState ==
                             ConnectionState.waiting) {
+                          controller!.pauseCamera();
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
