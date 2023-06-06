@@ -24,7 +24,10 @@ class _StudentEntriesState extends State<StudentEntries> {
             child: Text(
               'Quarantine and Monitor Students',
               textAlign: TextAlign.center,
-              style: TextStyle(fontFamily: 'SF-UI-Display', fontSize: 25),
+              style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20),
             ),
           ),
           Expanded(

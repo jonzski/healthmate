@@ -23,7 +23,10 @@ class _EntryRequestState extends State<EntryRequest> {
             child: Text(
               'Entry Request',
               textAlign: TextAlign.center,
-              style: TextStyle(fontFamily: 'SF-UI-Display', fontSize: 25),
+              style: TextStyle(
+                  fontFamily: 'SF-UI-Display',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 25),
             ),
           ),
           Expanded(
