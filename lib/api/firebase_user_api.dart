@@ -7,7 +7,7 @@ class FirebaseUserAPI {
 
   // Add User to Quarantine
   Future<String> addUserToQuarantine(
-      String uid, DateTime quarantineStart, DateTime quarantineEnd) async {
+      String uid, DateTime quarantineStart) async {
     try {
       await db.collection("quarantine").doc(uid).set({
         'uid': uid,
@@ -81,6 +81,7 @@ class FirebaseUserAPI {
           .collection("user")
           .where('underMonitoring', isEqualTo: false)
           .where('underQuarantine', isEqualTo: false)
+          .where('userType', isEqualTo: 0)
           .snapshots();
     } on FirebaseException catch (e) {
       throw e;
@@ -92,7 +93,7 @@ class FirebaseUserAPI {
     try {
       return db
           .collection("user")
-          .where('underMonitoring', isEqualTo: false)
+          .where('underMonitoring', isEqualTo: true)
           .where('underQuarantine', isEqualTo: true)
           .snapshots();
     } on FirebaseException catch (e) {
