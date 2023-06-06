@@ -51,15 +51,12 @@ class _EditRequestState extends State<EditRequest> {
                 return Card(
                   color: const Color(0xFF222429),
                   child: Padding(
-                    padding: EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(15),
                     child: ListTile(
                         title: Text('Request ID: ${entry.entryId!}'),
                         trailing: SizedBox(
-                          width:
-                              90, // Adjust the width as per your requirements
-                          height:
-                              56, // Adjust the height as per your requirements
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
                                 decoration: const BoxDecoration(
@@ -69,14 +66,13 @@ class _EditRequestState extends State<EditRequest> {
                                 child: IconButton(
                                   onPressed: () {
                                     context.read<EntryProvider>().editRequest(
-                                        entry,
-                                        entry.entryRequestId!,
-                                        'Approved');
+                                          entry,
+                                          entry.entryRequestId!,
+                                          'Approved',
+                                        );
                                   },
                                   icon: const Icon(Icons.check),
                                   color: Colors.white,
-                                  hoverColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -88,14 +84,13 @@ class _EditRequestState extends State<EditRequest> {
                                 child: IconButton(
                                   onPressed: () {
                                     context.read<EntryProvider>().editRequest(
-                                        entry,
-                                        entry.entryRequestId!,
-                                        'Rejected');
+                                          entry,
+                                          entry.entryRequestId!,
+                                          'Rejected',
+                                        );
                                   },
                                   icon: const Icon(Icons.close),
                                   color: Colors.white,
-                                  hoverColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
                                 ),
                               ),
                             ],
@@ -106,11 +101,11 @@ class _EditRequestState extends State<EditRequest> {
                           children: [
                             Text(
                               'Request Date: ${DateFormat('MM/dd/yyyy').format(entry.entryDate)}',
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 12),
                             ),
                             Text(
                               'Reason for editing: ${entry.remarks}',
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(fontSize: 12),
                             ),
                           ],
                         )),
