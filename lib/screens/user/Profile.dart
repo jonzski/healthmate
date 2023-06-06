@@ -168,7 +168,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ],
                         ),
-                        qRcode(entry!.entryId!)
+                        entry != null ? qRcode(entry!.entryId!) : qRcode("")
                       ]),
                     )),
                 TextButton(
