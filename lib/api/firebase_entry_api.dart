@@ -7,11 +7,12 @@ class FirebaseEntryAPI {
 
   Future<String> addEntry(Map<String, dynamic> entry, User user) async {
     DateTime timeToday = DateTime.now();
-    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    timeToday =
+        DateTime(timeToday.year, timeToday.month, timeToday.day, 0, 0, 0, 0, 0);
 
     final QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('entry')
-        .where('entryDate', isEqualTo: timeToday)
+        .where('entryDate', isGreaterThanOrEqualTo: timeToday)
         .where('uid', isEqualTo: user.uid)
         .get();
 
@@ -72,7 +73,6 @@ class FirebaseEntryAPI {
   Future<String> editEntryRequest(String entryId, DailyEntry entry) async {
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
-
     try {
       // print(entry.symptoms);
       final docRef = await db.collection("entryEditRequests").add({
