@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../model/user_model.dart';
 import '../../provider/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,7 @@ class _StudentListState extends State<StudentList> {
   final TextEditingController _searchController = TextEditingController();
   static final List<String> filterBy = ["Course", "College", "Student No"];
   String _filterByValue = filterBy.first;
+  final String logo = 'assets/images/Logo.svg';
 
   List<UserDetails> students = [];
   List<UserDetails> filteredStudents = [];
@@ -66,8 +68,43 @@ class _StudentListState extends State<StudentList> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text("No students found."),
+            return Center(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Opacity(
+                    opacity: 0.1, // Set the desired opacity value (0.0 to 1.0)
+                    child: SvgPicture.asset(
+                      logo,
+                      width: 250,
+                      colorFilter: const ColorFilter.mode(
+                        Color(0xFF526bf2),
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const <Widget>[
+                      Text(
+                        "No",
+                        style: TextStyle(
+                          color: Color(0xFF526bf2),
+                          fontSize: 50,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        "Students found!",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             );
           }
 
@@ -88,7 +125,10 @@ class _StudentListState extends State<StudentList> {
                 child: Text(
                   'List of Students',
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: 'SF-UI-Display', fontSize: 25),
+                  style: TextStyle(
+                      fontFamily: 'SF-UI-Display',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 25),
                 ),
               ),
               Container(
