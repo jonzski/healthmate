@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     const Text(
-                      "OHMS",
+                      "Health",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.w700),
                     ),
                     const Text(
-                      "Mobile",
+                      "Mate",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',

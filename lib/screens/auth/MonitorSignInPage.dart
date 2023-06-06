@@ -49,7 +49,7 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
                       ),
                     ),
                     const Text(
-                      "OHMS",
+                      "Health",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
@@ -57,7 +57,7 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
                           fontWeight: FontWeight.w700),
                     ),
                     const Text(
-                      "Mobile",
+                      "Mate",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',

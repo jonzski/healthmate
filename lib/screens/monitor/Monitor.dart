@@ -83,7 +83,7 @@ class _MonitorState extends State<Monitor> {
               ),
             ),
             const Text(
-              "OHMS",
+              "Health",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: 'SF-UI-Display',
@@ -91,7 +91,7 @@ class _MonitorState extends State<Monitor> {
                   fontWeight: FontWeight.w700),
             ),
             const Text(
-              "Mobile",
+              "Mate",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: 'SF-UI-Display',
@@ -101,13 +101,6 @@ class _MonitorState extends State<Monitor> {
           ]),
           backgroundColor: const Color(0xFF090c12),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     Navigator.pushNamed(context, '/scanner');
-        //   },
-        //   backgroundColor: const Color(0xFF526bf2),
-        //   child: const Icon(Icons.qr_code_scanner),
-        // ),
         floatingActionButtonLocation: ExpandableFab.location,
         floatingActionButton: ExpandableFab(
           backgroundColor: const Color(0xFF526bf2),

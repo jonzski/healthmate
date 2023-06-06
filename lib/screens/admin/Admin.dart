@@ -90,7 +90,7 @@ class _AdminState extends State<Admin> {
               ),
             ),
             const Text(
-              "OHMS",
+              "Health",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: 'SF-UI-Display',
@@ -98,7 +98,7 @@ class _AdminState extends State<Admin> {
                   fontWeight: FontWeight.w700),
             ),
             const Text(
-              "Mobile",
+              "Mate",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: 'SF-UI-Display',

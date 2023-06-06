@@ -49,7 +49,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                       ),
                     ),
                     const Text(
-                      "OHMS",
+                      "Health",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
@@ -57,7 +57,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                           fontWeight: FontWeight.w700),
                     ),
                     const Text(
-                      "Mobile",
+                      "Mate",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
