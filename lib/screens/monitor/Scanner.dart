@@ -102,9 +102,19 @@ class _ScannerState extends State<Scanner> {
             top: 50,
             left: 10,
             child: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
+              },
+            ),
+          ),
+          Positioned(
+            top: 50,
+            right: 10,
+            child: IconButton(
+              icon: const Icon(Icons.flip_camera_android),
+              onPressed: () {
+                controller!.flipCamera();
               },
             ),
           ),
