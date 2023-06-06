@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:cmsc_23_project/model/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,7 @@ class _ProfileState extends State<Profile> {
   bool generateQRcode = false;
   DailyEntry? entry;
 
+  @override
   void initState() {
     viewer = widget.viewer;
     super.initState();
@@ -49,11 +52,19 @@ class _ProfileState extends State<Profile> {
           }
         }
 
-        if (hasSymptoms == false) {
-          setState(() {
-            generateQRcode = true;
-          });
-        }
+        context
+            .read<UserProvider>()
+            .viewSpecificStudent(context.read<AuthProvider>().currentUser.uid)
+            .then((value) => {
+                  if (value?['underQuarantine'] == false &&
+                      value?['underMonitoring'] == false &&
+                      entry?.canGenerateQR == true)
+                    {
+                      setState(() {
+                        generateQRcode = true;
+                      })
+                    }
+                });
       }
     });
   }
