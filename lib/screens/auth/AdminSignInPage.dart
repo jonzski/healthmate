@@ -28,7 +28,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
           borderRadius: BorderRadius.circular(15),
           color: const Color(0xFF222429),
         ),
-        height: 450,
+        height: 400,
         margin: const EdgeInsets.only(left: 50.0, right: 50.0),
         child: Padding(
             padding: const EdgeInsets.all(20),
@@ -49,15 +49,15 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                       ),
                     ),
                     const Text(
-                      "OHMS",
+                      "Health",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
-                          fontSize: 10,
+                          fontSize: 30,
                           fontWeight: FontWeight.w700),
                     ),
                     const Text(
-                      "Mobile",
+                      "Mate",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
@@ -66,7 +66,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                     ),
                   ]),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 25),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Column(children: [
                       TextFormField(
                         controller: _emailController,
@@ -102,7 +102,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xFF526bf2)),
                         minimumSize:
-                            MaterialStateProperty.all(const Size(100, 50)),
+                            MaterialStateProperty.all(const Size(36, 36)),
                       ),
                       onPressed: () async {
                         if (loginKey.currentState!.validate()) {
@@ -132,7 +132,7 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     child: TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/admin-signup');
