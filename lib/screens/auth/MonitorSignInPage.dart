@@ -109,14 +109,19 @@ class _MonitorSignInPageState extends State<MonitorSignInPage> {
                           loginKey.currentState!.save();
 
                           try {
-                            final UserCredential user = await context
+                            final UserCredential? user = await context
                                 .read<AuthProvider>()
                                 .signIn(_emailController.text.trim(),
-                                    _passwordController.text.trim());
+                                    _passwordController.text.trim(), 3);
 
                             if (user != null && context.mounted) {
                               Navigator.pushReplacementNamed(
                                   context, '/monitor');
+                            } else if (user == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "You cannot sign in as a monitor")));
                             }
                           } catch (e) {
                             print('Error: $e');
