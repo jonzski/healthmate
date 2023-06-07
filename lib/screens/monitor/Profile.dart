@@ -28,10 +28,31 @@ class Profile extends StatelessWidget {
 
         Map<String, dynamic>? monitor = snapshot.data;
 
+        String empNo = "N/A";
+        String position = "N/A";
+        String homeUnit = "N/A";
+
         String name = monitor?['name'];
-        String empNo = monitor?['empNo'];
-        String position = monitor?['position'];
-        String homeUnit = monitor?['homeUnit'];
+        if (monitor?['empNo'] == null) {
+          empNo = monitor?['studentNum'];
+        } else {
+          empNo = monitor?['empNo'];
+        }
+
+        if (monitor?['position'] != null) {
+          position = monitor?['position'];
+        } else {
+          position = "Student Monitor";
+        }
+
+        if (monitor?['homeUnit'] != null) {
+          homeUnit = monitor?['homeUnit'];
+        } else {
+          homeUnit = monitor?['college'];
+        }
+
+        // position = monitor?['position'];
+        // homeUnit = monitor?['homeUnit'];
 
         return Container(
           color: const Color(0xFF090c12),
@@ -64,7 +85,7 @@ class Profile extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5),
                     child: Text(
-                      "Positiion: $position",
+                      "Position: $position",
                       style: TextStyle(fontSize: 18),
                     ),
                   ),

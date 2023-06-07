@@ -24,11 +24,28 @@ class Profile extends StatelessWidget {
         }
 
         Map<String, dynamic>? admin = snapshot.data;
+        String empNo = "N/A";
+        String position = "N/A";
+        String homeUnit = "N/A";
 
         String name = admin?['name'];
-        String empNo = admin?['empNo'];
-        String position = admin?['position'];
-        String homeUnit = admin?['homeUnit'];
+        if (admin?['empNo'] == null) {
+          empNo = admin?['studentNum'];
+        } else {
+          empNo = admin?['empNo'];
+        }
+
+        if (admin?['position'] != null) {
+          position = admin?['position'];
+        } else {
+          position = "Student Admin";
+        }
+
+        if (admin?['homeUnit'] != null) {
+          homeUnit = admin?['homeUnit'];
+        } else {
+          homeUnit = admin?['college'];
+        }
 
         return Container(
           color: const Color(0xFF090c12),
