@@ -9,6 +9,10 @@ class UserProvider with ChangeNotifier {
   late Stream<QuerySnapshot> _monitorStream;
   late Stream<QuerySnapshot> _clearedStream;
 
+  int? _clearedCount;
+  int? _quarantineCount;
+  int? _monitoringCount;
+
   UserProvider() {
     firebaseService = FirebaseUserAPI();
     getAllStudents();
@@ -21,6 +25,10 @@ class UserProvider with ChangeNotifier {
   Stream<QuerySnapshot> get allQuarantinedStudents => _quarantineStream;
   Stream<QuerySnapshot> get allMonitoredStudents => _monitorStream;
   Stream<QuerySnapshot> get allClearedStudent => _clearedStream;
+
+  int? get clearedCount => _clearedCount;
+  int? get quarantineCount => _quarantineCount;
+  int? get monitoringCount => _monitoringCount;
 
   // Add User to Quarantine
   Future<String> addUserToQuarantine(
@@ -93,5 +101,23 @@ class UserProvider with ChangeNotifier {
     Map<String, dynamic>? student =
         await firebaseService.getSpecificStudent(uid);
     return student;
+  }
+
+  // Edit Quarantine Count
+  void updateQuarantineCount(int count) {
+    _quarantineCount = count;
+    notifyListeners();
+  }
+
+  // Edit Monitoring Count
+  void updateMonitoringCount(int count) {
+    _monitoringCount = count;
+    notifyListeners();
+  }
+
+  // Edit Cleared Count
+  void updateClearedCount(int count) {
+    _clearedCount = count;
+    notifyListeners();
   }
 }
