@@ -89,7 +89,9 @@ class _DeleteRequestState extends State<DeleteRequest> {
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: ListTile(
-                        title: Text('Request ID: ${entry.entryId!}'),
+                        title: Text('Request ID: ${entry.entryId!}',
+                            style: const TextStyle(
+                                fontFamily: 'SF-UI-Display', fontSize: 16)),
                         trailing: SizedBox(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -137,13 +139,16 @@ class _DeleteRequestState extends State<DeleteRequest> {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const SizedBox(height: 10),
                             Text(
                               'Request Date: ${DateFormat('MM/dd/yyyy').format(entry.entryDate)}',
-                              style: const TextStyle(fontSize: 12),
+                              style: const TextStyle(
+                                  fontFamily: 'SF-UI-Display', fontSize: 12),
                             ),
                             Text(
                               'Reason for editing: ${entry.remarks}',
-                              style: const TextStyle(fontSize: 12),
+                              style: const TextStyle(
+                                  fontFamily: 'SF-UI-Display', fontSize: 12),
                             ),
                           ],
                         )),

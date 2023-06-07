@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../model/entry_model.dart';
 import '../../provider/entry_provider.dart';
@@ -90,7 +90,11 @@ class _EditRequestState extends State<EditRequest> {
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: ListTile(
-                        title: Text('Request ID: ${entry.entryId!}'),
+                        title: Text(
+                          'Request ID: ${entry.entryRequestId!}',
+                          style: const TextStyle(
+                              fontFamily: 'SF-UI-Display', fontSize: 16),
+                        ),
                         trailing: SizedBox(
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -136,13 +140,16 @@ class _EditRequestState extends State<EditRequest> {
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const SizedBox(height: 10),
                             Text(
                               'Request Date: ${DateFormat('MM/dd/yyyy').format(entry.entryDate)}',
-                              style: const TextStyle(fontSize: 12),
+                              style: const TextStyle(
+                                  fontFamily: 'SF-UI-Display', fontSize: 12),
                             ),
                             Text(
                               'Reason for editing: ${entry.remarks}',
-                              style: const TextStyle(fontSize: 12),
+                              style: const TextStyle(
+                                  fontFamily: 'SF-UI-Display', fontSize: 12),
                             ),
                           ],
                         )),

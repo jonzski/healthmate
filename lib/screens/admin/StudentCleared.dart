@@ -85,8 +85,13 @@ class _StudentClearingState extends State<StudentClearing> {
                 return Card(
                   color: const Color(0xFF222429),
                   child: ListTile(
-                    title: Text('Name: ${students.name}'),
-                    subtitle: Text('Student Number: ${students.studentNum}'),
+                    title: Text('Name: ${students.name}',
+                        style: const TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontWeight: FontWeight.w700,
+                        )),
+                    subtitle: Text('Student Number: ${students.studentNum}',
+                        style: const TextStyle(fontFamily: 'SF-UI-Display')),
                   ),
                 );
               }),

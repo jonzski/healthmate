@@ -147,7 +147,9 @@ class _StudentListState extends State<StudentList> {
                       const Text(
                         "Filter by",
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
+                            fontFamily: 'SF-UI-Display',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
                       ),
                       DropdownButton<String>(
                         // isExpanded: true,
@@ -175,7 +177,8 @@ class _StudentListState extends State<StudentList> {
                                 startSearch = true;
                               },
                               controller: _searchController,
-                              style: const TextStyle(fontSize: 16),
+                              style: const TextStyle(
+                                  fontFamily: 'SF-UI-Display', fontSize: 16),
                               decoration: const InputDecoration(
                                 labelText: 'Search',
                               )))
@@ -273,12 +276,22 @@ class _StudentListState extends State<StudentList> {
                               },
                             );
                           },
-                          title: Text(startSearch
-                              ? filteredStudents[index].name
-                              : students[index].name),
-                          subtitle: Text(startSearch
-                              ? filteredStudents[index].studentNum!
-                              : students[index].studentNum!),
+                          title: Text(
+                            startSearch
+                                ? filteredStudents[index].name
+                                : students[index].name,
+                            style: const TextStyle(
+                              fontFamily: 'SF-UI-Display',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          subtitle: Text(
+                              startSearch
+                                  ? filteredStudents[index].studentNum!
+                                  : students[index].studentNum!,
+                              style: const TextStyle(
+                                fontFamily: 'SF-UI-Display',
+                              )),
                           trailing: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.0),
