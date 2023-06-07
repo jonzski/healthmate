@@ -65,18 +65,18 @@ class FirebaseLogAPI {
 
       if (status == "Cleared") {
         await db.collection("user").doc(studentId).update({
-          'isUnderMonitoring': false,
-          'isUnderQuarantine': false,
+          'underMonitoring': false,
+          'underQuarantine': false,
         });
       } else if (status == "Under Monitoring") {
         await db.collection("user").doc(studentId).update({
-          'isUnderMonitoring': true,
-          'isUnderQuarantine': false,
+          'underMonitoring': true,
+          'underQuarantine': false,
         });
       } else {
         await db.collection("user").doc(studentId).update({
-          'isUnderMonitoring': true,
-          'isUnderQuarantine': true,
+          'underMonitoring': true,
+          'underQuarantine': true,
         });
       }
 
