@@ -174,8 +174,8 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                                   "empNo": _empnoController.text,
                                   "position": _positionControler.text,
                                   "homeUnit": _unitController.text,
-                                  "underMonitoring": null,
-                                  "underQuarantine": null,
+                                  "underMonitoring": false,
+                                  "underQuarantine": false,
                                   "diseases": null,
                                   "allergies": null
                                 };
