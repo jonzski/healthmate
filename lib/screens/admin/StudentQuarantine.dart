@@ -79,6 +79,7 @@ class _StudentQuarantineState extends State<StudentQuarantine> {
             itemBuilder: ((context, index) {
               UserDetails students = UserDetails.fromJson(
                   snapshot.data?.docs[index].data() as Map<String, dynamic>, 0);
+              print(snapshot.data?.docs.length);
               return Card(
                 color: const Color(0xFF222429),
                 child: ListTile(
@@ -91,9 +92,10 @@ class _StudentQuarantineState extends State<StudentQuarantine> {
                     ),
                     child: IconButton(
                       onPressed: () {
-                        context
-                            .read<UserProvider>()
-                            .endUserMonitoring(students.userId!);
+                        DateTime now = DateTime.now();
+                        DateTime futureDate = now.add(const Duration(days: 7));
+                        context.read<UserProvider>().finishStudentQuarantine(
+                            students.userId!, futureDate);
                       },
                       icon: const Icon(Icons.mood),
                       color: Colors.white,

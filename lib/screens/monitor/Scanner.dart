@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
 import 'dart:io';
 import 'dart:developer';
-import 'package:cmsc_23_project/provider/entry_provider.dart';
-import 'package:cmsc_23_project/provider/log_provider.dart';
 
-import '../../provider/auth_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+
+import '../../provider/auth_provider.dart';
+import '../../provider/log_provider.dart';
+import '../../provider/entry_provider.dart';
 
 class Scanner extends StatefulWidget {
   const Scanner({Key? key}) : super(key: key);
@@ -43,7 +44,12 @@ class _ScannerState extends State<Scanner> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    String _location = context.read()<LogProvider>().location;
+    if (controller != null && mounted) {
+      controller!.pauseCamera();
+      controller!.resumeCamera();
+    }
+
+    String _location = context.read<LogProvider>().location;
     String currentUserUid = context.read<AuthProvider>().currentUser.uid;
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
@@ -65,40 +71,36 @@ class _ScannerState extends State<Scanner> {
             ),
             onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
           ),
-          Expanded(
-            flex: 1,
-            child: Center(
-              child: (result != null)
-                  ? FutureBuilder(
-                      future: context.read<EntryProvider>().validateQRCode(
-                          result!.code!, currentUserUid, _location),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Center(
-                            child: Text("Error encountered! ${snapshot.error}"),
-                          );
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasData && snapshot.data == true) {
-                          // Pop the screen
-                          controller!.pauseCamera();
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            Navigator.pop(context);
-                          });
-                          return Container();
-                        } else {
-                          setState() {
-                            controller!.resumeCamera();
-                          }
-                        }
-                        return Text(qrText);
-                      },
-                    )
-                  : Text(qrText),
-            ),
+          Center(
+            child: (result != null)
+                ? FutureBuilder(
+                    future: context.read<EntryProvider>().validateQRCode(
+                        result!.code!, currentUserUid, _location),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        controller!.pauseCamera();
+                        return Center(
+                          child: Text("Error encountered! ${snapshot.error}"),
+                        );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        controller!.pauseCamera();
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasData && snapshot.data == true) {
+                        // Pop the screen
+                        controller!.pauseCamera();
+                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                          controller!.dispose();
+                          Navigator.pop(context);
+                        });
+                        return Container();
+                      } else {}
+                      return Text(qrText);
+                    },
+                  )
+                : Text(qrText),
           ),
           Positioned(
             top: 50,
@@ -106,6 +108,7 @@ class _ScannerState extends State<Scanner> {
             child: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
+                controller!.dispose();
                 Navigator.pop(context);
               },
             ),
@@ -134,6 +137,8 @@ class _ScannerState extends State<Scanner> {
         result = scanData;
       });
     });
+    controller.pauseCamera();
+    controller.resumeCamera();
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {

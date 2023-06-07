@@ -97,12 +97,6 @@ class Profile extends StatelessWidget {
                                     TextField(controller: _locationController),
                                 actions: <Widget>[
                                   TextButton(
-                                    child: const Text('Cancel'),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  TextButton(
                                     child: const Text('Update'),
                                     onPressed: () {
                                       String location =
@@ -113,6 +107,12 @@ class Profile extends StatelessWidget {
                                           .updateMonitorLocation(location);
 
                                       // Close the dialog
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('Cancel'),
+                                    onPressed: () {
                                       Navigator.of(context).pop();
                                     },
                                   ),

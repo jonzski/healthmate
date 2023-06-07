@@ -56,24 +56,25 @@ class FirebaseLogAPI {
     }
   }
 
-  Future<String> updateStatus(MonitorLog log) async {
+  Future<String> updateStatus(
+      String logId, String studentId, String status) async {
     try {
-      await db.collection("log").doc(log.logId).update({
-        'studentNum': log.status,
+      await db.collection("log").doc(logId).update({
+        'status': status,
       });
 
-      if (log.status == "Cleared") {
-        await db.collection("user").doc(log.studentId).update({
+      if (status == "Cleared") {
+        await db.collection("user").doc(studentId).update({
           'isUnderMonitoring': false,
           'isUnderQuarantine': false,
         });
-      } else if (log.status == "Under Monitoring") {
-        await db.collection("user").doc(log.studentId).update({
+      } else if (status == "Under Monitoring") {
+        await db.collection("user").doc(studentId).update({
           'isUnderMonitoring': true,
           'isUnderQuarantine': false,
         });
       } else {
-        await db.collection("user").doc(log.studentId).update({
+        await db.collection("user").doc(studentId).update({
           'isUnderMonitoring': true,
           'isUnderQuarantine': true,
         });
@@ -101,14 +102,10 @@ class FirebaseLogAPI {
     }
   }
 
-  Future<String> updateLocation(String uid, MonitorLog log) async {
+  Future<String> updateLocation(String logId, String location) async {
     try {
-      await db.collection("log").doc(log.logId).update({
-        'location': log.location,
-      });
-
-      await db.collection("user").doc(log.studentId).update({
-        'location': log.location,
+      await db.collection("log").doc(logId).update({
+        'location': location,
       });
 
       return "Successfully updated Location!";

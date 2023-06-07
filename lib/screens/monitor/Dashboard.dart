@@ -96,9 +96,9 @@ class _DashboardState extends State<Dashboard> {
     return Container(
         margin: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0),
         padding: const EdgeInsets.all(15),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: const <Widget>[
             Center(
               child: Text(
                 "Daily Status",

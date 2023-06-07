@@ -120,12 +120,10 @@ class _StudentMonitoringState extends State<StudentMonitoring> {
                             child: IconButton(
                               onPressed: () {
                                 DateTime now = DateTime.now();
-                                DateTime futureDate =
-                                    now.add(const Duration(days: 7));
+
                                 context
                                     .read<UserProvider>()
-                                    .addUserToQuarantine(
-                                        students.userId!, now, futureDate);
+                                    .addUserToQuarantine(students.userId!, now);
                               },
                               icon: const Icon(Icons.sick),
                               color: Colors.white,

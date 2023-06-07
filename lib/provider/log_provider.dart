@@ -36,8 +36,9 @@ class LogProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateStatus(MonitorLog log) async {
-    String message = await firebaseService.updateStatus(log);
+  void updateStatus(String logId, String studentId, String status) async {
+    String message =
+        await firebaseService.updateStatus(logId, studentId, status);
     notifyListeners();
   }
 
@@ -46,8 +47,8 @@ class LogProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateLocation(String uid, MonitorLog log) async {
-    String message = await firebaseService.updateLocation(uid, log);
+  void updateLocation(String logId, String location) async {
+    String message = await firebaseService.updateLocation(logId, location);
     notifyListeners();
   }
 

@@ -90,7 +90,7 @@ class _AdminState extends State<Admin> {
               ),
             ),
             const Text(
-              "OHMS",
+              "Health",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: 'SF-UI-Display',
@@ -98,7 +98,7 @@ class _AdminState extends State<Admin> {
                   fontWeight: FontWeight.w700),
             ),
             const Text(
-              "Mobile",
+              "Mate",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: 'SF-UI-Display',
@@ -114,7 +114,7 @@ class _AdminState extends State<Admin> {
           type: ExpandableFabType.up,
           children: [
             FloatingActionButton(
-              backgroundColor: const Color(0xFF42a0d6),
+              backgroundColor: const Color(0xFF526bf2),
               heroTag: null,
               child: const Icon(Icons.phone_android),
               onPressed: () {

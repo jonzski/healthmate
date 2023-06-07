@@ -24,9 +24,9 @@ class UserProvider with ChangeNotifier {
 
   // Add User to Quarantine
   Future<String> addUserToQuarantine(
-      String uid, DateTime quarantineStart, DateTime quarantineEnd) async {
-    String message = await firebaseService.addUserToQuarantine(
-        uid, quarantineStart, quarantineEnd);
+      String uid, DateTime quarantineStart) async {
+    String message =
+        await firebaseService.addUserToQuarantine(uid, quarantineStart);
     print(message);
 
     return message;
