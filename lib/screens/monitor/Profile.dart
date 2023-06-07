@@ -43,10 +43,28 @@ class Profile extends StatelessWidget {
 
         Map<String, dynamic>? monitor = snapshot.data;
 
+        String empNo = "N/A";
+        String position = "N/A";
+        String homeUnit = "N/A";
+
         String name = monitor?['name'];
-        String empNo = monitor?['empNo'];
-        String position = monitor?['position'];
-        String homeUnit = monitor?['homeUnit'];
+        if (monitor?['empNo'] == null) {
+          empNo = monitor?['studentNum'];
+        } else {
+          empNo = monitor?['empNo'];
+        }
+
+        if (monitor?['position'] != null) {
+          position = monitor?['position'];
+        } else {
+          position = "Student Monitor";
+        }
+
+        if (monitor?['homeUnit'] != null) {
+          homeUnit = monitor?['homeUnit'];
+        } else {
+          homeUnit = monitor?['college'];
+        }
 
         Random random = Random();
         int randomIndex = random.nextInt(quotes.length);
@@ -169,154 +187,77 @@ class Profile extends StatelessWidget {
                         ),
                       ]),
                     )),
-                TextButton(
-                  onPressed: () {
-                    context.read<AuthProvider>().signOut();
-                    Navigator.pushReplacementNamed(context, '/monitor-sigin');
-                  },
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.transparent),
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            backgroundColor: const Color(0xFF222429),
+                            title: const Text('Enter current location'),
+                            content: TextField(controller: _locationController),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Update'),
+                                onPressed: () {
+                                  String location = _locationController.text;
+
+                                  context
+                                      .read<LogProvider>()
+                                      .updateMonitorLocation(location);
+
+                                  // Close the dialog
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                      overlayColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                    ),
+                    child: const Text(
+                      'Update Location',
+                      style: TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15),
+                    ),
                   ),
-                  child: const Text(
-                    'Sign Out',
-                    style: TextStyle(
-                        fontFamily: 'SF-UI-Display',
-                        fontWeight: FontWeight.w700,
-                        fontSize: 15),
+                  TextButton(
+                    onPressed: () {
+                      context.read<AuthProvider>().signOut();
+                      Navigator.pushReplacementNamed(context, '/monitor-sigin');
+                    },
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                      overlayColor:
+                          MaterialStateProperty.all(Colors.transparent),
+                    ),
+                    child: const Text(
+                      'Sign Out',
+                      style: TextStyle(
+                          fontFamily: 'SF-UI-Display',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15),
+                    ),
                   ),
-                ),
+                ]),
               ],
             )));
-
-        // return Container(
-        //   color: const Color(0xFF090c12),
-        //   child: Padding(
-        //       padding: const EdgeInsets.all(30),
-        //       child: Center(
-        //         child: ListView(shrinkWrap: true, children: <Widget>[
-        //           const Center(
-        //               child: Padding(
-        //                   padding: EdgeInsets.all(15),
-        //                   child: Text(
-        //                     "Profile",
-        //                     style: TextStyle(
-        //                         fontSize: 30, fontWeight: FontWeight.bold),
-        //                   ))),
-        //           Padding(
-        //             padding: const EdgeInsets.symmetric(vertical: 5),
-        //             child: Text(
-        //               "Name: $name",
-        //               style: TextStyle(fontSize: 18),
-        //             ),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.symmetric(vertical: 5),
-        //             child: Text(
-        //               "Employee Number: $empNo",
-        //               style: const TextStyle(fontSize: 18),
-        //             ),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.symmetric(vertical: 5),
-        //             child: Text(
-        //               "Positiion: $position",
-        //               style: TextStyle(fontSize: 18),
-        //             ),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.symmetric(vertical: 5),
-        //             child: Text(
-        //               "Home Unit: $homeUnit",
-        //               style: const TextStyle(fontSize: 18),
-        //             ),
-        //           ),
-        //           Padding(
-        //             padding: const EdgeInsets.symmetric(vertical: 5),
-        //             child: Text(
-        //               "Location: $_location",
-        //               style: const TextStyle(fontSize: 18),
-        //             ),
-        //           ),
-        //           Row(
-        //             mainAxisAlignment: MainAxisAlignment.center,
-        //             children: [
-        //               TextButton(
-        //                 onPressed: () {
-        //                   showDialog(
-        //                     context: context,
-        //                     builder: (BuildContext context) {
-        //                       return AlertDialog(
-        //                         backgroundColor: const Color(0xFF222429),
-        //                         title: const Text('Enter current location'),
-        //                         content:
-        //                             TextField(controller: _locationController),
-        //                         actions: <Widget>[
-        //                           TextButton(
-        //                             child: const Text('Update'),
-        //                             onPressed: () {
-        //                               String location =
-        //                                   _locationController.text;
-
-        //                               context
-        //                                   .read<LogProvider>()
-        //                                   .updateMonitorLocation(location);
-
-        //                               // Close the dialog
-        //                               Navigator.of(context).pop();
-        //                             },
-        //                           ),
-        //                           TextButton(
-        //                             child: const Text('Cancel'),
-        //                             onPressed: () {
-        //                               Navigator.of(context).pop();
-        //                             },
-        //                           ),
-        //                         ],
-        //                       );
-        //                     },
-        //                   );
-        //                 },
-        //                 style: ButtonStyle(
-        //                   backgroundColor:
-        //                       MaterialStateProperty.all(Colors.transparent),
-        //                   overlayColor:
-        //                       MaterialStateProperty.all(Colors.transparent),
-        //                 ),
-        //                 child: const Text(
-        //                   'Update Location',
-        //                   style: TextStyle(
-        //                       fontFamily: 'SF-UI-Display',
-        //                       fontWeight: FontWeight.w700,
-        //                       fontSize: 15),
-        //                 ),
-        //               ),
-        //               TextButton(
-        //                 onPressed: () {
-        //                   context.read<AuthProvider>().signOut();
-        //                   Navigator.pushReplacementNamed(
-        //                       context, '/admin-signin');
-        //                 },
-        //                 style: ButtonStyle(
-        //                   backgroundColor:
-        //                       MaterialStateProperty.all(Colors.transparent),
-        //                   overlayColor:
-        //                       MaterialStateProperty.all(Colors.transparent),
-        //                 ),
-        //                 child: const Text(
-        //                   'Logout',
-        //                   style: TextStyle(
-        //                       fontFamily: 'SF-UI-Display',
-        //                       fontWeight: FontWeight.w700,
-        //                       fontSize: 15),
-        //                 ),
-        //               )
-        //             ],
-        //           ),
-        //         ]),
-        //       )),
-        // );
       },
     );
   }

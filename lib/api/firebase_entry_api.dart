@@ -202,6 +202,27 @@ class FirebaseEntryAPI {
           'remarks': entryRequest.remarks,
           'status': entryRequest.status,
         });
+        // Get the entry
+        final entry = await db
+            .collection("entry")
+            .where('entryId', isEqualTo: entryRequest.entryId)
+            .get();
+
+        // get user
+        final user = await db
+            .collection("user")
+            .where('userId', isEqualTo: entry.docs[0]['uid'])
+            .get();
+
+        if (user.docs.isNotEmpty) {
+          // If entry.closeContact, then update user underMonitoring to true
+          if (entryRequest.closeContact) {
+            await db
+                .collection("user")
+                .doc(user.docs[0].id)
+                .update({'underMonitoring': true});
+          }
+        }
       } else {
         await db.collection("entry").doc(entryRequest.entryId).update({
           'remarks': entryRequest.remarks,

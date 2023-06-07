@@ -46,7 +46,8 @@ class _EditEntryState extends State<EditEntry> {
     StreamSubscription<QuerySnapshot> subscription = FirebaseFirestore.instance
         .collection("entry")
         .where('uid', isEqualTo: user.uid)
-        .where('entryDate', isEqualTo: timeToday)
+        .where('entryDate', isGreaterThanOrEqualTo: timeToday)
+        .where('entryDate', isLessThan: timeToday.add(const Duration(days: 1)))
         .snapshots()
         .listen((QuerySnapshot snapshot) {
       if (snapshot.docs.isNotEmpty) {
@@ -263,7 +264,7 @@ class _EditEntryState extends State<EditEntry> {
                 content: Text('Please select an answer in the last question')));
           } else {
             dailyEntry!.symptoms = symptomsList;
-            // print(dailyEntry!.symptoms);
+            print(dailyEntry!.symptoms);
             entryProvider.editEntryRequest(dailyEntry!.entryId!, dailyEntry!);
 
             // formKey.currentState?.save();

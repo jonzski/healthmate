@@ -121,6 +121,9 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget pieGraph() {
+    int? quarantineCount = context.watch<UserProvider>().quarantineCount;
+    int? monitoringCount = context.watch<UserProvider>().monitoringCount;
+    int? clearedCount = context.watch<UserProvider>().clearedCount;
     return Container(
         margin: const EdgeInsets.only(left: 30, right: 30, bottom: 30, top: 10),
         constraints: const BoxConstraints(
@@ -135,7 +138,19 @@ class _DashboardState extends State<Dashboard> {
               width: 0.5, // Set the thickness of the border line
             )),
         child: PieChart(
-          dataMap: dataMap,
+          dataMap: (quarantineCount != null &&
+                  monitoringCount != null &&
+                  clearedCount != null)
+              ? {
+                  "Cleared": clearedCount.toDouble(),
+                  "Monitoring": monitoringCount.toDouble(),
+                  "Quarantined": quarantineCount.toDouble(),
+                }
+              : {
+                  "Cleared": 0,
+                  "Monitoring": 0,
+                  "Quarantined": 0,
+                },
           colorList: const [Colors.green, Colors.orange, Colors.red],
           chartType: ChartType.disc, // Set the chartType to 'disc'
           legendOptions: const LegendOptions(
@@ -168,6 +183,9 @@ class _DashboardState extends State<Dashboard> {
               }
 
               dataMap["Cleared"] = snapshot.data!.docs.length.toDouble();
+              context
+                  .read<UserProvider>()
+                  .updateClearedCount(snapshot.data!.docs.length);
 
               return Row(children: [
                 Row(
@@ -193,7 +211,7 @@ class _DashboardState extends State<Dashboard> {
                           TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 20),
                       child: Text(
                         '${snapshot.data!.docs.length}',
                         style: const TextStyle(
@@ -226,6 +244,9 @@ class _DashboardState extends State<Dashboard> {
                 );
               }
               dataMap["Monitoring"] = snapshot.data!.docs.length.toDouble();
+              context
+                  .read<UserProvider>()
+                  .updateMonitoringCount(snapshot.data!.docs.length);
               return Row(children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -250,7 +271,7 @@ class _DashboardState extends State<Dashboard> {
                           TextStyle(fontSize: 16, fontFamily: 'SF-UI-Display'),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 20),
                       child: Text(
                         '${snapshot.data!.docs.length}',
                         style: const TextStyle(
@@ -285,6 +306,9 @@ class _DashboardState extends State<Dashboard> {
                 );
               }
               dataMap["Quarantined"] = snapshot.data!.docs.length.toDouble();
+              context
+                  .read<UserProvider>()
+                  .updateQuarantineCount(snapshot.data!.docs.length);
               return Row(children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,

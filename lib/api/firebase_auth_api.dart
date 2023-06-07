@@ -37,9 +37,9 @@ class FirebaseAuthAPI {
       // get the portion inside parenthesis in e.message
       // and return it
       // From: https://stackoverflow.com/questions/57949887/how-do-i-use-regexp-in-flutter
-      String? message =
-          RegExp('\\(([^)]+)\\)').firstMatch(e.message!)?.group(1);
-      throw message!;
+      // String? message =
+      //     RegExp('\\(([^)]+)\\)').firstMatch(e.message!)?.group(1);
+      throw e;
     } catch (e) {
       print(e);
       rethrow;
