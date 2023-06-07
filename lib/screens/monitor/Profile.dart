@@ -239,7 +239,8 @@ class Profile extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       context.read<AuthProvider>().signOut();
-                      Navigator.pushReplacementNamed(context, '/monitor-sigin');
+                      Navigator.pushReplacementNamed(
+                          context, '/monitor-signin');
                     },
                     style: ButtonStyle(
                       backgroundColor:
