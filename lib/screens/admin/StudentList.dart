@@ -218,28 +218,28 @@ class _StudentListState extends State<StudentList> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          'Name: ${students[index].name}',
+                                          'Name: ${startSearch ? filteredStudents[index].name : students[index].name}',
                                           style: const TextStyle(
                                             fontFamily: 'SF-UI-Display',
                                           ),
                                           textAlign: TextAlign.left,
                                         ),
                                         Text(
-                                          'Student Number: ${students[index].studentNum}',
+                                          'Student Number: ${startSearch ? filteredStudents[index].studentNum : students[index].studentNum}',
                                           style: const TextStyle(
                                             fontFamily: 'SF-UI-Display',
                                           ),
                                           textAlign: TextAlign.left,
                                         ),
                                         Text(
-                                          'Course: ${students[index].course}',
+                                          'Course: ${startSearch ? filteredStudents[index].course : students[index].course}',
                                           style: const TextStyle(
                                             fontFamily: 'SF-UI-Display',
                                           ),
                                           textAlign: TextAlign.left,
                                         ),
                                         Text(
-                                          'College: ${students[index].college}',
+                                          'College: ${startSearch ? filteredStudents[index].college : students[index].college}',
                                           style: const TextStyle(
                                             fontFamily: 'SF-UI-Display',
                                           ),
@@ -428,8 +428,12 @@ class _StudentListState extends State<StudentList> {
                                                       .read<UserProvider>()
                                                       .elevateUserToAdminOrMonitor(
                                                           uid, 2);
-                                                  filteredStudents.remove(
-                                                      filteredStudents[index]);
+                                                  startSearch
+                                                      ? filteredStudents.remove(
+                                                          filteredStudents[
+                                                              index])
+                                                      : students.remove(
+                                                          students[index]);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           content: Text(
@@ -440,8 +444,12 @@ class _StudentListState extends State<StudentList> {
                                                       .read<UserProvider>()
                                                       .elevateUserToAdminOrMonitor(
                                                           uid, 3);
-                                                  filteredStudents.remove(
-                                                      filteredStudents[index]);
+                                                  startSearch
+                                                      ? filteredStudents.remove(
+                                                          filteredStudents[
+                                                              index])
+                                                      : students.remove(
+                                                          students[index]);
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                           content: Text(
@@ -450,7 +458,7 @@ class _StudentListState extends State<StudentList> {
 
                                                 selectedAdmin = false;
                                                 selectedMonitor = false;
-                                                Navigator.of(context).pop();
+                                                Navigator.pop(context);
                                               })
                                         ],
                                       );
