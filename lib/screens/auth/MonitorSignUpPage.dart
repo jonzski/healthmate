@@ -176,8 +176,8 @@ class _MonitorSignUpPageState extends State<MonitorSignUpPage> {
                                     "empNo": _empnoController.text,
                                     "position": _positionController.text,
                                     "homeUnit": _unitController.text,
-                                    "underMonitoring": null,
-                                    "underQuarantine": null,
+                                    "underMonitoring": false,
+                                    "underQuarantine": false,
                                     "diseases": null,
                                     "allergies": null
                                   };
