@@ -174,6 +174,7 @@ class FirebaseEntryAPI {
             'date': DateTime.now(),
             'uid': monitorId,
             'studentId': userData['userId'],
+            'studentName': userData['name'],
             'location': location,
           });
           await db
