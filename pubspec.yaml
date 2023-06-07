@@ -23,6 +23,12 @@ dependencies:
   qr_code_scanner: ^1.0.1
   qr_flutter: ^4.1.0
   flutter_expandable_fab: ^1.8.0
+  screenshot: ^2.1.0
+  share: ^2.0.4
+  path_provider: ^2.0.15
+  image_gallery_saver: ^2.0.1
+  permission_handler: ^10.2.1
+  gallery_saver: ^2.3.2
 
 dev_dependencies:
   flutter_test:
