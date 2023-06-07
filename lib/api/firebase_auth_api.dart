@@ -10,11 +10,26 @@ class FirebaseAuthAPI {
   Stream<User?> get getUser => auth.authStateChanges();
   User get currentUser => auth.currentUser!;
 
-  Future<UserCredential> signIn(String email, String password) async {
+  Future<UserCredential?> signIn(
+      String email, String password, int userType) async {
     try {
       UserCredential credential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      return credential;
+
+      final snapshot = await db
+          .collection("user")
+          .where('userId', isEqualTo: credential.user?.uid)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        QueryDocumentSnapshot document = snapshot.docs[0];
+        Map<String, dynamic> userAcc = document.data() as Map<String, dynamic>;
+        if (userAcc['userType'] != userType) {
+          return null;
+        } else {
+          return credential;
+        }
+      }
     } on FirebaseAuthException catch (e) {
       //possible to return something more useful
       //than just print an error message to improve UI/UX

@@ -110,10 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                           loginKey.currentState!.save();
 
                           try {
-                            final UserCredential user = await context
+                            final UserCredential? user = await context
                                 .read<AuthProvider>()
                                 .signIn(_emailController.text.trim(),
-                                    _passwordController.text.trim());
+                                    _passwordController.text.trim(), 0);
 
                             if (user != null && context.mounted) {
                               // Navigator.pushReplacementNamed(context, '/user');
@@ -121,6 +121,11 @@ class _LoginPageState extends State<LoginPage> {
                                   arguments: const UserView(
                                     viewer: 'Student',
                                   ));
+                            } else if (user == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "You cannot sign in as a student")));
                             }
                           } catch (e) {
                             print('Error: ${e}');

@@ -109,13 +109,18 @@ class _AdminSignInPageState extends State<AdminSignInPage> {
                           loginKey.currentState!.save();
 
                           try {
-                            final UserCredential user = await context
+                            final UserCredential? user = await context
                                 .read<AuthProvider>()
                                 .signIn(_emailController.text.trim(),
-                                    _passwordController.text.trim());
+                                    _passwordController.text.trim(), 2);
 
                             if (user != null && context.mounted) {
                               Navigator.pushReplacementNamed(context, '/admin');
+                            } else if (user == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "You cannot sign in as an admin")));
                             }
                           } catch (e) {
                             print('Error: $e');

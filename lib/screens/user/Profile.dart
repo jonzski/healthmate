@@ -138,14 +138,16 @@ class _ProfileState extends State<Profile> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              name,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontFamily: 'SF-UI-Display',
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                  color: Colors.black),
+                            SizedBox(
+                              width: 100,
+                              child: Text(
+                                name,
+                                style: const TextStyle(
+                                    fontFamily: 'SF-UI-Display',
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    color: Colors.black),
+                              ),
                             ),
                             Text(
                               studentNum,

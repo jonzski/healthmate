@@ -265,10 +265,12 @@ class _SignupPageState extends State<SignupPage> {
                                     try {
                                       await authProvider.signUp(
                                           email, password, 0, name, newUser);
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.pop(context);
                                     } catch (e) {
                                       print(e);
                                     }
-                                  } // return to login page
+                                  }
                                 },
                                 child: const Text(
                                   'Create Account',

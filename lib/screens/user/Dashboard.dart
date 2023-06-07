@@ -105,6 +105,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget todaysEntry() {
+    final entryProvider = context.read<EntryProvider>();
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     User user = context.read<AuthProvider>().currentUser;
@@ -136,8 +137,19 @@ class _DashboardState extends State<Dashboard> {
                   color: Colors.green.shade700,
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/add-entry');
+                  onPressed: () async {
+                    bool isAdded = await entryProvider.checkIfAddedEntry(
+                        user.uid, user, timeToday);
+
+                    if (isAdded) {
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              "You have already added an entry for today")));
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushNamed(context, '/add-entry');
+                    }
                   },
                   child: const Text('Add Entry'),
                 )
@@ -150,8 +162,19 @@ class _DashboardState extends State<Dashboard> {
                   color: Colors.blue.shade900,
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/edit-entry');
+                  onPressed: () async {
+                    bool isAdded = await entryProvider.checkIfAddedEntry(
+                        user.uid, user, timeToday);
+
+                    if (!isAdded) {
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text("You have not added an entry for today")));
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushNamed(context, '/edit-entry');
+                    }
                   },
                   child: const Text('Edit Entry'),
                 )
@@ -164,70 +187,82 @@ class _DashboardState extends State<Dashboard> {
                   color: Colors.red,
                 ),
                 TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          title: const Text('Delete Today\'s Entry'),
-                          content: Form(
-                            key: formKey,
-                            child: TextFormField(
-                                controller: _remarkController,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter a remark';
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: 'Reason for deleting entry',
-                                ),
-                                onChanged: (String value) {
-                                  entry!.remarks = value;
-                                }),
-                          ),
-                          actions: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                TextButton(
-                                  child: const Text('Submit'),
-                                  onPressed: () {
-                                    if (formKey.currentState!.validate()) {
-                                      final entryProvider =
-                                          context.read<EntryProvider>();
-                                      // entry.entryId causes error (returns null value)
-                                      entryProvider.entryDeleteRequest(
-                                          entry!.entryId!, entry);
+                  onPressed: () async {
+                    bool isAdded = await entryProvider.checkIfAddedEntry(
+                        user.uid, user, timeToday);
 
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  'Successfully requested for deleting entry!')));
-                                      setState(() {
-                                        _remarkController.clear();
-                                      });
-
-                                      Navigator.of(context).pop();
+                    if (!isAdded) {
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text("You have not added an entry for today")));
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            title: const Text('Delete Today\'s Entry'),
+                            content: Form(
+                              key: formKey,
+                              child: TextFormField(
+                                  controller: _remarkController,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter a remark';
                                     }
+                                    return null;
                                   },
-                                ),
-                                TextButton(
-                                  child: const Text('Close'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            )
-                          ],
-                        );
-                      },
-                    );
+                                  decoration: const InputDecoration(
+                                    labelText: 'Reason for deleting entry',
+                                  ),
+                                  onChanged: (String value) {
+                                    entry!.remarks = value;
+                                  }),
+                            ),
+                            actions: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  TextButton(
+                                    child: const Text('Submit'),
+                                    onPressed: () {
+                                      if (formKey.currentState!.validate()) {
+                                        final entryProvider =
+                                            context.read<EntryProvider>();
+                                        // entry.entryId causes error (returns null value)
+                                        entryProvider.entryDeleteRequest(
+                                            entry!.entryId!, entry);
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'Successfully requested for deleting entry!')));
+                                        setState(() {
+                                          _remarkController.clear();
+                                        });
+
+                                        Navigator.of(context).pop();
+                                      }
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: const Text('Close'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                   child: const Text('Delete Entry'),
                 )

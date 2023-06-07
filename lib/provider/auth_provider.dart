@@ -28,8 +28,10 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<UserCredential> signIn(String email, String password) async {
-    UserCredential credential = await authService.signIn(email, password);
+  Future<UserCredential?> signIn(
+      String email, String password, int userType) async {
+    UserCredential? credential =
+        await authService.signIn(email, password, userType);
     notifyListeners();
     return credential;
   }
