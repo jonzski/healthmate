@@ -8,6 +8,7 @@ class MonitorLog {
   String? location;
   final String logId;
   String studentId;
+  String studentName;
 
   MonitorLog({
     this.status,
@@ -17,6 +18,7 @@ class MonitorLog {
     this.location,
     required this.logId,
     required this.studentId,
+    required this.studentName,
   });
 
   factory MonitorLog.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class MonitorLog {
       location: json['location'],
       logId: json['logId'],
       studentId: json['studentId'],
+      studentName: json['studentName'],
     );
   }
 
@@ -43,7 +46,8 @@ class MonitorLog {
       "uid": log.uid,
       "date": log.date,
       "location": log.location,
-      "studentId": log.studentId
+      "studentId": log.studentId,
+      "studentName": log.studentName,
     };
   }
 }
