@@ -108,27 +108,32 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         if (loginKey.currentState!.validate()) {
                           loginKey.currentState!.save();
-
+                          //final UserCredential?
+                          UserCredential? user;
                           try {
-                            final UserCredential? user = await context
-                                .read<AuthProvider>()
-                                .signIn(_emailController.text.trim(),
-                                    _passwordController.text.trim(), 0);
+                            user = await context.read<AuthProvider>().signIn(
+                                _emailController.text.trim(),
+                                _passwordController.text.trim(),
+                                0);
+                          } on FirebaseAuthException catch (e) {
+                            // Pop Over
+                            final String error = "${e.message}";
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text(error)));
+                            print('Errorrrr: ${e.message}');
+                          }
 
-                            if (user != null && context.mounted) {
-                              // Navigator.pushReplacementNamed(context, '/user');
-                              Navigator.pushNamed(context, '/user',
-                                  arguments: const UserView(
-                                    viewer: 'Student',
-                                  ));
-                            } else if (user == null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          "You cannot sign in as a student")));
-                            }
-                          } catch (e) {
-                            print('Error: ${e}');
+                          if (user != null && context.mounted) {
+                            // Navigator.pushReplacementNamed(context, '/user');
+                            Navigator.pushNamed(context, '/user',
+                                arguments: const UserView(
+                                  viewer: 'Student',
+                                ));
+                          } else if (user == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        "You cannot sign in as a student")));
                           }
                         }
                       },
