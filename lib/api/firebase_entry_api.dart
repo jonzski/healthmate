@@ -170,10 +170,13 @@ class FirebaseEntryAPI {
           // Use the userData map as needed
           final docRef = await db.collection("log").add({
             'status': "Cleared",
-            'studentNum': userData['studentNum'],
+            'studentNum': userData['studentNum'] != null
+                ? userData['studentNum']
+                : userData['empNo'],
             'date': DateTime.now(),
             'uid': monitorId,
             'studentId': userData['userId'],
+            'studentName': userData['name'],
             'location': location,
           });
           await db

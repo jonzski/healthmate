@@ -12,6 +12,7 @@ class LogProvider with ChangeNotifier {
 
   LogProvider() {
     firebaseService = FirebaseLogAPI();
+    fetchAllLogs();
   }
 
   // getter
@@ -19,8 +20,8 @@ class LogProvider with ChangeNotifier {
   Stream<QuerySnapshot> get allLogsByDate => _logStreamByDate;
   String get location => _location;
 
-  void fetchAllLogs(String userId) async {
-    _logStream = firebaseService.fetchAllLogs(userId);
+  void fetchAllLogs() async {
+    _logStream = firebaseService.fetchAllLogs();
     notifyListeners();
   }
 
