@@ -293,7 +293,9 @@ class _DashboardState extends State<Dashboard> {
 
           Map<String, dynamic>? student = snapshot.data;
 
-          bool isQuarantine = student?['underQuarantine'];
+          bool isQuarantine = student?['underQuarantine'] != null
+              ? (student?['underQuarantine'])
+              : false;
 
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
@@ -357,7 +359,9 @@ class _DashboardState extends State<Dashboard> {
 
         Map<String, dynamic>? student = snapshot.data;
 
-        bool isQuarantine = student?['underMonitoring'];
+        bool isQuarantine = student?['underMonitoring'] != null
+            ? (student?['underMonitoring'])
+            : false;
 
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),

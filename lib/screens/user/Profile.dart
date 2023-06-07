@@ -98,7 +98,9 @@ class _ProfileState extends State<Profile> {
             ? 'College'
             : user?['college'];
         String uid = user?['userId'];
-        bool underQuarantine = user?['underQuarantine'];
+        bool underQuarantine = (user?['underQuarantine'] != null)
+            ? (user?['underQuarantine'])
+            : false;
 
         if (underQuarantine) {
           generateQRcode = false;
