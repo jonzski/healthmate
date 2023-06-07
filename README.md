@@ -160,12 +160,12 @@ Overall, the HealthMate aims to streamline health monitoring processes, ensure c
 </figure>
 
 ## Tech Stack
-  # Flutter (Front End) ![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
-    - Flutter is a cross-platform framework developed by Google for building native-like applications for iOS, Android, and the web from a single codebase. Flutter provides a rich set of UI components and a reactive framework that enables fast and expressive UI development. It allows for seamless integration with Firebase and provides an efficient and performant user interface for the UPLB Health Monitoring System.
-  # Firebase (Back End) ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
-    - Firebase is a comprehensive mobile and web application development platform provided by Google. It offers a wide range of services and tools that simplify the development process, including authentication, real-time database, cloud storage, cloud functions, and hosting. Firebase's real-time database and cloud storage are utilized to store and manage user data, health records, and other relevant information for the UPLB Health Monitoring System. Firebase's authentication service is used for user authentication and security.
-  # Android ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
-    - Android is a popular operating system developed by Google for mobile devices. It offers a user-friendly interface, a vast selection of applications, and extensive customization options. With its open-source nature, Android has a thriving community of developers constantly contributing to its growth.
+  ### Flutter (Front End)
+  Flutter is a cross-platform framework developed by Google for building native-like applications for iOS, Android, and the web from a single codebase. Flutter provides a rich set of UI components and a reactive framework that enables fast and expressive UI development. It allows for seamless integration with Firebase and provides an efficient and performant user interface for the UPLB Health Monitoring System.
+  ### Firebase (Back End)
+  Firebase is a comprehensive mobile and web application development platform provided by Google. It offers a wide range of services and tools that simplify the development process, including authentication, real-time database, cloud storage, cloud functions, and hosting. Firebase's real-time database and cloud storage are utilized to store and manage user data, health records, and other relevant information for the UPLB Health Monitoring System. Firebase's authentication service is used for user authentication and security.
+  ### Android
+  Android is a popular operating system developed by Google for mobile devices. It offers a user-friendly interface, a vast selection of applications, and extensive customization options. With its open-source nature, Android has a thriving community of developers constantly contributing to its growth.
 
 
 # Starting the Project
