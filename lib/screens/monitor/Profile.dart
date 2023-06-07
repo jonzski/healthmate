@@ -68,6 +68,7 @@ class Profile extends StatelessWidget {
 
         Random random = Random();
         int randomIndex = random.nextInt(quotes.length);
+        String _location = context.watch<LogProvider>().location;
 
         return Container(
             color: const Color(0xFF090c12),
@@ -87,6 +88,14 @@ class Profile extends StatelessWidget {
                           color: Colors.white),
                     ),
                   )),
+                ),
+                Text(
+                  'Current Location: $_location',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontFamily: 'SF-UI-Display',
+                      fontSize: 16,
+                      color: Colors.white),
                 ),
                 Container(
                     padding: const EdgeInsets.all(35),
@@ -232,6 +241,7 @@ class Profile extends StatelessWidget {
                       'Update Location',
                       style: TextStyle(
                           fontFamily: 'SF-UI-Display',
+                          color: Color(0xFF526bf2),
                           fontWeight: FontWeight.w700,
                           fontSize: 15),
                     ),
@@ -251,6 +261,7 @@ class Profile extends StatelessWidget {
                     child: const Text(
                       'Sign Out',
                       style: TextStyle(
+                          color: Color(0xFF526bf2),
                           fontFamily: 'SF-UI-Display',
                           fontWeight: FontWeight.w700,
                           fontSize: 15),
