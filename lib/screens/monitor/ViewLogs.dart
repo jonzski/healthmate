@@ -18,15 +18,16 @@ class ViewLogs extends StatefulWidget {
 class _ViewLogsState extends State<ViewLogs> {
   BuildContext? _initialContext;
 
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initialContext = context;
-      String currentUserUid =
-          _initialContext!.read<AuthProvider>().currentUser.uid;
-      _initialContext!.watch<LogProvider>().fetchAllLogs(currentUserUid);
-    });
-  }
+  @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     _initialContext = context;
+  //     String currentUserUid =
+  //         _initialContext!.read<AuthProvider>().currentUser.uid;
+  //     _initialContext!.watch<LogProvider>().fetchAllLogs(currentUserUid);
+  //   });
+  // }
 
   final String logo = 'assets/images/Logo.svg';
 
@@ -57,7 +58,7 @@ class _ViewLogsState extends State<ViewLogs> {
 
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> allStudents = context.watch<LogProvider>().allLogs;
+    Stream<QuerySnapshot>? allStudents = context.watch<LogProvider>().allLogs;
 
     return Container(
       color: const Color(0xFF090c12),
@@ -112,11 +113,14 @@ class _ViewLogsState extends State<ViewLogs> {
               ),
             );
           }
+          String userId = context.read<AuthProvider>().currentUser.uid;
           List<MonitorLog> temp = [];
           for (int index = 0; index < snapshot.data!.docs.length; index++) {
             MonitorLog log = MonitorLog.fromJson(
                 snapshot.data?.docs[index].data() as Map<String, dynamic>);
-            temp.add(log);
+            if (log.uid == userId) {
+              temp.add(log);
+            }
           }
           logs = temp;
 

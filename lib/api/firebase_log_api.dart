@@ -6,13 +6,9 @@ import '../model/log_model.dart';
 class FirebaseLogAPI {
   static final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Stream<QuerySnapshot<Object?>> fetchAllLogs(String userId) {
+  Stream<QuerySnapshot<Object?>> fetchAllLogs() {
     try {
-      return db
-          .collection("log")
-          .where('uid', isEqualTo: userId)
-          .orderBy('date', descending: true)
-          .snapshots();
+      return db.collection("log").orderBy('date', descending: true).snapshots();
     } on FirebaseException catch (e) {
       throw e;
     }
