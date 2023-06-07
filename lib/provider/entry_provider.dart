@@ -42,6 +42,17 @@ class EntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> checkIfAddedEntry(
+      String uid, User user, DateTime timeToday) async {
+    DailyEntry entry = DailyEntry(
+        uid: uid, symptoms: {}, closeContact: false, entryDate: timeToday);
+
+    bool isAdded =
+        await firebaseService.checkIfAddedEntry(entry.toJson(entry), user);
+
+    return isAdded;
+  }
+
   void editEntryRequest(String entryId, DailyEntry entry) async {
     String message = await firebaseService.editEntryRequest(entryId, entry);
     print(message);

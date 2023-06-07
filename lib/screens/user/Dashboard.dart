@@ -105,6 +105,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget todaysEntry() {
+    final entryProvider = context.read<EntryProvider>();
     DateTime timeToday = DateTime.now();
     timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
     User user = context.read<AuthProvider>().currentUser;
@@ -136,8 +137,19 @@ class _DashboardState extends State<Dashboard> {
                   color: Colors.green.shade700,
                 ),
                 TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/add-entry');
+                  onPressed: () async {
+                    bool isAdded = await entryProvider.checkIfAddedEntry(
+                        user.uid, user, timeToday);
+
+                    if (isAdded) {
+                      // ignore: use_build_context_synchronously
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              "You have already added an entry for today")));
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushNamed(context, '/add-entry');
+                    }
                   },
                   child: const Text('Add Entry'),
                 )

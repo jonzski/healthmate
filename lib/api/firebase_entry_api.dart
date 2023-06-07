@@ -32,6 +32,22 @@ class FirebaseEntryAPI {
     }
   }
 
+  Future<bool> checkIfAddedEntry(Map<String, dynamic> entry, User user) async {
+    DateTime timeToday = DateTime.now();
+    timeToday = DateTime(timeToday.year, timeToday.month, timeToday.day);
+    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('entry')
+        .where('uid', isEqualTo: user.uid)
+        .where('entryDate', isGreaterThanOrEqualTo: timeToday)
+        .where('entryDate', isLessThan: timeToday.add(Duration(days: 1)))
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      return true;
+    }
+    return false;
+  }
+
   Future<String> updateMonitoring(String uid) async {
     try {
       await db.collection("user").doc(uid).update({'underMonitoring': true});
