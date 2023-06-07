@@ -3,7 +3,7 @@
    <application
         android:label="HealthMate"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/HealthMate">
         <activity
             android:name=".MainActivity"
             android:exported="true"
