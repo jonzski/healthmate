@@ -20,7 +20,8 @@ class FirebaseLogAPI {
       return db
           .collection("log")
           .where('userId', isEqualTo: userId)
-          .where('date', isEqualTo: date)
+          .where('date', isGreaterThanOrEqualTo: date)
+          .where('date', isLessThanOrEqualTo: date.add(const Duration(days: 1)))
           .orderBy('date', descending: true)
           .snapshots();
     } on FirebaseException catch (e) {
